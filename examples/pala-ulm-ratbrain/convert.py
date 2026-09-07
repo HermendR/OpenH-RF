@@ -20,10 +20,9 @@ os.environ.setdefault("KERAS_BACKEND", "jax")
 import h5py
 import numpy as np
 import requests
-import zea
-import zea.data.convert.verasonics  # noqa: F401  (registers the submodule attribute)
 from tqdm import tqdm
 from zea import File
+from zea.data.convert.verasonics import bs100bw_to_iq
 
 DEFAULT_INPUT = Path(__file__).parent / "RF" / "RF_002.hdf5"
 DEFAULT_OUTPUT = Path(__file__).parent / "pala_sample.hdf5"
@@ -52,7 +51,7 @@ def convert(path: Path, output_path: Path) -> Path:
         sampling_frequency = _scalar(rf.attrs["decim_sample_rate_MHz"]) * 1e6 / 4
 
         raw_data = rf[:].transpose(3, 2, 1, 0)[..., None].astype(np.float32)
-        raw_data = zea.data.convert.verasonics.bs100bw_to_iq(raw_data)
+        raw_data = bs100bw_to_iq(raw_data)
         n_frames, n_tx, n_ax, n_el, n_ch = raw_data.shape  # noqa: F841
 
         waveforms_two_way = _waveform_samples(file["rf"]["pulse"]["Wvfm2Wy"], n_tx)
@@ -107,9 +106,7 @@ def convert(path: Path, output_path: Path) -> Path:
         "transmit_origins": np.zeros((n_tx, 3), dtype=np.float32),
         "waveforms_two_way": waveforms_two_way,
         "waveforms_one_way": waveforms_one_way,
-        "time_to_next_transmit": np.full(
-            (n_frames, n_tx), time_to_next_transmit, dtype=np.float32
-        ),
+        "time_to_next_transmit": np.full((n_frames, n_tx), time_to_next_transmit, dtype=np.float32),
     }
 
     metadata = {
@@ -240,6 +237,13 @@ def main() -> None:
 
     if args.download:
         _download_and_unzip()
+
+    if not args.input_path.exists():
+        parser.error(
+            f"input file not found: {args.input_path}\n"
+            "Pass --download to fetch the PALA dataset from Zenodo, or give the path "
+            "to an RF_XXX.hdf5 file you already have."
+        )
 
     print(f"Converting {args.input_path} ...")
     out = convert(path=args.input_path, output_path=args.output)
