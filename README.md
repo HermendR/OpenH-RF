@@ -4,6 +4,7 @@
 
 # OpenH-RF
 
+[![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-OpenH--RF-FFD21E?style=for-the-badge)](https://huggingface.co/datasets/nvidia/OpenH-RF)
 [![Discord](https://img.shields.io/badge/Discord-Join%20Community-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/gNTJeUsH2B)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge)](LICENSE)
 
@@ -19,6 +20,10 @@ OpenH-RF is a collaborative initiative led by [Stanford University](https://med.
 
 We aim to curate **20,000+** real and synthetic channel capture measurements spanning reconstruction, flow, quantitative imaging, motion estimation and interpretation tasks — released under **CC BY 4.0**.
 
+## 📣 Updates
+
+- 🚀 **September 2026** — [OpenH-RF v1.0 early-access pre-release is live on Hugging Face!](https://huggingface.co/datasets/nvidia/OpenH-RF)
+
 ## How to Participate
 
 1. **Review the RFP** — Read the [Request for Proposals](assets/OpenH-RF%20Request%20for%20Proposals%20(RFP).pdf) for technical scope, eligibility and evaluation criteria.
@@ -30,12 +35,12 @@ We aim to curate **20,000+** real and synthetic channel capture measurements spa
 
 | Milestone | Date |
 |-----------|------|
-| RFP released | March 16, 2026 |
-| Proposal submission deadline | June 10, 2026 |
-| Data collection window | May – July 2026 |
-| Dataset delivery deadline | July 12, 2026 |
+| ~~RFP released~~ | ~~March 16, 2026~~ |
+| ~~Proposal submission deadline~~ | ~~June 10, 2026~~ |
+| ~~Data collection window~~ | ~~May – July 2026~~ |
+| ~~Dataset delivery deadline~~ | ~~July 12, 2026~~ |
 | Model training & validation | August – September 2026 |
-| Public release (dataset + foundation model) | October 2026 |
+| Public release (dataset + foundation model) | October 4, 2026 |
 
 ## Steering Committee
 
@@ -96,7 +101,7 @@ Set the matching `KERAS_BACKEND` (`jax`, `torch`, or `tensorflow`) before runnin
 
 ## Contact
 
-- **Technical questions** — [openh.data+rf@gmail.com](mailto:openh.data+rf@gmail.com)
+- **Technical questions** — [openh.data+rf@gmail.com](mailto:openh.data+rf@gmail.com), the [Hugging Face dataset community page](https://huggingface.co/datasets/nvidia/OpenH-RF/discussions), or the [`zea` community page](https://github.com/tue-bmd/zea/discussions)
 - **Administrative questions** — [wsimson@nvidia.com](mailto:wsimson@nvidia.com)
 - **Community** — [Join our Discord](https://discord.gg/gNTJeUsH2B)
 
