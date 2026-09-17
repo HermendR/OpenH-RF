@@ -150,7 +150,9 @@ def main() -> None:
     plt.close(fig)
     print(f"Saved {OUTPUT}")
 
-    # Build requested 2x1 view: top = short imaging pulse ultrasound, bottom = matching camera image.
+    # Build requested 2x1 view:
+    # top = short imaging pulse ultrasound
+    # bottom = matching camera image.
     if track_panels:
         selected_panel = None
         for label, recon, extent_mm, image_frame in track_panels:

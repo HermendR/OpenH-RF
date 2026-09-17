@@ -47,7 +47,7 @@ def _cubic(x):
 def _contributions(in_length, out_length, scale):
     """Input sample indices and kernel weights for each output sample along one axis."""
     if scale < 1:
-        kernel = lambda x: scale * _cubic(scale * x)
+        kernel = lambda x: scale * _cubic(scale * x)  # noqa: E731
         kernel_width = 4.0 / scale
     else:
         kernel = _cubic

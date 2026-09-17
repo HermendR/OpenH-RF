@@ -148,12 +148,6 @@ def main():
     plt.savefig(str(OUTPUT), bbox_inches="tight", dpi=100)
     plt.close()
 
-    iz, ix = np.unravel_index(np.argmax(amplitude), amplitude.shape)
-    zg = np.linspace(*PARAMETERS["zlims"], amplitude.shape[0])
-    xg = np.linspace(*PARAMETERS["xlims"], amplitude.shape[1])
-    print(
-        f"Map            : {amplitude.shape}, peak at x={xg[ix] * 1e3:.2f} mm, z={zg[iz] * 1e3:.2f} mm"
-    )
     print(f"Saved          : {OUTPUT}")
 
 

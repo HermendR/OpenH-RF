@@ -165,7 +165,6 @@ def reconstruct_track(path: str, output_dir: Path, track_index: int, config, pip
         outputs = pipeline(return_numpy=True, **{pipeline.key: data}, **pipeline_parameters)
         image = np.squeeze(outputs[pipeline.output_key])
         image = np.clip(image, dynamic_range[0], dynamic_range[1])
-        sampling_frequency = metadata_scalar(track.scan, "sampling_frequency")
         demodulation_frequency = float(
             parameter_overrides.get("demodulation_frequency")
             or metadata_scalar(track.scan, "demodulation_frequency")

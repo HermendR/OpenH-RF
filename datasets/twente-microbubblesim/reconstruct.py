@@ -55,7 +55,8 @@ PULSE_TO_TRACK = {pulse: index for index, pulse in enumerate(PULSE_NAMES)}
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 PATH = "hf://nvidia/OpenH-RF/twente-microbubblesim/data/Monodispers/RFDATA00002.hdf5"
-CONFIG_PATH = "hf://nvidia/OpenH-RF/twente-microbubblesim/pipeline/pipeline_track_0_DPT.yaml"  # Pipeline YAML to load; otherwise the selected track's saved pipeline
+# Pipeline YAML to load; otherwise the selected track's saved pipeline
+CONFIG_PATH = "hf://nvidia/OpenH-RF/twente-microbubblesim/pipeline/pipeline_track_0_DPT.yaml"
 PULSE = "DPT"  # Pulse label to reconstruct, for example REF, DPT, or L1.7
 # (must match the track in CONFIG_PATH; track 0 is DPT)
 OUTPUT = None  # Output PNG filename; otherwise uses population and pulse names
