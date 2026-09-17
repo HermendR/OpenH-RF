@@ -35,6 +35,8 @@ The files are physically delay-consistent and reconstruct with zea-native
 scanline delay-and-sum. They are not recovered or measured scanner channel
 data, and they must not be represented as such.
 
+![Example reconstruction](./assets/module_A.png)
+
 ## Dataset Contributors
 
 - **Organization:** The University of British Columbia (UBC), Department of
