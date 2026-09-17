@@ -124,10 +124,10 @@ are in `data/manifest.json` and in the `description` attribute of
 
 ```python
 with zea.File("data/baseline_R45_H8__point_z080_r4.hdf5") as f:
-    saf = {e.name: e for e in f.custom}       # custom/saf_bmode elements
-    volume_db   = saf["values"].data          # (1, z, x, y) float32 dB
-    coordinates = saf["coordinates"].data     # (z, x, y, 3) float32 m
-    print(saf["values"].description)          # axes + eSAF parameters + arc-FWHM
+    saf = {e.name: e for e in f.custom}  # custom/saf_bmode elements
+    volume_db = saf["values"].data  # (1, z, x, y) float32 dB
+    coordinates = saf["coordinates"].data  # (z, x, y, 3) float32 m
+    print(saf["values"].description)  # axes + eSAF parameters + arc-FWHM
 ```
 
 A **MATLAB `.mat` version** of the same raw channel data + metadata, plus a

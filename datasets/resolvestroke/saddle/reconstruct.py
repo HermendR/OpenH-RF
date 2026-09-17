@@ -46,7 +46,6 @@ OUTPUT = None  # Output PNG path (default: outputs/<input-stem>_bmode.png)
 
 
 def main():
-
     # Default output goes to outputs/ next to the script; create it if needed.
     out_path = OUTPUT or (HERE / "outputs" / f"{Path(INPUT).stem}_bmode.png")
     out_path.parent.mkdir(parents=True, exist_ok=True)

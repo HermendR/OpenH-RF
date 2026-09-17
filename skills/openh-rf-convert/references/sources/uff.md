@@ -87,7 +87,7 @@ But zea also requires `t0_delays >= 0`, so we have to shift. The fix:
 # t_i = (x_i · sin θ) / c. For positive θ the wave propagates in +x →
 # element at -x_max fires first.
 raw_t0d = x[None, :] * np.sin(polar_angles)[:, None] / c
-shift_per_tx = -raw_t0d.min(axis=1)              # (n_tx,), non-negative
+shift_per_tx = -raw_t0d.min(axis=1)  # (n_tx,), non-negative
 t0_delays = raw_t0d - raw_t0d.min(axis=1, keepdims=True)
 # CRITICAL: bump initial_times by the same per-tx shift, so the
 # sample-to-time mapping stays consistent across transmits.
