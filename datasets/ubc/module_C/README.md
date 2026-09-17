@@ -41,9 +41,8 @@ synchronization only; no validated spatial registration is supplied.
 - **Organization:** The University of British Columbia (UBC), Department of
   Electrical and Computer Engineering and School of Biomedical Engineering.
 - **Dataset-preparation contact:** Zongze Li, zongze@student.ubc.ca.
-- **Contributors:** Septimiu E. Salcudean, Robert Rohling, Qi Zeng,
-  Tajwar Abrar Aleef, Hamid Moradi, Mohammad Honarvar, Wanwen Chen, Zijian Wu,
-  Yuxin Chen, Yu Chung Lee, Zongze Li, Patrick Boyan Chen, and Michael Frew.
+- **Contributors:** Zongze Li, Yu Chung Lee, Qi Zeng, Wanwen Chen, Zijian Wu,
+  Yuxin Chen, Patrick Boyan Chen, Michael Frew, Tajwar Abrar Aleef, Hamid Moradi, Mohammad Honarvar, Septimiu E. Salcudean, Robert Rohling.
 
 ## Dataset Creation Date
 
