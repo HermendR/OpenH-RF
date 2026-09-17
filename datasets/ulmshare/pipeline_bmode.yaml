@@ -1,0 +1,13 @@
+pipeline:
+    jit_options: pipeline
+    operations:
+    -   name: keras.ops.cast
+        params:
+            dtype: float32
+    -   name: beamform
+        params:
+            jit_options: null
+    - envelope_detect
+    -   name: log_compress
+        params:
+            clip: false

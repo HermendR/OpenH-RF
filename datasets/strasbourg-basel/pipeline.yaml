@@ -1,0 +1,30 @@
+pipeline:
+    operations:
+    -   name: cast
+        params:
+            dtype: float32
+    - apply_window
+    -   name: beamform
+        params:
+            beamformer: delay_and_sum
+            enable_pfield: true
+    - keras.ops.abs
+    -   name: gaussian_blur
+        params:
+            sigma: 2.0
+            axes:
+            - -2  # depth (axial) axis only
+    -   name: normalize
+        params:
+            output_range:
+            - 0.0
+            - 1.0
+            percentile: 99.5
+    - log_compress
+parameters:
+    dynamic_range:
+    - -50
+    - 0
+    pfield_kwargs:
+        alpha: 5
+        percentile: 60

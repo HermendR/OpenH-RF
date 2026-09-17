@@ -1,0 +1,19 @@
+parameters:
+  xlims: [-0.01902, 0.01863]
+  zlims: [0.0, 0.072]
+  grid_size_x: 256
+  grid_size_z: 256
+
+pipeline:
+  operations:
+    - name: demodulate
+    - name: downsample
+      params:
+        factor: 4
+    - name: beamform
+      params:
+        beamformer: delay_and_sum
+        enable_pfield: false
+    - name: envelope_detect
+    - name: normalize
+    - name: log_compress
