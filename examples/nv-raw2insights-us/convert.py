@@ -27,11 +27,12 @@ from pathlib import Path
 os.environ.setdefault("KERAS_BACKEND", "jax")
 
 import numpy as np
-from datasets import load_dataset
 from zea import File
 from zea.beamform.pixelgrid import cartesian_pixel_grid
 from zea.display import to_8bit
 from zea.func.ultrasound import log_compress
+
+from datasets import load_dataset
 
 HF_REPO = "nvidia/NV-Raw2Insights-US"
 DEFAULT_OUTPUT = Path("nv_raw2insights_us_sample.hdf5")

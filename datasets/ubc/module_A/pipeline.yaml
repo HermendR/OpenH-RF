@@ -1,0 +1,33 @@
+pipeline:
+    name: module_a_scanline_delay_and_sum
+    operations:
+    -   name: keras.ops.cast
+        params:
+            dtype: float32
+    - demodulate
+    -   name: beamform
+        params:
+            beamformer: delay_and_sum
+            enable_aligned_apodization: true
+    - envelope_detect
+    -   name: normalize
+        params:
+            output_range:
+            - 0.0
+            - 1.0
+            percentile: 99.5
+    - log_compress
+parameters:
+    enable_scanline: true
+    grid_type: polar
+    # In scanline mode, zlims are depths along each transmit beam measured
+    # from its origin on the curved element surface.
+    zlims:
+    - 0.0001
+    - 0.100023
+    grid_size_z: 256
+    dynamic_range:
+    - -50.0
+    - 0.0
+    f_number: 0.0
+    apply_lens_correction: false

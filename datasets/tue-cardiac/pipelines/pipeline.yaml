@@ -1,0 +1,31 @@
+parameters:
+  selected_transmits: all
+  pixels_per_wavelength: 2
+  f_number: 0.6
+  apply_lens_correction: true
+  lens_thickness: 0.001
+  lens_sound_speed: 1000
+  bandwidth: 2.0e+6
+  dynamic_range: [-60, 0]
+  grid_type: polar
+  polar_limits: [-0.785398, 0.785398]
+  zlims: [0.0, 0.11354112]
+pipeline:
+  operations:
+    - name: cast
+      params:
+        dtype: float32
+    - band_pass_filter
+    - apply_window
+    - demodulate
+    - name: downsample
+      params:
+        factor: 2
+    - name: beamform
+      params:
+        beamformer: delay_and_sum
+        enable_pfield: true
+    - envelope_detect
+    - normalize
+    - log_compress
+    - scan_convert

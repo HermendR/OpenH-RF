@@ -1,0 +1,23 @@
+pipeline:
+    operations:
+    -   name: keras.ops.cast
+        params:
+            dtype: float32
+    -   name: transmission_attenuation
+        params:
+            reference: 1.0
+    -   name: aperture_rearrange
+        params:
+            aperture_offset: 256
+    - resort_sinogram
+    -   name: linearize_detectors
+        params:
+            probe_radius: 0.13
+    - filtered_backprojection
+    -   name: gaussian_blur
+        params:
+            sigma: 1.0
+            axes:
+            - -2
+            - -1
+    with_batch_dim: false

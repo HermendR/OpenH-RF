@@ -46,7 +46,7 @@ This is the single biggest source of axial smearing if done wrong:
 # initial_times by the same shift so the sample-to-time mapping stays
 # consistent across transmits.
 raw_t0d = x[None, :] * np.sin(polar_angles)[:, None] / c
-shift_per_tx = -raw_t0d.min(axis=1)              # (n_tx,) ≥ 0
+shift_per_tx = -raw_t0d.min(axis=1)  # (n_tx,) ≥ 0
 t0_delays = raw_t0d - raw_t0d.min(axis=1, keepdims=True)
 initial_times = source_initial_time + sequence_delay + shift_per_tx
 ```

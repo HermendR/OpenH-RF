@@ -1,0 +1,10 @@
+pipeline:
+    operations:
+    - beamform
+    - envelope_detect
+    -   name: normalize
+        params:
+            output_range:
+            - 0.0
+            - 1.0
+    - log_compress

@@ -1,0 +1,12 @@
+pipeline:
+    jit_options: pipeline
+    operations:
+    -   name: keras.ops.cast
+        params:
+            dtype: float32
+    -   name: beamform
+        params:
+            jit_options: null
+    -   name: tissue_suppression
+        params:
+            cutoff: 0.05
