@@ -37,11 +37,11 @@ data, and they must not be represented as such.
 
 ## Dataset Contributors
 
-University of British Columbia. Primary contact: Zongze Li
-(`zongze@student.ubc.ca`). Proposed contributors retained from the original
-Module A data card: Septimiu E. Salcudean, Robert Rohling, Qi Zeng, Tajwar Abrar
-Aleef, Hamid Moradi, Mohammad Honarvar, Wanwen Chen, Zijian Wu, Yuxin Chen, Yu
-Chung Lee, Zongze Li, Patrick Boyan Chen, and Michael Frew.
+- **Organization:** The University of British Columbia (UBC), Department of
+  Electrical and Computer Engineering and School of Biomedical Engineering.
+- **Dataset-preparation contact:** Zongze Li, zongze@student.ubc.ca.
+- **Contributors:** Zongze Li, Yu Chung Lee, Qi Zeng, Wanwen Chen, Zijian Wu,
+  Yuxin Chen, Patrick Boyan Chen, Michael Frew, Tajwar Abrar Aleef, Hamid Moradi, Mohammad Honarvar, Septimiu E. Salcudean, Robert Rohling.
 
 ## Dataset Creation Date
 
@@ -219,6 +219,4 @@ validation sidecars are not included.
 ## Ethical Considerations
 
 The data are phantom acquisitions only. There are no human subjects, no PHI,
-and no patient demographics. The phantom model is CIRS model 039 Shear Wave
-Liver Fibrosis Phantom. Institutional data-release approval was confirmed in
-the original contributor data card.
+and no patient demographics.
