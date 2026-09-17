@@ -1,6 +1,7 @@
 *.hdf5
 *.mat
 *.png
+*.gif
 .venv/
 __pycache__/
 .env
@@ -12,3 +13,7 @@ __pycache__/
 # Generated example artifacts (written by the example scripts at run time)
 examples/tracked-cirs-phantom/data/
 examples/tracked-cirs-phantom/3d_views/
+
+# A data card's figures live in an assets/ folder beside it, and are checked in
+# rather than regenerated -- see datasets/tue-carotid/assets.
+!datasets/**/assets/**
