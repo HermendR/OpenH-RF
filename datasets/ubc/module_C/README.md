@@ -36,6 +36,8 @@ IQ using a custom scatterer model and assumed transmit/receive geometry. They
 are not measured pre-beamforming channels. Modalities have temporal
 synchronization only; no validated spatial registration is supplied.
 
+![Example reconstruction](./assets/module_C.png)
+
 ## Dataset Contributors
 
 - **Organization:** The University of British Columbia (UBC), Department of
