@@ -79,9 +79,7 @@ def default_config_path(pulse: str) -> Path:
 
     track_index = PULSE_TO_TRACK[pulse]
     return (
-        Path(__file__).resolve().parent
-        / "pipeline"
-        / f"pipeline_track_{track_index}_{pulse}.yaml"
+        Path(__file__).resolve().parent / "pipeline" / f"pipeline_track_{track_index}_{pulse}.yaml"
     )
 
 
@@ -91,20 +89,15 @@ def default_output_path(path: Path, pulse: str) -> Path:
 
 
 def main() -> None:
-
     zea.init_device("cpu")
     zea.visualize.set_mpl_style()
 
-    config_path = (
-        str(CONFIG_PATH) if CONFIG_PATH is not None else default_config_path(PULSE)
-    )
+    config_path = str(CONFIG_PATH) if CONFIG_PATH is not None else default_config_path(PULSE)
     input_path = str(PATH)
     if not input_path.lower().endswith(".hdf5"):
         raise ValueError("PATH must point directly to a .hdf5 acquisition file")
     track_index = PULSE_TO_TRACK[PULSE]
-    output_path = (
-        Path(OUTPUT) if OUTPUT else default_output_path(Path(input_path), pulse=PULSE)
-    )
+    output_path = Path(OUTPUT) if OUTPUT else default_output_path(Path(input_path), pulse=PULSE)
 
     file, parameters, image, custom = run_bmode(
         input_path,
@@ -114,9 +107,7 @@ def main() -> None:
         xlims_cm=(-1.4, 1.4),
     )
     try:
-        extent_cm = image_extent_cm(
-            parameters, custom, image.shape, xlims_cm=(-1.4, 1.4)
-        )
+        extent_cm = image_extent_cm(parameters, custom, image.shape, xlims_cm=(-1.4, 1.4))
         bubble_x_cm, bubble_z_cm = bubble_coordinates_cm(custom)
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         plot_bmode(
@@ -126,9 +117,7 @@ def main() -> None:
             bubble_x_cm=bubble_x_cm,
             bubble_z_cm=bubble_z_cm,
             show_bubbles=SHOW_BUBBLES,
-            title=(
-                f"{population_name(Path(input_path))} — {PULSE} — {Path(input_path).stem}"
-            ),
+            title=(f"{population_name(Path(input_path))} — {PULSE} — {Path(input_path).stem}"),
         )
     finally:
         file.close()

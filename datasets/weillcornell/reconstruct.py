@@ -103,9 +103,7 @@ def save_png(image_db: np.ndarray, parameters, out_path: Path, title: str) -> No
     extent_mm = [float(v) * 1e3 for v in parameters.extent_imshow]
     fov_ratio = abs(extent_mm[2] - extent_mm[3]) / abs(extent_mm[1] - extent_mm[0])
     zea.visualize.set_mpl_style()
-    fig, ax = plt.subplots(
-        figsize=(6.2, 2.0 + 4.8 * fov_ratio), constrained_layout=True
-    )
+    fig, ax = plt.subplots(figsize=(6.2, 2.0 + 4.8 * fov_ratio), constrained_layout=True)
     im = ax.imshow(
         image_db,
         cmap="gray",
@@ -155,9 +153,7 @@ def summarize_qus(zea_file: Path, frame: int) -> None:
 
     print("QUS targets")
     print(f"  RF frame       : shape={raw_frame.shape}, dtype={raw_frame.dtype}")
-    print(
-        f"  QUS grid       : shape={m_pooled.shape}, coordinates={coordinates_shape} [x,y,z] m"
-    )
+    print(f"  QUS grid       : shape={m_pooled.shape}, coordinates={coordinates_shape} [x,y,z] m")
     print(
         f"  Theoretical BSC: shape={bsc.shape}, unit={bsc_unit}, "
         f"band={frequencies_hz[0] * 1e-6:.6f}-{frequencies_hz[-1] * 1e-6:.6f} MHz"
@@ -177,7 +173,6 @@ def summarize_qus(zea_file: Path, frame: int) -> None:
 
 
 def main() -> int:
-
     # Define the beamforming pipeline in code, save it (with the reconstruction
     # parameters) to pipeline.yaml, then load that YAML back in.
     write_config(build_pipeline(), CONFIG)
@@ -190,7 +185,9 @@ def main() -> int:
     print(f"Pipeline       : {CONFIG}")
     print(f"Output         : {OUTPUT}")
     print(
-        f"Reconstruction : shape={image_db.shape}, min={float(np.nanmin(image_db)):.2f}, max={float(np.nanmax(image_db)):.2f}"
+        f"Reconstruction : shape={image_db.shape}, "
+        f"min={float(np.nanmin(image_db)):.2f}, "
+        f"max={float(np.nanmax(image_db)):.2f}"
     )
     summarize_qus(INPUT, FRAME)
     return 0

@@ -46,9 +46,7 @@ CONFIG = HERE / "pipeline.yaml"
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 INPUT = "hf://nvidia/OpenH-RF/weizmann-sampl/data/30_1.hdf5"
-DATA_DIR = (
-    HERE / "subjects"
-)  # HDF5 files to sample from (grid modes, used when INPUT is None)
+DATA_DIR = HERE / "subjects"  # HDF5 files to sample from (grid modes, used when INPUT is None)
 OUTPUT = None
 # Frame 0 is unsettled: a near-field transient saturates the log compression
 # and blacks out everything below ~10 mm.
@@ -57,9 +55,7 @@ N_SCANS = 3  # Number of random scans (grid mode)
 N_FRAMES = 4  # Random frames per scan (grid mode)
 SEED = None  # Random seed (grid mode)
 MIN_FRAME = 4  # Lowest frame index per scan (random grid mode); skips settling
-SYSTEMATIC = (
-    False  # Systematic grid mode: fixed frame numbers per patient (see PATIENTS)
-)
+SYSTEMATIC = False  # Systematic grid mode: fixed frame numbers per patient (see PATIENTS)
 PATIENTS = None  # Comma-separated patient IDs, e.g. '1_1,10_1' (systematic mode)
 FRAME_START = 1  # First frame number, 1-indexed (systematic mode)
 FRAME_STEP = 5  # Step between frame numbers (systematic mode)
@@ -109,9 +105,7 @@ def reconstruct_single(config):
 def reconstruct_grid(config):
     hdf5_files = sorted(DATA_DIR.glob("*.hdf5"))
     if not hdf5_files:
-        raise FileNotFoundError(
-            f"No .hdf5 files found in {DATA_DIR}. Run convert.py first."
-        )
+        raise FileNotFoundError(f"No .hdf5 files found in {DATA_DIR}. Run convert.py first.")
 
     rng = random.Random(SEED)
     n_scans = min(N_SCANS, len(hdf5_files))
@@ -136,13 +130,8 @@ def reconstruct_grid(config):
         outputs = pipeline(data=raw, **inputs)
         recon = np.array(outputs["data"])  # (n_frames, grid_z, grid_x)
         extent_mm = [v * 1e3 for v in parameters.extent_imshow]
-        images = [
-            zea.display.to_8bit(r, dynamic_range=parameters.dynamic_range)
-            for r in recon
-        ]
-        rows.append(
-            (path.stem, list(zip(frame_indices, images, [extent_mm] * len(images))))
-        )
+        images = [zea.display.to_8bit(r, dynamic_range=parameters.dynamic_range) for r in recon]
+        rows.append((path.stem, list(zip(frame_indices, images, [extent_mm] * len(images)))))
         print(f"raw_data shape   : {raw.shape}  ({path.stem})")
 
     _save_grid(rows, OUTPUT or DATA_DIR / "random_grid.png", frame_label_offset=0)
@@ -156,9 +145,7 @@ def reconstruct_systematic_grid(config):
     if not patients:
         raise ValueError("SYSTEMATIC requires PATIENTS (comma-separated patient IDs).")
 
-    frame_numbers = list(
-        range(FRAME_START, FRAME_START + FRAME_STEP * FRAME_COUNT, FRAME_STEP)
-    )
+    frame_numbers = list(range(FRAME_START, FRAME_START + FRAME_STEP * FRAME_COUNT, FRAME_STEP))
 
     pipeline = Pipeline.from_config(config)
     rows = []
@@ -186,10 +173,7 @@ def reconstruct_systematic_grid(config):
         outputs = pipeline(data=raw, **inputs)
         recon = np.array(outputs["data"])
         extent_mm = [v * 1e3 for v in parameters.extent_imshow]
-        images = [
-            zea.display.to_8bit(r, dynamic_range=parameters.dynamic_range)
-            for r in recon
-        ]
+        images = [zea.display.to_8bit(r, dynamic_range=parameters.dynamic_range) for r in recon]
         rows.append((patient, list(zip(valid, images, [extent_mm] * len(images)))))
         print(f"raw_data shape   : {raw.shape}  ({patient}, frame numbers {valid})")
 
@@ -201,9 +185,7 @@ def _save_grid(rows, output_path, frame_label_offset):
 
     n_scans = len(rows)
     n_cols = max(len(row_cells) for _, row_cells in rows)
-    fig, axes = plt.subplots(
-        n_scans, n_cols, figsize=(3 * n_cols, 3.4 * n_scans), squeeze=False
-    )
+    fig, axes = plt.subplots(n_scans, n_cols, figsize=(3 * n_cols, 3.4 * n_scans), squeeze=False)
     for row, (scan_name, row_cells) in enumerate(rows):
         for col in range(n_cols):
             ax = axes[row][col]
@@ -212,9 +194,7 @@ def _save_grid(rows, output_path, frame_label_offset):
                 continue
             frame_idx, image, extent_mm = row_cells[col]
             ax.imshow(image, extent=extent_mm, cmap="gray")
-            ax.set_title(
-                f"{scan_name}\nframe {frame_idx + frame_label_offset}", fontsize=9
-            )
+            ax.set_title(f"{scan_name}\nframe {frame_idx + frame_label_offset}", fontsize=9)
             ax.set_xlabel("X (mm)")
             ax.set_ylabel("Z (mm)")
 
@@ -224,7 +204,6 @@ def _save_grid(rows, output_path, frame_label_offset):
 
 
 def main():
-
     global INPUT
     if INPUT is None and not SYSTEMATIC and not True:
         found = sorted(HERE.glob("*.hdf5"))

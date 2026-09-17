@@ -43,9 +43,7 @@ def load_hdf5(
     file = zea.File(str(path))
     if track_index < 0 or track_index >= len(file.tracks):
         file.close()
-        raise IndexError(
-            f"track_index {track_index} is outside [0, {len(file.tracks) - 1}]"
-        )
+        raise IndexError(f"track_index {track_index} is outside [0, {len(file.tracks) - 1}]")
     track = file.tracks[track_index]
     parameters = track.load_parameters()
     data = track.data.raw_data[:num_frames, parameters.selected_transmits, ...]
@@ -70,9 +68,7 @@ def run_bmode(
     import keras
     import zea
 
-    file, parameters, data, custom = load_hdf5(
-        path, num_frames=num_frames, track_index=track_index
-    )
+    file, parameters, data, custom = load_hdf5(path, num_frames=num_frames, track_index=track_index)
     config = zea.Config.from_path(str(config_path))
     parameters.dynamic_range = tuple(dynamic_range)
     if xlims_cm is not None:
@@ -85,9 +81,7 @@ def run_bmode(
     inputs = {pipeline.key: data, **inputs}
     image = keras.ops.convert_to_numpy(pipeline(**inputs)[pipeline.output_key])
     image = np.asarray(keras.ops.squeeze(image))
-    image = np.asarray(
-        zea.display.to_8bit(image, dynamic_range=parameters.dynamic_range)
-    )
+    image = np.asarray(zea.display.to_8bit(image, dynamic_range=parameters.dynamic_range))
     return file, parameters, image, custom
 
 

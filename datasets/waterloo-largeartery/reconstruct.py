@@ -64,9 +64,7 @@ PIPELINE = "hf://nvidia/OpenH-RF/waterloo-largeartery/pipeline.yaml"
 FRAME = 100
 POWER_THRESHOLD = 50.0  # Power Doppler mask threshold (dB); covers the vein lumen
 VMAX = 1.0  # Velocity color-scale max (m/s) for the quiver overlay; None -> 99th pct
-NO_DEALIAS = (
-    False  # Use the raw (aliased) velocity fields even when dealiased ones exist
-)
+NO_DEALIAS = False  # Use the raw (aliased) velocity fields even when dealiased ones exist
 
 
 def draw_velocity_field(
@@ -146,7 +144,6 @@ def build_config() -> Config:
 
 
 def main():
-
     zea.init_device()
 
     # pipeline.yaml is the source of truth (pipeline + dynamic_range); (re)create
@@ -183,8 +180,7 @@ def main():
         )
 
         has_velocity = all(
-            k in f.data
-            for k in ("vector_velocity_x", "vector_velocity_z", "power_doppler")
+            k in f.data for k in ("vector_velocity_x", "vector_velocity_z", "power_doppler")
         )
         # Prefer the dealiased vector fields when the file carries them.
         has_dealiased = all(
@@ -201,15 +197,11 @@ def main():
             power = f.data.power_doppler.values[frame]
 
             if has_dealiased and NO_DEALIAS:
-                print(
-                    "Dealiased fields present but NO_DEALIAS set: using raw estimates."
-                )
+                print("Dealiased fields present but NO_DEALIAS set: using raw estimates.")
             elif dealiased:
                 print("Using dealiased vector velocity fields.")
             else:
-                print(
-                    "No dealiased vector velocity fields in file: using raw estimates."
-                )
+                print("No dealiased vector velocity fields in file: using raw estimates.")
     # breakpoint()
     inputs = pipeline.prepare_parameters(parameters)
     recon = pipeline(data=raw, **inputs, return_numpy=True)["data"][0]
@@ -239,9 +231,7 @@ def main():
         else:
             v_scale = float(np.percentile(mag[valid], 99)) if np.any(valid) else 1.0
         axes[1].imshow(recon, **imshow_kw)
-        q = draw_velocity_field(
-            axes[1], vx, vz, power, POWER_THRESHOLD, extent, vmax=v_scale
-        )
+        q = draw_velocity_field(axes[1], vx, vz, power, POWER_THRESHOLD, extent, vmax=v_scale)
         q.set_clim(0, v_scale)
 
     for ax in axes:

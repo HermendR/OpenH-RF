@@ -41,8 +41,7 @@ HERE = Path(__file__).resolve().parent
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 ZEA_FILE = (
-    "hf://nvidia/OpenH-RF/ubc/module_A/acquisitions/case_1.83/"
-    "ubc_swave_cirs_1.83_p10_f13.hdf5"
+    "hf://nvidia/OpenH-RF/ubc/module_A/acquisitions/case_1.83/ubc_swave_cirs_1.83_p10_f13.hdf5"
 )
 OUTPUT = HERE / "results" / "reconstruct_1.83_p10_f13.png"
 FRAME = 0
@@ -120,9 +119,7 @@ def save_bmode(bmode, parameters, output_path: Path):
     # at the plotting boundary -- matplotlib needs host arrays.
     sector = keras.ops.convert_to_numpy(sector)
     x_limits_mm = keras.ops.convert_to_numpy(scan_parameters["x_lim"]) * 1e3
-    z_limits_mm = (
-        keras.ops.convert_to_numpy(scan_parameters["z_lim"]) - DISTANCE_TO_APEX_M
-    ) * 1e3
+    z_limits_mm = (keras.ops.convert_to_numpy(scan_parameters["z_lim"]) - DISTANCE_TO_APEX_M) * 1e3
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     zea.visualize.set_mpl_style()

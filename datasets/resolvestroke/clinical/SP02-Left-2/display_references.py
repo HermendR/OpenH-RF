@@ -50,9 +50,7 @@ def main():
     ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
     ap.add_argument("--output", type=Path, default=None)
     args = ap.parse_args()
-    out = args.output or args.input.with_name(
-        f"{args.input.stem}_references_montage.png"
-    )
+    out = args.output or args.input.with_name(f"{args.input.stem}_references_montage.png")
 
     with h5py.File(str(args.input), "r") as f:
         g = f.custom.computed_references
@@ -66,9 +64,7 @@ def main():
     ext_yz = [y_mm.min(), y_mm.max(), z_mm.max(), z_mm.min()]  # project out x
 
     # 2 rows (x-z / y-z MIP) x N columns (maps), landscape
-    fig, axes = plt.subplots(
-        2, len(MAPS), figsize=(3.3 * len(MAPS), 8.4), constrained_layout=True
-    )
+    fig, axes = plt.subplots(2, len(MAPS), figsize=(3.3 * len(MAPS), 8.4), constrained_layout=True)
     for c, (name, cmap, clim, signed) in enumerate(MAPS):
         vol = data[name]
         cm = plt.get_cmap(cmap).copy()
@@ -79,9 +75,7 @@ def main():
             # gradient instead of saturating.
             fin = vol[np.isfinite(vol)]
             fin = fin[fin > 0]
-            vmin, vmax = (
-                (0.0, float(np.percentile(fin, 99.9))) if fin.size else (0.0, 1.0)
-            )
+            vmin, vmax = (0.0, float(np.percentile(fin, 99.9))) if fin.size else (0.0, 1.0)
         else:
             vmin, vmax = clim
         rows = [
@@ -90,9 +84,7 @@ def main():
         ]  # row 1: y-z (project out x)
         for r, (img, ext, xlab) in enumerate(rows):
             ax = axes[r, c]
-            im = ax.imshow(
-                img, extent=ext, cmap=cm, vmin=vmin, vmax=vmax, aspect="equal"
-            )
+            im = ax.imshow(img, extent=ext, cmap=cm, vmin=vmin, vmax=vmax, aspect="equal")
             ax.set_xlabel(xlab)
         axes[0, c].set_title(name, fontsize=10)
         fig.colorbar(
@@ -106,9 +98,7 @@ def main():
     axes[0, 0].set_ylabel("x-z MIP\nz [mm]")
     axes[1, 0].set_ylabel("y-z MIP\nz [mm]")
 
-    fig.suptitle(
-        f"Computed reference maps — {args.input.name}", fontsize=13, fontweight="bold"
-    )
+    fig.suptitle(f"Computed reference maps — {args.input.name}", fontsize=13, fontweight="bold")
     fig.savefig(str(out), dpi=130)
     print(f"Saved: {out}")
 

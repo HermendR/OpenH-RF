@@ -54,9 +54,7 @@ CONFIG = HERE / "pipeline.yaml"
 N_EL = 1024  # ring elements
 N_RX = 512  # receive sub-aperture width
 APERTURE_OFFSET = (N_EL - N_RX) // 2  # 256
-PROBE_RADIUS = (
-    13e-2  # m; matches us4us's reconstruction_example.py and the measured geometry
-)
+PROBE_RADIUS = 13e-2  # m; matches us4us's reconstruction_example.py and the measured geometry
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
@@ -107,9 +105,7 @@ class ApertureRearrange(Operation):
 
     def __init__(self, aperture_offset: int | None = None, **kwargs):
         super().__init__(**kwargs)
-        self.aperture_offset = (
-            APERTURE_OFFSET if aperture_offset is None else aperture_offset
-        )
+        self.aperture_offset = APERTURE_OFFSET if aperture_offset is None else aperture_offset
 
     def call(self, **kwargs):
         att = kwargs[self.key]  # (n_tx, n_rx)
@@ -176,9 +172,7 @@ class LinearizeDetectors(Operation):
         n_col = sinogram.shape[1]
 
         i = np.arange(-(n_col // 2), n_col // 2)
-        xp = self.probe_radius * np.sin(
-            i * np.pi / 2 / n_col
-        )  # arc -> chord, non-uniform
+        xp = self.probe_radius * np.sin(i * np.pi / 2 / n_col)  # arc -> chord, non-uniform
         x = i * np.sqrt(2) * self.probe_radius / n_col  # uniform target axis
 
         lo = np.clip(np.searchsorted(xp, x) - 1, 0, n_col - 2)
@@ -200,9 +194,7 @@ class FilteredBackprojection(Operation):
         (real in, real out) are used below instead of a full complex `fft`/`ifft`
         - there's no plain complex `ifft` in keras.ops anyway."""
         half = n_detectors // 2
-        n = ops.concatenate(
-            [ops.arange(1.0, half + 1, 2.0), ops.arange(half - 1.0, 0.0, -2.0)]
-        )
+        n = ops.concatenate([ops.arange(1.0, half + 1, 2.0), ops.arange(half - 1.0, 0.0, -2.0)])
         odd = -1.0 / (np.pi * n) ** 2
         even = ops.concatenate([ops.convert_to_tensor([0.25]), ops.zeros((half - 1,))])
         f = ops.reshape(ops.stack([even, odd], axis=1), (n_detectors,))
@@ -215,9 +207,7 @@ class FilteredBackprojection(Operation):
 
         ramp_half = self._ramp_filter_half(n_detectors)
         real, imag = ops.rfft(sinogram)
-        filtered = ops.irfft(
-            (real * ramp_half, imag * ramp_half), fft_length=n_detectors
-        )
+        filtered = ops.irfft((real * ramp_half, imag * ramp_half), fft_length=n_detectors)
 
         # Backprojection geometry (which detector index each pixel/angle maps to)
         # depends only on (n_angles, n_detectors).
@@ -225,10 +215,7 @@ class FilteredBackprojection(Operation):
         angles = ops.arange(n_angles, dtype="float32") * (2 * np.pi / n_angles)
         x = ops.arange(n_detectors) - half
         X, Y = ops.meshgrid(x, x)  # (n_detectors, n_detectors)
-        t = (
-            X[None] * ops.cos(angles)[:, None, None]
-            + Y[None] * ops.sin(angles)[:, None, None]
-        )
+        t = X[None] * ops.cos(angles)[:, None, None] + Y[None] * ops.sin(angles)[:, None, None]
         idx_raw = ops.cast(ops.round(t + half), "int32")  # (n_angles, D, D)
         # Skip out-of-range detector indices per angle rather than clamping them
         # to the edge, which would smear a repeated edge value into the image.
@@ -275,9 +262,7 @@ def parse_dead_channels(description: str) -> np.ndarray:
     match = re.search(r"turned off[^:]*:\s*([\d,\s]+?)\s*\(numbering", description)
     if not match:
         return np.array([], dtype=np.int64)
-    return np.array(
-        [int(x) for x in match.group(1).split(",") if x.strip()], dtype=np.int64
-    )
+    return np.array([int(x) for x in match.group(1).split(",") if x.strip()], dtype=np.int64)
 
 
 def ring_center_and_radius(probe_geometry: np.ndarray) -> tuple[np.ndarray, float]:
@@ -310,7 +295,6 @@ def validate_geometry(rf, tx_position, rx_positions, sound_speed, initial_time, 
 
 
 def main():
-
     input_path = str(INPUT)
     if "://" not in input_path:
         candidate = Path(input_path)
@@ -375,9 +359,7 @@ def main():
         float(initial_times[0]),
         fs,
     )
-    zea.log.info(
-        f"Direct-arrival check: median |measured - predicted| = {residual:.2f} samples"
-    )
+    zea.log.info(f"Direct-arrival check: median |measured - predicted| = {residual:.2f} samples")
 
     outputs = pipeline(data=raw, return_numpy=True)
     recon = outputs["data"]  # (n_detectors, n_detectors)
@@ -386,21 +368,13 @@ def main():
     fig, axes = plt.subplots(1, 4, figsize=(24, 5.5))
 
     n_rx = raw.shape[2]
-    rf_db = 20 * np.log10(
-        np.abs(raw[0, :, :, 0]) / (np.abs(raw[0, :, :, 0]).max() + 1e-12) + 1e-10
-    )
+    rf_db = 20 * np.log10(np.abs(raw[0, :, :, 0]) / (np.abs(raw[0, :, :, 0]).max() + 1e-12) + 1e-10)
     axes[0].imshow(rf_db, aspect="auto", cmap="gray", vmin=-60, vmax=0)
-    axes[0].plot(
-        np.arange(n_rx), predicted, "r--", lw=1.0, label="predicted direct arrival"
-    )
-    axes[0].plot(
-        np.arange(n_rx), measured, "c:", lw=0.7, alpha=0.6, label="measured (argmax)"
-    )
+    axes[0].plot(np.arange(n_rx), predicted, "r--", lw=1.0, label="predicted direct arrival")
+    axes[0].plot(np.arange(n_rx), measured, "c:", lw=0.7, alpha=0.6, label="measured (argmax)")
     axes[0].set_ylim(raw.shape[1], 0)
     axes[0].legend(loc="lower left", fontsize=7)
-    axes[0].set_title(
-        f"RF, transmit 0 [dB]\ngeometry check: residual {residual:.2f} samples"
-    )
+    axes[0].set_title(f"RF, transmit 0 [dB]\ngeometry check: residual {residual:.2f} samples")
     axes[0].set_xlabel("Receive channel")
     axes[0].set_ylabel("Axial sample")
 
@@ -412,9 +386,7 @@ def main():
     extent = [-half_width, half_width, half_width, -half_width]
     vmin, vmax = np.percentile(recon, [1, 99])
     handle = axes[1].imshow(recon, cmap="magma", extent=extent, vmin=vmin, vmax=vmax)
-    axes[1].set_title(
-        f"Attenuation FBP (zea.Pipeline)\n({Path(input_path).name}, frame {FRAME})"
-    )
+    axes[1].set_title(f"Attenuation FBP (zea.Pipeline)\n({Path(input_path).name}, frame {FRAME})")
     axes[1].set_xlabel("X (mm)")
     axes[1].set_ylabel("Z (mm)")
     cax = make_axes_locatable(axes[1]).append_axes("right", size="5%", pad=0.05)
@@ -440,9 +412,7 @@ def main():
         image_coords[..., 2].min() * 1e3,
     ]
     svmin, svmax = np.percentile(stored_image, [1, 99])
-    h = axes[3].imshow(
-        stored_image, cmap="magma", extent=img_extent, vmin=svmin, vmax=svmax
-    )
+    h = axes[3].imshow(stored_image, cmap="magma", extent=img_extent, vmin=svmin, vmax=svmax)
     axes[3].set_title("Stored FBP (us4us)")
     axes[3].set_xlabel("X (mm)")
     axes[3].set_ylabel("Z (mm)")

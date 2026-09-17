@@ -41,9 +41,7 @@ from zea.ops import Downsample
 HERE = Path(__file__).resolve().parent
 DEFAULT_PIPELINE = HERE / "pipeline.yaml"
 
-OUTPUT_PX = (
-    None  # reconstruction side length; None -> derive from segmentation mask dims
-)
+OUTPUT_PX = None  # reconstruction side length; None -> derive from segmentation mask dims
 
 MASK_COLORS = ["tab:red", "tab:green", "tab:cyan", "tab:orange", "tab:purple"]
 
@@ -102,9 +100,7 @@ def reconstruct_frame(
 
     cartesian = cartesian[::-1]  # +depth up
     if mirror:
-        cartesian = cartesian[
-            :, ::-1
-        ]  # reversed transducer rotation -> mirror across y
+        cartesian = cartesian[:, ::-1]  # reversed transducer rotation -> mirror across y
     return np.asarray(zea.display.to_8bit(cartesian, dynamic_range=dynamic_range))
 
 
@@ -133,9 +129,7 @@ def draw_overlay(ax, recon_gray, segmentation, labels, alpha):
 def render_overview(panels, frames, labels, position_mm, frame_rate_hz, alpha, output):
     n_panels = len(panels)
     has_tracking = position_mm is not None
-    frame_color = {
-        fr: FRAME_COLORS[i % len(FRAME_COLORS)] for i, fr in enumerate(frames)
-    }
+    frame_color = {fr: FRAME_COLORS[i % len(FRAME_COLORS)] for i, fr in enumerate(frames)}
 
     zea.visualize.set_mpl_style()
     fig = plt.figure(
@@ -188,9 +182,7 @@ def render_overview(panels, frames, labels, position_mm, frame_rate_hz, alpha, o
             spine.set_linewidth(2.5)
 
     legend_handles = [
-        plt.Line2D(
-            [0], [0], marker="s", linestyle="", color=present_colors[label], label=label
-        )
+        plt.Line2D([0], [0], marker="s", linestyle="", color=present_colors[label], label=label)
         for label in labels
         if label in present_colors
     ]
@@ -209,7 +201,6 @@ def render_overview(panels, frames, labels, position_mm, frame_rate_hz, alpha, o
 
 
 def main():
-
     zea.init_device()
 
     pipeline = zea.Pipeline.from_path(str(PIPELINE))
@@ -221,9 +212,7 @@ def main():
         frames = select_frames(n_frames, FRAMES, NUM_FRAMES)
 
         raw_frames = [np.asarray(f.data.raw_data[fr : fr + 1]) for fr in frames]
-        masks = [
-            np.asarray(f.data.segmentation.values[fr]).astype(bool) for fr in frames
-        ]
+        masks = [np.asarray(f.data.segmentation.values[fr]).astype(bool) for fr in frames]
         labels = list(f.data.segmentation.labels.asstr()[:])
         mask_h, mask_w = (
             int(f.data.segmentation.values.shape[1]),
@@ -236,9 +225,7 @@ def main():
             pullback = f.metadata.pullback_position
             position_mm = np.squeeze(np.asarray(pullback.samples) * 1e3)
             if position_mm.ndim > 1:
-                position_mm = position_mm[
-                    :, int(np.argmax(np.ptp(position_mm, axis=0)))
-                ]
+                position_mm = position_mm[:, int(np.argmax(np.ptp(position_mm, axis=0)))]
             frame_rate_hz = float(pullback.sampling_frequency)
         else:
             print("No pullback_position metadata found; skipping trajectory panel.")
@@ -260,13 +247,9 @@ def main():
     # Polar grid: one A-line per transmit (theta), n_ax // downsample factor (rho).
     n_theta = int(raw_frames[0].shape[1])
     n_ax = int(raw_frames[0].shape[2])
-    factor = next(
-        (op.factor for op in pipeline.operations if isinstance(op, Downsample)), 1
-    )
+    factor = next((op.factor for op in pipeline.operations if isinstance(op, Downsample)), 1)
     n_rho = n_ax // factor
-    print(
-        f"reconstruction: {out_h}x{out_w} px (mask {mask_h}x{mask_w}), polar {n_rho}x{n_theta}"
-    )
+    print(f"reconstruction: {out_h}x{out_w} px (mask {mask_h}x{mask_w}), polar {n_rho}x{n_theta}")
 
     # Full-circle cross-section centred on the catheter, inscribed in the shorter axis.
     coordinates = zea.display.polar_to_cartesian_coordinates(
@@ -297,9 +280,7 @@ def main():
             )
         panels.append((frame, recon_gray, mask))
 
-    output = OUTPUT or (
-        HERE / "outputs" / Path(INPUT).stem / f"overview_{len(frames)}_frames.png"
-    )
+    output = OUTPUT or (HERE / "outputs" / Path(INPUT).stem / f"overview_{len(frames)}_frames.png")
     render_overview(panels, frames, labels, position_mm, frame_rate_hz, ALPHA, output)
 
 

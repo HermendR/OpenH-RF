@@ -61,7 +61,6 @@ DEVICE = None  # e.g. cpu, cuda:0, auto:1
 
 
 def main() -> int:
-
     pipeline_path = PIPELINE or HERE / "pipelines" / PIPELINE_FOR_TRACK[TRACK]
     output_path = OUTPUT or HERE / "reference" / (
         f"{Path(ZEA_FILE).stem}_{TRACK}_frame-{FRAME:03d}.png"

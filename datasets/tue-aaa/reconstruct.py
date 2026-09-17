@@ -89,7 +89,6 @@ def write_config(pipeline: Pipeline, path: Path) -> None:
 
 
 def main():
-
     zea.init_device(device=DEVICE, verbose=False)
 
     # Define the beamforming pipeline in code, save it (with the acquisition

@@ -46,7 +46,6 @@ OUTPUT = None  # Output PNG path (default: outputs/<input-stem>_bmode.png)
 
 
 def main():
-
     if INPUT is None or not True:
         problem = (
             "no .hdf5 files found under data/"
@@ -99,9 +98,7 @@ def main():
     if parameters.grid_type == "polar":
         # Scan-convert: place each (radial, angular) sample at its Cartesian (x, z).
         x_mm, z_mm = grid[..., 0] * 1e3, grid[..., 2] * 1e3
-        pm = ax.pcolormesh(
-            x_mm, z_mm, image, cmap="gray", vmin=vmin, vmax=vmax, shading="auto"
-        )
+        pm = ax.pcolormesh(x_mm, z_mm, image, cmap="gray", vmin=vmin, vmax=vmax, shading="auto")
         ax.set_aspect("equal")
         ax.invert_yaxis()
         title = "Diverging-wave sector B-mode (y=0 plane)"
@@ -116,9 +113,7 @@ def main():
             float(z_mm.max()),
             float(z_mm.min()),
         ]
-        pm = ax.imshow(
-            image, cmap="gray", vmin=vmin, vmax=vmax, extent=extent, aspect="auto"
-        )
+        pm = ax.imshow(image, cmap="gray", vmin=vmin, vmax=vmax, extent=extent, aspect="auto")
         title = "B-mode (Cartesian, elevation slice y≈0)"
 
     ax.set_title(title)

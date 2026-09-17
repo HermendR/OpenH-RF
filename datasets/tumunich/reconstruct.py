@@ -50,9 +50,7 @@ from zea.ops import (
 from zea.ops.base import Operation
 
 HERE = Path(__file__).parent
-DEFAULT_INPUT = (
-    "hf://nvidia/OpenH-RF/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf5"
-)
+DEFAULT_INPUT = "hf://nvidia/OpenH-RF/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf5"
 CONFIG = HERE / "pipeline.yaml"
 
 
@@ -136,9 +134,7 @@ def reconstruct_frame(f, frame):
     end_depth = float(display_coords[..., 2].max())
     display_axial_spacing = display_coords[1, 0, 2] - display_coords[0, 0, 2]
     img_coords = display_coords[round(start_depth / display_axial_spacing) :].copy()
-    img_coords[..., 2] = np.linspace(start_depth, end_depth, img_coords.shape[0])[
-        :, None
-    ]
+    img_coords[..., 2] = np.linspace(start_depth, end_depth, img_coords.shape[0])[:, None]
 
     parameters = {
         **PARAMETERS,
@@ -148,9 +144,7 @@ def reconstruct_frame(f, frame):
     }
 
     center_frequency = float(np.asarray(f.scan.center_frequency).reshape(-1)[0])
-    bandwidth_fraction = (
-        float(np.asarray(f.probe.probe_bandwidth_percent).reshape(-1)[0]) / 100.0
-    )
+    bandwidth_fraction = float(np.asarray(f.probe.probe_bandwidth_percent).reshape(-1)[0]) / 100.0
     passband = (
         center_frequency * (1 - bandwidth_fraction / 2),
         center_frequency * (1 + bandwidth_fraction / 2),
@@ -178,7 +172,6 @@ def reconstruct_frame(f, frame):
 
 
 def main():
-
     global OUTPUT
     if OUTPUT is None:
         OUTPUT = Path(f"{Path(INPUT).stem}_reconstructed.png")

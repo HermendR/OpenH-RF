@@ -114,9 +114,7 @@ def localize_movie(iq_cf, threshold_snr=2.0, min_distance=1):
             sub-pixel positions.
     """
     threshold = threshold_snr * float(np.median(np.abs(iq_cf)))
-    return [
-        localize_frame(frame, threshold, min_distance=min_distance) for frame in iq_cf
-    ]
+    return [localize_frame(frame, threshold, min_distance=min_distance) for frame in iq_cf]
 
 
 def track(
@@ -173,9 +171,7 @@ def track(
             # Predict from each track's last *known* position, and allow a
             # track that has been coasting to have travelled further.
             prev_pts = np.array([_last_known(t["pts"]) for t in active])
-            gate = max_linking_distance * (
-                1.0 + np.array([t["miss"] for t in active], dtype=float)
-            )
+            gate = max_linking_distance * (1.0 + np.array([t["miss"] for t in active], dtype=float))
 
             cost = np.linalg.norm(prev_pts[:, None, :] - frame_pts[None, :, :], axis=2)
             # Gate *inside* the cost: forbidden pairings are never chosen, so
@@ -374,9 +370,7 @@ def reconstruct_ulm(
         tuple: ``(density, tracks)`` — the ``(Nz*super_res, Nx*super_res)``
             density map and the list of surviving tracks.
     """
-    localizations = localize_movie(
-        iq_cf, threshold_snr=threshold_snr, min_distance=min_distance
-    )
+    localizations = localize_movie(iq_cf, threshold_snr=threshold_snr, min_distance=min_distance)
     tracks = track(
         localizations,
         max_linking_distance=max_linking_distance,

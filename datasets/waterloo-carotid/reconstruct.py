@@ -163,8 +163,7 @@ def main():
         )
 
         has_velocity = all(
-            k in f.data
-            for k in ("vector_velocity_x", "vector_velocity_z", "power_doppler")
+            k in f.data for k in ("vector_velocity_x", "vector_velocity_z", "power_doppler")
         )
         if has_velocity:
             vx = f.data.vector_velocity_x.values[frame]
@@ -196,9 +195,7 @@ def main():
         valid = (power >= POWER_THRESHOLD) & ~np.isnan(mag)
         v_scale = float(np.percentile(mag[valid], 95)) if np.any(valid) else 1.0
         axes[1].imshow(recon, **imshow_kw)
-        q = draw_velocity_field(
-            axes[1], vx, vz, power, POWER_THRESHOLD, extent, vmax=v_scale
-        )
+        q = draw_velocity_field(axes[1], vx, vz, power, POWER_THRESHOLD, extent, vmax=v_scale)
         q.set_clim(0, v_scale)
 
     for ax in axes:

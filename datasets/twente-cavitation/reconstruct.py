@@ -52,7 +52,9 @@ from zea.ops import (
 )
 
 HERE = Path(__file__).parent
-DEFAULT_INPUT = "hf://nvidia/OpenH-RF/twente-cavitation/data/cavitation_bubbles_10kPa_01mL_per_min.hdf5"
+DEFAULT_INPUT = (
+    "hf://nvidia/OpenH-RF/twente-cavitation/data/cavitation_bubbles_10kPa_01mL_per_min.hdf5"
+)
 CONFIG = HERE / "pipeline.yaml"
 
 
@@ -99,7 +101,6 @@ def build_pipeline() -> Pipeline:
 
 
 def main():
-
     global OUTPUT
     if OUTPUT is None:
         OUTPUT = Path(Path(INPUT).stem + ".png")
@@ -120,9 +121,7 @@ def main():
         raw = f.data.raw_data[:FRAMES]  # (n_frames, n_tx, n_ax, n_el, 1)
 
     # Passive-acquisition overrides (see module docstring).
-    parameters["tx_apodizations"] = np.ones_like(
-        np.asarray(parameters["tx_apodizations"])
-    )
+    parameters["tx_apodizations"] = np.ones_like(np.asarray(parameters["tx_apodizations"]))
 
     # Accumulate envelope energy over sampling instants (and frames).
     energy = None

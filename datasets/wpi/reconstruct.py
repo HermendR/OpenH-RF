@@ -45,7 +45,6 @@ FRAME_INDEX = None  # rotation frame to beamform (default: closest to +-90 deg r
 
 
 def main():
-
     zea.init_device()
 
     # Load the whole processing chain + parameters from pipeline.yaml
@@ -60,9 +59,7 @@ def main():
         # Rotation angle per frame lives in metadata/probe_pose (euler_xyz [rad],
         # nominal 1 Hz sampling — one pose per rotation frame): the array rotates
         # about its axial (z) axis, so the angle is the z Euler component.
-        rotation_angles_deg = np.degrees(
-            np.asarray(f.metadata.probe_pose.rotation)[:, 2]
-        ).ravel()
+        rotation_angles_deg = np.degrees(np.asarray(f.metadata.probe_pose.rotation)[:, 2]).ravel()
         n_frames = f.data.raw_data.shape[0]
         frame = FRAME_INDEX
         if frame is None:  # default: frame where the probe has rotated ~90 deg
@@ -84,15 +81,11 @@ def main():
     outputs = pipeline(data=raw, **inputs)
 
     recon = np.array(outputs["data"])  # (1, grid_z, grid_x), log-compressed dB
-    image = zea.display.to_8bit(
-        recon[0], dynamic_range=parameters.dynamic_range, pillow=False
-    )
+    image = zea.display.to_8bit(recon[0], dynamic_range=parameters.dynamic_range, pillow=False)
 
     # B-mode + rotation-angle plot (how to interpret the frame axis)
     zea.visualize.set_mpl_style()
-    fig, axes = plt.subplots(
-        1, 2, figsize=(11, 5), gridspec_kw={"width_ratios": [1, 1.3]}
-    )
+    fig, axes = plt.subplots(1, 2, figsize=(11, 5), gridspec_kw={"width_ratios": [1, 1.3]})
 
     mm = plt.FuncFormatter(lambda v, _: f"{v * 1e3:.0f}")
     axes[0].imshow(image, extent=parameters.extent_imshow, cmap="gray", aspect="equal")

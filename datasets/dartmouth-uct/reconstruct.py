@@ -66,12 +66,8 @@ PARAMETERS = {
 # local path to run against your own copy.
 INPUT = "hf://nvidia/OpenH-RF/dartmouth-uct/data/2d/phantom_179604449_z200.hdf5"
 FOV = None  # square field of view [m] (default: the ground-truth map footprint)
-NUM_PIXELS = (
-    None  # output image is num_pixels x num_pixels (default: ground-truth resolution)
-)
-SOS_MAP = (
-    False  # use the ground-truth sound-speed map for straight-ray corrected delays
-)
+NUM_PIXELS = None  # output image is num_pixels x num_pixels (default: ground-truth resolution)
+SOS_MAP = False  # use the ground-truth sound-speed map for straight-ray corrected delays
 COMPOUNDING = None  # transmit compounding (default: coherent for 2D, incoherent for 3D)
 DEVICE = None  # CUDA device ID (e.g. 'cuda:0', 'auto:1', or 'cpu')
 
@@ -185,7 +181,6 @@ def crop_to_grid(gt, grid):
 
 
 def main():
-
     suffix = "_sos.png" if SOS_MAP else ".png"
     output_path = Path(Path(INPUT).stem + suffix)
 

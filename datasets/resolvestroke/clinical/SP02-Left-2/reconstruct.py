@@ -38,9 +38,7 @@ from zea.beamform.pixelgrid import polar_pixel_grid
 
 HERE = Path(__file__).parent
 _HDF5 = "hf://nvidia/OpenH-RF/resolvestroke/clinical/SP02-Left-2/SP02-Left-2.hdf5"
-DEFAULT_INPUT = (
-    "hf://nvidia/OpenH-RF/resolvestroke/clinical/SP02-Left-2/SP02-Left-2.hdf5"
-)
+DEFAULT_INPUT = "hf://nvidia/OpenH-RF/resolvestroke/clinical/SP02-Left-2/SP02-Left-2.hdf5"
 CONFIG = HERE / "pipeline.yaml"
 TGC_DB_PER_CM = 1.5  # display-only linear TGC (dB gain per cm of depth)
 
@@ -124,7 +122,6 @@ def beamform_sector(pipeline, parameters, raw, grid):
 
 
 def main():
-
     out_path = OUTPUT or Path(f"{Path(INPUT).stem}_bmode.png")
 
     zea.init_device()
@@ -155,9 +152,7 @@ def main():
 
     # x-z sector: scan-convert with the fan's Cartesian (x, z).
     x_mm, z_mm = grid_xz[..., 0] * 1e3, grid_xz[..., 2] * 1e3
-    pm1 = ax1.pcolormesh(
-        x_mm, z_mm, xz_slice, cmap="gray", vmin=vmin, vmax=vmax, shading="auto"
-    )
+    pm1 = ax1.pcolormesh(x_mm, z_mm, xz_slice, cmap="gray", vmin=vmin, vmax=vmax, shading="auto")
     ax1.set_aspect("equal")
     ax1.invert_yaxis()
     ax1.set_title(f"x-z sector (y=0) — frame {FRAME}")
@@ -168,9 +163,7 @@ def main():
 
     # y-z sector: the fan lives in y-z, so plot y vs z.
     y_mm, z2_mm = grid_yz[..., 1] * 1e3, grid_yz[..., 2] * 1e3
-    pm2 = ax2.pcolormesh(
-        y_mm, z2_mm, yz_slice, cmap="gray", vmin=vmin, vmax=vmax, shading="auto"
-    )
+    pm2 = ax2.pcolormesh(y_mm, z2_mm, yz_slice, cmap="gray", vmin=vmin, vmax=vmax, shading="auto")
     ax2.set_aspect("equal")
     ax2.invert_yaxis()
     ax2.set_title(f"y-z sector (x=0) — frame {FRAME}")

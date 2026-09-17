@@ -68,9 +68,7 @@ def main():
     ext_yz = [y_mm.min(), y_mm.max(), z_mm.max(), z_mm.min()]  # project out x
 
     # 2 rows (x-z / y-z MIP) x N columns (maps), landscape
-    fig, axes = plt.subplots(
-        2, len(MAPS), figsize=(3.3 * len(MAPS), 8.4), constrained_layout=True
-    )
+    fig, axes = plt.subplots(2, len(MAPS), figsize=(3.3 * len(MAPS), 8.4), constrained_layout=True)
     for c, (name, cmap, clim, signed) in enumerate(MAPS):
         vol = data[name]
         cm = TUBE_CMAP.copy() if name == "tube_mask" else plt.get_cmap(cmap).copy()
@@ -78,9 +76,7 @@ def main():
         if clim is None:  # auto from positive finite values
             fin = vol[np.isfinite(vol)]
             fin = fin[fin > 0]
-            vmin, vmax = (
-                (0.0, float(np.percentile(fin, 99))) if fin.size else (0.0, 1.0)
-            )
+            vmin, vmax = (0.0, float(np.percentile(fin, 99))) if fin.size else (0.0, 1.0)
         else:
             vmin, vmax = clim
         rows = [
@@ -89,9 +85,7 @@ def main():
         ]  # row 1: y-z (project out x)
         for r, (img, ext, xlab) in enumerate(rows):
             ax = axes[r, c]
-            im = ax.imshow(
-                img, extent=ext, cmap=cm, vmin=vmin, vmax=vmax, aspect="equal"
-            )
+            im = ax.imshow(img, extent=ext, cmap=cm, vmin=vmin, vmax=vmax, aspect="equal")
             ax.set_xlabel(xlab)
         axes[0, c].set_title(name, fontsize=10)
         label = "label" if name == "tube_mask" else "value"
@@ -106,9 +100,7 @@ def main():
     axes[0, 0].set_ylabel("x-z MIP\nz [mm]")
     axes[1, 0].set_ylabel("y-z MIP\nz [mm]")
 
-    fig.suptitle(
-        f"Computed reference maps — {args.input.name}", fontsize=13, fontweight="bold"
-    )
+    fig.suptitle(f"Computed reference maps — {args.input.name}", fontsize=13, fontweight="bold")
     fig.savefig(str(out), dpi=130)
     print(f"Saved: {out}")
 

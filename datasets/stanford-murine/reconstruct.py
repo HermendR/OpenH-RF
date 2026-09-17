@@ -62,9 +62,7 @@ def reconstruction_limits(
     initial_times = np.asarray(track.scan.initial_times, dtype=np.float64)
     zmin = max(0.0, float(np.min(initial_times) * sound_speed / 2.0))
     zmax = float(
-        (np.max(initial_times) + (raw_data.shape[2] - 1) / sampling_frequency)
-        * sound_speed
-        / 2.0
+        (np.max(initial_times) + (raw_data.shape[2] - 1) / sampling_frequency) * sound_speed / 2.0
     )
 
     geometry = np.asarray(file.probe.probe_geometry)
@@ -93,9 +91,9 @@ def reconstruction_limits(
 
 def folded_frequency(frequency: float, sampling_frequency: float) -> float:
     """Fold a frequency into the sampled Nyquist interval."""
-    return (
-        frequency + sampling_frequency / 2.0
-    ) % sampling_frequency - sampling_frequency / 2.0
+    return (frequency + sampling_frequency / 2.0) % sampling_frequency - sampling_frequency / 2.0
+
+
 def demodulation_filter(
     sampling_frequency: float,
     demodulation_frequency: float,
@@ -117,9 +115,9 @@ def demodulation_filter(
             f"demodulation_frequency={demodulation_frequency:g} Hz"
         )
     return firwin(num_taps, cutoff, fs=sampling_frequency).astype(np.float32), cutoff
-def reconstruct_track(
-    path: str, output_dir: Path, track_index: int, config, pipeline
-) -> Path:
+
+
+def reconstruct_track(path: str, output_dir: Path, track_index: int, config, pipeline) -> Path:
     import matplotlib.pyplot as plt
     import numpy as np
     import zea
@@ -164,9 +162,7 @@ def reconstruct_track(
             fir_filter_taps=filter_taps,
         )
 
-        outputs = pipeline(
-            return_numpy=True, **{pipeline.key: data}, **pipeline_parameters
-        )
+        outputs = pipeline(return_numpy=True, **{pipeline.key: data}, **pipeline_parameters)
         image = np.squeeze(outputs[pipeline.output_key])
         image = np.clip(image, dynamic_range[0], dynamic_range[1])
         sampling_frequency = metadata_scalar(track.scan, "sampling_frequency")
@@ -215,9 +211,7 @@ def reconstruct_file(
                 f"No config found for track label {track_label!r}; expected one of {expected}"
             )
         config, pipeline = pipeline_configs[track_label]
-        out_paths.append(
-            reconstruct_track(path, output_dir, track_index, config, pipeline)
-        )
+        out_paths.append(reconstruct_track(path, output_dir, track_index, config, pipeline))
     return out_paths
 
 

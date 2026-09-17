@@ -144,9 +144,7 @@ def load_capture(zea_path: Path) -> dict:
     zlims = (float(image_coords[..., 2].min()), float(image_coords[..., 2].max()))
     # update() keeps every derived acquisition parameter from the file (n_tx,
     # n_ax, ...) and only overlays the FOV grid, invalidating the cached grid.
-    parameters.update(
-        xlims=xlims, zlims=zlims, grid_size_x=image_coords.shape[1]
-    )
+    parameters.update(xlims=xlims, zlims=zlims, grid_size_x=image_coords.shape[1])
 
     return {
         "raw": raw,
@@ -203,30 +201,22 @@ def main():
         panels.append("scatterers")
 
     zea.visualize.set_mpl_style()
-    fig, axes = plt.subplots(
-        1, len(panels), figsize=(6.5 * len(panels), 6), squeeze=False
-    )
+    fig, axes = plt.subplots(1, len(panels), figsize=(6.5 * len(panels), 6), squeeze=False)
     ax = {name: axes[0][i] for i, name in enumerate(panels)}
 
     # 1: the reconstruction itself.
     # aspect="equal": 1 mm lateral == 1 mm axial on screen (physically faithful,
     # no stretching). extent is in mm, so the image renders at its true
     # proportions rather than being stretched to fill the axes box.
-    ax["bmode"].imshow(
-        bmode, cmap="gray", vmin=-60, vmax=0, extent=extent, aspect="equal"
-    )
-    _label(
-        ax["bmode"], f"{Path(ZEA_FILE).stem} — B-mode reconstruction, frame {FRAME}"
-    )
+    ax["bmode"].imshow(bmode, cmap="gray", vmin=-60, vmax=0, extent=extent, aspect="equal")
+    _label(ax["bmode"], f"{Path(ZEA_FILE).stem} — B-mode reconstruction, frame {FRAME}")
     cax = make_axes_locatable(ax["bmode"]).append_axes("right", size="5%", pad=0.05)
     fig.colorbar(ax["bmode"].images[0], cax=cax, label="dB")
 
     # 2: the capture's class-specific label, when it carries one.
     if "label" in ax:
         if cap["seg_fg"] is not None:
-            ax["label"].imshow(
-                cap["seg_fg"], cmap="gray", extent=cap["seg_extent"], aspect="equal"
-            )
+            ax["label"].imshow(cap["seg_fg"], cmap="gray", extent=cap["seg_extent"], aspect="equal")
             _label(ax["label"], f"data/segmentation foreground: {cap['seg_label']}")
         else:
             div_img = cap["div_img"]

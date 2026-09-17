@@ -43,9 +43,7 @@ HERE = Path(__file__).resolve().parent
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-ZEA_FILE = (
-    "hf://nvidia/OpenH-RF/ubc/module_C/acquisitions/session_01/session_01_f1306.hdf5"
-)
+ZEA_FILE = "hf://nvidia/OpenH-RF/ubc/module_C/acquisitions/session_01/session_01_f1306.hdf5"
 OUTPUT = HERE / "results" / "reconstruct_f1306_bk_scanconverted.png"
 FRAME = 0
 
@@ -112,9 +110,7 @@ def scan_convert_bk_style(scanlines, depth_m: float):
 
     Returns the scan-converted sector and its (x, z) display limits in metres.
     """
-    virtual_apex_m = DISPLAY_SOURCE_APERTURE_M / (
-        2.0 * np.tan(DISPLAY_MAX_STEERING_RAD)
-    )
+    virtual_apex_m = DISPLAY_SOURCE_APERTURE_M / (2.0 * np.tan(DISPLAY_MAX_STEERING_RAD))
     radial_step_m = (depth_m - LINE_DEPTH_MIN_M) / (scanlines.shape[0] - 1)
     sector, display_parameters = zea.display.scan_convert_2d(
         scanlines,
@@ -178,10 +174,7 @@ def main() -> None:
     scanlines, depth_m = reconstruct_scanlines(ZEA_FILE, FRAME)
     sector, x_lim, z_lim = scan_convert_bk_style(scanlines, depth_m)
     save_bmode(sector, x_lim, z_lim, OUTPUT)
-    print(
-        f"Scanline B-mode: {scanlines.shape}; "
-        f"{scanlines.min():.3f}..{scanlines.max():.3f} dB"
-    )
+    print(f"Scanline B-mode: {scanlines.shape}; {scanlines.min():.3f}..{scanlines.max():.3f} dB")
     print(f"Scan converted : {sector.shape}; depth={depth_m * 1e3:.1f} mm")
     print(f"Saved          : {OUTPUT}")
 

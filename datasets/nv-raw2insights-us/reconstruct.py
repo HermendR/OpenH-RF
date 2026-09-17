@@ -133,9 +133,7 @@ def main():
 
     # 4: zea-reconstructed B-mode (DAS pipeline on raw_data)
     stored_ext = coords_to_imshow_mm(img_coords)
-    axes[3].imshow(
-        recon, aspect="auto", cmap="gray", vmin=-60, vmax=0, extent=recon_ext
-    )
+    axes[3].imshow(recon, aspect="auto", cmap="gray", vmin=-60, vmax=0, extent=recon_ext)
     axes[3].set_xlim(stored_ext[0], stored_ext[1])
     axes[3].set_ylim(stored_ext[2], stored_ext[3])
     axes[3].set_title(f"B-mode (DAS, zea)\nreconstructed: {recon.shape}")
@@ -143,18 +141,14 @@ def main():
     axes[3].set_ylabel("Depth [mm]")
 
     # 5: SOS map
-    im = axes[4].imshow(
-        sos[0], aspect="auto", cmap="hot", extent=coords_to_imshow_mm(sos_coords)
-    )
+    im = axes[4].imshow(sos[0], aspect="auto", cmap="hot", extent=coords_to_imshow_mm(sos_coords))
     plt.colorbar(im, ax=axes[4], label="m/s")
     axes[4].set_title(f"Speed of sound\nsos_map: {sos.shape}")
     axes[4].set_xlabel("Lateral [mm]")
     axes[4].set_ylabel("Depth [mm]")
 
     # 6: zea-reconstructed B-mode with SoS correction
-    axes[5].imshow(
-        recon_sos, aspect="auto", cmap="gray", vmin=-60, vmax=0, extent=recon_ext
-    )
+    axes[5].imshow(recon_sos, aspect="auto", cmap="gray", vmin=-60, vmax=0, extent=recon_ext)
     axes[5].set_xlim(stored_ext[0], stored_ext[1])
     axes[5].set_ylim(stored_ext[2], stored_ext[3])
     axes[5].set_title(f"B-mode (DAS + SoS, zea)\nreconstructed: {recon_sos.shape}")
@@ -176,9 +170,7 @@ def main():
     axes[6].set_xlabel("Lateral [mm]")
     axes[6].set_ylabel("Depth [mm]")
 
-    fig.suptitle(
-        f"openh-rf sample (phase error: {phase_err[0]:.2f} rad)", fontsize=14, y=1.02
-    )
+    fig.suptitle(f"openh-rf sample (phase error: {phase_err[0]:.2f} rad)", fontsize=14, y=1.02)
     plt.tight_layout()
     plt.savefig(OUTPUT, dpi=150, bbox_inches="tight")
     print(f"Saved {OUTPUT}")

@@ -46,9 +46,7 @@ DEFAULT_GRID_SIZE_Z = 480
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = (
-    "hf://nvidia/OpenH-RF/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5"
-)
+INPUT = "hf://nvidia/OpenH-RF/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5"
 FRAME = DEFAULT_FRAME  # Frame index to reconstruct (default: %(default)s)
 OUTPUT = HERE / "reference_bmode.png"  # Output PNG path (default: %(default)s)
 OUTPUT_2X1 = (
@@ -80,7 +78,6 @@ def build_pipeline() -> zea.Pipeline:
 
 
 def main() -> None:
-
     input_path = str(INPUT)
     if "://" not in input_path:
         candidate = Path(input_path)
@@ -124,9 +121,7 @@ def main() -> None:
             params.grid_size_z = DEFAULT_GRID_SIZE_Z
             x_span = params.xlims[1] - params.xlims[0]
             z_span = params.zlims[1] - params.zlims[0]
-            params.grid_size_x = max(
-                1, int(round(params.grid_size_z * x_span / z_span))
-            )
+            params.grid_size_x = max(1, int(round(params.grid_size_z * x_span / z_span)))
             raw = track.data.raw_data[FRAME : FRAME + 1, ...]
             inputs = pipeline.prepare_parameters(params)
             outputs = pipeline(data=raw, **inputs)
@@ -145,12 +140,8 @@ def main() -> None:
                 image_frame = np.flipud(np.rot90(image_frame, 3))
             track_panels.append((label, recon, extent_mm, image_frame))
 
-            ax.imshow(
-                recon, cmap="gray", vmin=-50, vmax=0, extent=extent_mm, aspect="equal"
-            )
-            ax.set_title(
-                f"Track: {label}\nFile: {Path(input_path).name}, Frame {FRAME}"
-            )
+            ax.imshow(recon, cmap="gray", vmin=-50, vmax=0, extent=extent_mm, aspect="equal")
+            ax.set_title(f"Track: {label}\nFile: {Path(input_path).name}, Frame {FRAME}")
             ax.set_xlabel("Lateral [mm]")
             ax.set_ylabel("Depth [mm]")
 
@@ -172,9 +163,7 @@ def main() -> None:
         label, recon, extent_mm, image_frame = selected_panel
         fig2, axes2 = plt.subplots(2, 1, figsize=(7, 10))
 
-        axes2[0].imshow(
-            recon, cmap="gray", vmin=-50, vmax=0, extent=extent_mm, aspect="equal"
-        )
+        axes2[0].imshow(recon, cmap="gray", vmin=-50, vmax=0, extent=extent_mm, aspect="equal")
         axes2[0].set_title(f"Ultrasound ({label}) - frame {FRAME}")
         axes2[0].set_xlabel("Lateral [mm]")
         axes2[0].set_ylabel("Depth [mm]")
@@ -185,9 +174,7 @@ def main() -> None:
             axes2[1].set_xlabel("X [px]")
             axes2[1].set_ylabel("Y [px]")
         else:
-            axes2[1].text(
-                0.5, 0.5, "No camera image available", ha="center", va="center"
-            )
+            axes2[1].text(0.5, 0.5, "No camera image available", ha="center", va="center")
             axes2[1].set_title("Camera image unavailable")
             axes2[1].set_axis_off()
 

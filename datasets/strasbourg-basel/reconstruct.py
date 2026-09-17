@@ -74,9 +74,7 @@ def reconstruct(source: str, scan: str, frame: int, config: Config) -> None:
     recon = np.array(outputs["data"])  # (n_frames, grid_z, grid_x, n_ch)
     # No envelope_detect in pipeline.yaml (see its comments), so the trailing
     # n_ch=1 axis survives to the output; squeeze it for a 2D image.
-    image = zea.display.to_8bit(
-        np.squeeze(recon[0]), dynamic_range=parameters.dynamic_range
-    )
+    image = zea.display.to_8bit(np.squeeze(recon[0]), dynamic_range=parameters.dynamic_range)
 
     zea.visualize.set_mpl_style()
     plt.figure()
@@ -91,7 +89,6 @@ def reconstruct(source: str, scan: str, frame: int, config: Config) -> None:
 
 
 def main():
-
     if SCAN:
         sources = {Path(SCAN).stem: str(SCAN)}
     else:
@@ -99,9 +96,7 @@ def main():
     scans = list(sources)
     unknown = [s for s in scans if s not in REFERENCE_FRAME]
     if unknown:
-        raise SystemExit(
-            f"unknown scan(s) {unknown}; expected one of {list(REFERENCE_FRAME)}"
-        )
+        raise SystemExit(f"unknown scan(s) {unknown}; expected one of {list(REFERENCE_FRAME)}")
     if FRAME is not None and len(scans) > 1:
         raise SystemExit("FRAME applies to a single scan; name one")
 
@@ -110,9 +105,7 @@ def main():
     config = Config.from_path(str(CONFIG))
 
     for scan, source in sources.items():
-        reconstruct(
-            source, scan, FRAME if FRAME is not None else REFERENCE_FRAME[scan], config
-        )
+        reconstruct(source, scan, FRAME if FRAME is not None else REFERENCE_FRAME[scan], config)
 
 
 if __name__ == "__main__":

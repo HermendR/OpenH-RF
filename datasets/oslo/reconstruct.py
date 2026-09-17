@@ -58,10 +58,7 @@ PIPELINE_YAML = {
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-PATHS = (
-    "hf://nvidia/OpenH-RF/oslo/A_cardiac/"
-    "Verasonics_P2-4_apical_four_chamber_subject_1.hdf5"
-)
+PATHS = "hf://nvidia/OpenH-RF/oslo/A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1.hdf5"
 REFOCUS = False  # Also emit the secondary REFoCUS reconstruction where flagged for it
 
 
@@ -74,9 +71,7 @@ def reconstruct(
     also render the REFoCUS variant); ``suffix`` names the output PNG.
     """
     cfg = PARAMETERS[Path(path).stem]
-    config = zea.Config.from_path(
-        str(HERE / PIPELINE_YAML[pipeline_key or cfg["pipeline"]])
-    )
+    config = zea.Config.from_path(str(HERE / PIPELINE_YAML[pipeline_key or cfg["pipeline"]]))
     is_scanline = bool(config.parameters.get("enable_scanline"))
     overrides = dict(config.parameters)
     if "dynamic_range" in cfg:
@@ -134,7 +129,6 @@ def reconstruct(
 
 
 def main():
-
     zea.init_device()
     paths = [str(PATHS)] if PATHS else [str(p) for p in sorted(HERE.glob("*/*.hdf5"))]
     for path in paths:

@@ -88,9 +88,7 @@ ULM_SUPER_RES = 10
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/ulmshare/data/mouse_40_acquisition_1_zea.hdf5"
-OUT_DIR = Path(
-    __file__
-).parent  # Directory for all outputs (default: next to this script)
+OUT_DIR = Path(__file__).parent  # Directory for all outputs (default: next to this script)
 FRAME = 0  # B-mode frame index (default: 0)
 # An acquisition is ~178 GB / 76000 frames; `None` means all of them, which is
 # only sensible on local disk. Four buffers is what the ULM parameters above
@@ -182,9 +180,7 @@ def _raw_source(zea_file):
     for track in tracks:
         if track.label == "raw":
             return track
-    raise ValueError(
-        f"No 'raw' track in {zea_file}; found {[t.label for t in tracks]}."
-    )
+    raise ValueError(f"No 'raw' track in {zea_file}; found {[t.label for t in tracks]}.")
 
 
 def _apply_ulmshare_grid(parameters):
@@ -294,9 +290,7 @@ def save_image(image, out_path, title, label, cmap, vmin=None, vmax=None, ticks=
 
     zea.visualize.set_mpl_style()
     fig, ax = plt.subplots(figsize=(4, 6))
-    im = ax.imshow(
-        image, cmap=cmap, vmin=vmin, vmax=vmax, extent=EXTENT_MM, aspect="equal"
-    )
+    im = ax.imshow(image, cmap=cmap, vmin=vmin, vmax=vmax, extent=EXTENT_MM, aspect="equal")
     ax.set_title(title)
     ax.set_xlabel("x (mm)")
     ax.set_ylabel("z (mm)")
@@ -315,9 +309,7 @@ def save_movie_gif(movie, out_path, vmin, vmax, cmap="viridis", fps=MOVIE_FPS):
     from zea.io_lib import matplotlib_figure_to_numpy, save_to_gif
 
     fig, ax = plt.subplots(figsize=(4, 6))
-    im = ax.imshow(
-        movie[0], cmap=cmap, vmin=vmin, vmax=vmax, extent=EXTENT_MM, aspect="equal"
-    )
+    im = ax.imshow(movie[0], cmap=cmap, vmin=vmin, vmax=vmax, extent=EXTENT_MM, aspect="equal")
     ax.set_xlabel("x (mm)")
     ax.set_ylabel("z (mm)")
     cax = make_axes_locatable(ax).append_axes("right", size="5%", pad=0.1)
@@ -358,7 +350,6 @@ def render_ulm(density, out_path, super_res=ULM_SUPER_RES):
 
 
 def main():
-
     out_dir = OUT_DIR
     out_dir.mkdir(parents=True, exist_ok=True)
     bmode_yaml = out_dir / "pipeline_bmode.yaml"

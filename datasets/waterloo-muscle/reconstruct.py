@@ -66,7 +66,6 @@ def build_pipeline() -> Pipeline:
 
 
 def main():
-
     zea.init_device()
 
     pipeline = build_pipeline()
@@ -94,9 +93,7 @@ def main():
     # Size each panel to the image aspect ratio so the axes hug the B-mode.
     panel_h = 5.5
     img_aspect = (extent[1] - extent[0]) / (extent[2] - extent[3])
-    fig, ax = plt.subplots(
-        figsize=(panel_h * img_aspect, panel_h), constrained_layout=True
-    )
+    fig, ax = plt.subplots(figsize=(panel_h * img_aspect, panel_h), constrained_layout=True)
     ax.imshow(recon, cmap="gray", vmin=-60, vmax=0, extent=extent)
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("z [mm]")

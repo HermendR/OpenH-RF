@@ -39,7 +39,6 @@ OUT = HERE / "bmode.png"
 
 
 def main():
-
     zea.init_device()
     config = Config.from_path(str(CONFIG))
 

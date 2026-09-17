@@ -42,12 +42,8 @@ class LogTransform(Operation):
         data = kwargs[self.key]
         data = (log1p(abs(self.k * data) + self.c)) * sign(data)
         if self.data_min is not None and self.data_max is not None:
-            log_data_min = log1p(abs(self.k * self.data_min) + self.c) * sign(
-                self.data_min
-            )
-            log_data_max = log1p(abs(self.k * self.data_max) + self.c) * sign(
-                self.data_max
-            )
+            log_data_min = log1p(abs(self.k * self.data_min) + self.c) * sign(self.data_min)
+            log_data_max = log1p(abs(self.k * self.data_max) + self.c) * sign(self.data_max)
             _input_range = (log_data_min, log_data_max)
         else:
             _input_range = None

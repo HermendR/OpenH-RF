@@ -70,9 +70,7 @@ class ApplyProbePose(Operation):
     """Apply the tracked probe pose of one frame before beamforming."""
 
     def __init__(self, **kwargs):
-        super().__init__(
-            additional_output_keys=["probe_geometry", "transmit_origins"], **kwargs
-        )
+        super().__init__(additional_output_keys=["probe_geometry", "transmit_origins"], **kwargs)
 
     def call(
         self,
@@ -117,12 +115,8 @@ class ApplyProbePose(Operation):
             axis=0,
         )
 
-        probe_geometry = (
-            ops.matmul(ops.cast(probe_geometry, "float32"), ops.transpose(R)) + t
-        )
-        transmit_origins = (
-            ops.matmul(ops.cast(transmit_origins, "float32"), ops.transpose(R)) + t
-        )
+        probe_geometry = ops.matmul(ops.cast(probe_geometry, "float32"), ops.transpose(R)) + t
+        transmit_origins = ops.matmul(ops.cast(transmit_origins, "float32"), ops.transpose(R)) + t
 
         return {
             self.output_key: kwargs[self.key],
@@ -143,16 +137,12 @@ def create_and_save_pipeline():
         operations=[
             Map(
                 operations=[
-                    Squeeze(
-                        axis=0
-                    ),  # (1, n_tx=1, n_ax, n_el, n_ch) -> (n_tx=1, n_ax, n_el, n_ch)
+                    Squeeze(axis=0),  # (1, n_tx=1, n_ax, n_el, n_ch) -> (n_tx=1, n_ax, n_el, n_ch)
                     Cast(dtype="float32"),
                     Demodulate(),
                     ApplyProbePose(),
                     Beamform(beamformer="delay_and_sum", enable_pfield=False),
-                    ExpandDims(
-                        axis=0
-                    ),  # restore the frame axis so Map can stack frames
+                    ExpandDims(axis=0),  # restore the frame axis so Map can stack frames
                 ],
                 argnames=["data", "probe_translation", "probe_rotation"],
                 batch_size=1,  # one tracked frame at a time (each frame has its own pose)
@@ -199,17 +189,13 @@ def main():
     x_motion = probe_translation[:, 0]  # x position for each frame, in meters
     direction = np.sign(x_motion[-1] - x_motion[0])
     dx = desired_dx_m * direction
-    desired_x_positions = np.arange(
-        x_motion[0], x_motion[-1] + 0.5 * dx, dx, dtype=np.float32
-    )
+    desired_x_positions = np.arange(x_motion[0], x_motion[-1] + 0.5 * dx, dx, dtype=np.float32)
     frame_indices = np.array(
         [np.argmin(np.abs(x_motion - x_target)) for x_target in desired_x_positions]
     )
 
     # Center the selected sweep around the reconstruction grid
-    probe_translation = probe_translation - np.mean(
-        probe_translation[frame_indices], axis=0
-    )
+    probe_translation = probe_translation - np.mean(probe_translation[frame_indices], axis=0)
 
     # ------------------------------------------------------------
     # Run the pipeline

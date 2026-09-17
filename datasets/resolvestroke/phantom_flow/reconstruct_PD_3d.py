@@ -105,9 +105,7 @@ class TissueHighpass(Operation):
         freqs = np.fft.rfftfreq(n, d=1.0 / self.frame_rate_hz)  # non-negative
         mask = (freqs >= self.cutoff_hz).astype(np.float32)
         # Raised-cosine taper across [cutoff - transition, cutoff) to reduce ringing.
-        taper = (freqs >= self.cutoff_hz - self.transition_hz) & (
-            freqs < self.cutoff_hz
-        )
+        taper = (freqs >= self.cutoff_hz - self.transition_hz) & (freqs < self.cutoff_hz)
         mask[taper] = 0.5 * (
             1.0 + np.cos(np.pi * (self.cutoff_hz - freqs[taper]) / self.transition_hz)
         )
@@ -147,9 +145,7 @@ def reverse_tgc(raw, parameters):
 # --------------------------------------------------------------------------- #
 # Sector-volume grid.
 # --------------------------------------------------------------------------- #
-def build_sector_volume_grid(
-    azimuth_limits, elevation_limits, zlims, apex, n_r, n_az, n_el
-):
+def build_sector_volume_grid(azimuth_limits, elevation_limits, zlims, apex, n_r, n_az, n_el):
     """Build a real 3D sector-volume grid for a diverging wave.
 
     Bi-angular ("pyramidal") parametrization: a ray is steered by an azimuth
@@ -187,7 +183,6 @@ def sector_plane_coords(r, angle, apex):
 
 
 def main():
-
     out_path = OUTPUT or Path("phantom_flow_PD_montage.png")
 
     n_bf = N_FRAMES
@@ -242,9 +237,7 @@ def main():
             start = clip_start + frame_offset
             end = start + n_bf
 
-            print(
-                f"\n  Clip '{clip_name}': frames {start}-{end}  (HP cutoff={hp_cutoff} Hz)"
-            )
+            print(f"\n  Clip '{clip_name}': frames {start}-{end}  (HP cutoff={hp_cutoff} Hz)")
 
             raw = f.data.raw_data[start:end]  # (n_bf, n_tx, n_ax, n_el, n_ch)
             raw = reverse_tgc(raw, parameters)  # undo hardware TGC before beamforming
@@ -256,8 +249,7 @@ def main():
     # Normalize all PD volumes to the same global max (common dB scale)
     global_max = max(pv.max() for pv in pd_volumes)
     pd_db_volumes = [
-        10.0 * np.log10(np.maximum(pd, global_max * 1e-35) / global_max)
-        for pd in pd_volumes
+        10.0 * np.log10(np.maximum(pd, global_max * 1e-35) / global_max) for pd in pd_volumes
     ]
 
     # Scan-conversion coordinates for the two MIP planes (central plane of the fan)
@@ -272,9 +264,7 @@ def main():
         # x-z MIP: project out elevation (max over the y-fan)
         xz_mip = np.max(pd_vol, axis=2)  # (n_r, n_az)
         ax = axes[0, col]
-        ax.pcolormesh(
-            xz_lat, xz_z, xz_mip, cmap="hot", vmin=vmin, vmax=vmax, shading="auto"
-        )
+        ax.pcolormesh(xz_lat, xz_z, xz_mip, cmap="hot", vmin=vmin, vmax=vmax, shading="auto")
         ax.set_aspect("equal")
         ax.invert_yaxis()
         ax.set_title(f"{clip_name}\nx-z MIP", fontsize=9)
@@ -285,9 +275,7 @@ def main():
         # y-z MIP: project out azimuth (max over the x-fan)
         yz_mip = np.max(pd_vol, axis=1)  # (n_r, n_el)
         ax = axes[1, col]
-        ax.pcolormesh(
-            yz_lat, yz_z, yz_mip, cmap="hot", vmin=vmin, vmax=vmax, shading="auto"
-        )
+        ax.pcolormesh(yz_lat, yz_z, yz_mip, cmap="hot", vmin=vmin, vmax=vmax, shading="auto")
         ax.set_aspect("equal")
         ax.invert_yaxis()
         ax.set_title(f"{clip_name}\ny-z MIP", fontsize=9)

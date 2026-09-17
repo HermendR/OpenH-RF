@@ -85,9 +85,7 @@ def main():
         print(f"Saved pipeline recipe to {SAVE_PIPELINE}")
 
     inputs = pipeline.prepare_parameters(params)
-    recon = keras.ops.convert_to_numpy(
-        pipeline(data=raw[FRAME : FRAME + 1], **inputs)["data"]
-    )[0]
+    recon = keras.ops.convert_to_numpy(pipeline(data=raw[FRAME : FRAME + 1], **inputs)["data"])[0]
     recon_ext = [v * 1e3 for v in params.extent_imshow]
     print(f"Reconstructed: {recon.shape}")
 

@@ -55,11 +55,7 @@ def _contributions(in_length, out_length, scale):
 
     centres = np.arange(1, out_length + 1) / scale + 0.5 * (1 - 1 / scale)
     taps = int(np.ceil(kernel_width)) + 2
-    indices = (
-        np.floor(centres - kernel_width / 2).astype(np.int64)[:, None]
-        + np.arange(taps)
-        - 1
-    )
+    indices = np.floor(centres - kernel_width / 2).astype(np.int64)[:, None] + np.arange(taps) - 1
 
     weights = kernel(centres[:, None] - indices - 1)
     weights /= weights.sum(axis=1, keepdims=True)
@@ -82,9 +78,7 @@ def imresize(img, output_shape):
     scale = [output_shape[axis] / img.shape[axis] for axis in (0, 1)]
     out = img
     for axis in np.argsort(scale):
-        weights, indices = _contributions(
-            img.shape[axis], output_shape[axis], scale[axis]
-        )
+        weights, indices = _contributions(img.shape[axis], output_shape[axis], scale[axis])
         if axis == 0:
             out = _resize_axis0(out, weights, indices)
         else:

@@ -113,7 +113,6 @@ def scan_convert_map(
 
 
 def main() -> None:
-
     zea.visualize.set_mpl_style()
     zea.init_device()
 
@@ -147,9 +146,7 @@ def main() -> None:
         ax_bmode.set_title(f"B-mode (DAS), frame {FRAME}")
         ax_bmode.set_xlabel("Lateral position [mm]")
         ax_bmode.set_ylabel("Depth [mm]")
-        cax_bmode = make_axes_locatable(ax_bmode).append_axes(
-            "right", size="5%", pad=0.08
-        )
+        cax_bmode = make_axes_locatable(ax_bmode).append_axes("right", size="5%", pad=0.08)
         fig.colorbar(im_bmode, cax=cax_bmode, label="dB")
 
         im_sos = ax_sos.imshow(sos_sector, cmap=sos_cmap, extent=extent)

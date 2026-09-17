@@ -61,10 +61,7 @@ PARAMETERS = {
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = (
-    "hf://nvidia/OpenH-RF/vanderbilt/data/Fundamental/"
-    "118420_1_Focused_Uncoded_TX.hdf5"
-)
+INPUT = "hf://nvidia/OpenH-RF/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5"
 N_FRAMES = 1
 DEVICE = None  # CUDA device ID (e.g. 'cuda:0', 'auto:1', or 'cpu')
 
@@ -95,7 +92,6 @@ def write_config(pipeline: Pipeline, path: Path) -> None:
 
 
 def main():
-
     # The input may be an hf:// URI, so write the PNG beside this script.
     output_path = HERE / f"{Path(INPUT).stem}.png"
 

@@ -56,9 +56,7 @@ def plot_comparison(sos, pred, path):
     _, ax = plt.subplots(1, 2, figsize=(7, 6))
     im = ax[0].imshow(sos[0, :, :, 0], cmap="gray", vmin=1300, vmax=1700)
     ax[0].set_title("Ground Truth SOS Map")
-    ax[1].imshow(
-        keras.ops.convert_to_numpy(pred)[0, :, :, 0], cmap="gray", vmin=1300, vmax=1700
-    )
+    ax[1].imshow(keras.ops.convert_to_numpy(pred)[0, :, :, 0], cmap="gray", vmin=1300, vmax=1700)
     ax[1].set_title("Predicted SOS Map")
     for axis in ax:
         axis.set_xlabel("X (mm)")
@@ -73,7 +71,6 @@ def plot_comparison(sos, pred, path):
 
 
 def main():
-
     zea.init_device(verbose=False)
 
     if LOAD_CONFIG:

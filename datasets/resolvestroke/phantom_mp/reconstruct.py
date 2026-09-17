@@ -54,9 +54,7 @@ def sector_grids(p, apex):
     offset by the apex to keep the configured zlims as true on-axis depth."""
     lims = tuple(float(v) for v in p["polar_limits"])
     z0, z1 = (float(v) for v in p["zlims"])
-    xz = polar_pixel_grid(
-        lims, (z0 + apex, z1), int(p["grid_size_z"]), int(p["grid_size_x"]), apex
-    )
+    xz = polar_pixel_grid(lims, (z0 + apex, z1), int(p["grid_size_z"]), int(p["grid_size_x"]), apex)
     yz = xz.copy()
     yz[..., 0], yz[..., 1] = 0.0, xz[..., 0]
     return np.stack([xz, yz])  # (2, n_r, n_theta, 3)
@@ -75,24 +73,16 @@ def main():
     tgc = np.asarray(parameters.tgc_gain_curve, np.float32)
     raw = np.asarray(raw, np.float32) / tgc.reshape(1, 1, -1, 1, 1)
 
-    apex = float(
-        np.abs(np.ravel(parameters.focus_distances)[0])
-    )  # virtual-source depth
+    apex = float(np.abs(np.ravel(parameters.focus_distances)[0]))  # virtual-source depth
     grid = sector_grids(config.parameters, apex)  # (2, n_r, n_theta, 3): [x-z, y-z]
 
     # Beamform both fans in one pass; reshape_grid restores the (2, n_r, n_theta) shape.
     pipeline = Pipeline.from_config(config)
-    inputs = pipeline.prepare_parameters(
-        parameters, grid=grid, flatgrid=grid.reshape(-1, 3)
-    )
+    inputs = pipeline.prepare_parameters(parameters, grid=grid, flatgrid=grid.reshape(-1, 3))
     sectors = np.asarray(
-        pipeline(**{pipeline.key: raw}, **inputs, return_numpy=True)[
-            pipeline.output_key
-        ]
+        pipeline(**{pipeline.key: raw}, **inputs, return_numpy=True)[pipeline.output_key]
     )[0]
-    print(
-        f"raw {raw.shape}  sectors {sectors.shape}  (polar, apex={apex * 1e3:.1f} mm)"
-    )
+    print(f"raw {raw.shape}  sectors {sectors.shape}  (polar, apex={apex * 1e3:.1f} mm)")
 
     dr = config.parameters.get("dynamic_range", [-40, 0])
     vmin, vmax = float(dr[0]), float(dr[1])

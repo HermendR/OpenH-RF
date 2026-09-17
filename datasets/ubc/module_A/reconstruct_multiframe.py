@@ -21,12 +21,8 @@ from pathlib import Path
 os.environ.setdefault("KERAS_BACKEND", "jax")
 os.environ.setdefault("MPLBACKEND", "Agg")
 os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
-os.environ.setdefault(
-    "MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "module_a_ubc_v2_mpl")
-)
-os.environ.setdefault(
-    "ZEA_CACHE_DIR", str(Path(tempfile.gettempdir()) / "module_a_ubc_v2_zea")
-)
+os.environ.setdefault("MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "module_a_ubc_v2_mpl"))
+os.environ.setdefault("ZEA_CACHE_DIR", str(Path(tempfile.gettempdir()) / "module_a_ubc_v2_zea"))
 
 import imageio.v2 as imageio
 import numpy as np
@@ -61,8 +57,7 @@ def find_sequence(acquisitions: str, case_id: str, plane: int) -> list[str]:
     ``acquisitions`` is an ``hf://`` prefix instead of a local directory.
     """
     return [
-        f"{acquisitions}/case_{case_id}/"
-        f"ubc_swave_cirs_{case_id}_p{plane:02d}_f{frame:02d}.hdf5"
+        f"{acquisitions}/case_{case_id}/ubc_swave_cirs_{case_id}_p{plane:02d}_f{frame:02d}.hdf5"
         for frame in range(FRAMES_PER_SEQUENCE)
     ]
 
@@ -157,9 +152,7 @@ def display_frame(
     ).astype(np.uint8)
 
     source = Image.fromarray(scaled, mode="L").convert("RGB")
-    source = source.resize(
-        (source.width * 2, source.height * 2), Image.Resampling.BILINEAR
-    )
+    source = source.resize((source.width * 2, source.height * 2), Image.Resampling.BILINEAR)
     # 528 image rows + 64 title rows = 592, divisible by 16 for H.264.
     title_height = 64
     canvas = Image.new("RGB", (source.width, source.height + title_height), "white")
@@ -196,9 +189,7 @@ def save_nifti(
     struct.pack_into("<8h", header, 40, 4, nx, nz, ny, nt, 1, 1, 1)
     struct.pack_into("<h", header, 70, 16)  # NIFTI_TYPE_FLOAT32
     struct.pack_into("<h", header, 72, 32)
-    struct.pack_into(
-        "<8f", header, 76, 1.0, dx, dz, 1.0, FRAME_INTERVAL_S, 1.0, 1.0, 1.0
-    )
+    struct.pack_into("<8f", header, 76, 1.0, dx, dz, 1.0, FRAME_INTERVAL_S, 1.0, 1.0, 1.0)
     struct.pack_into("<f", header, 108, 352.0)
     struct.pack_into("<f", header, 112, 1.0)
     struct.pack_into("<B", header, 123, 2 | 8)  # millimetres and seconds
@@ -214,9 +205,7 @@ def save_nifti(
     header[344:348] = b"n+1\0"
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    with gzip.GzipFile(
-        filename=str(path), mode="wb", compresslevel=6, mtime=0
-    ) as stream:
+    with gzip.GzipFile(filename=str(path), mode="wb", compresslevel=6, mtime=0) as stream:
         stream.write(header)
         stream.write(b"\0\0\0\0")
         stream.write(data.tobytes(order="F"))
