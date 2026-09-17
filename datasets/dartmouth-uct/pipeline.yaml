@@ -1,0 +1,30 @@
+pipeline:
+    operations:
+    -   name: keras.ops.cast
+        params:
+            dtype: float32
+    -   name: patched_grid
+        operations:
+        -   name: usct_reflectivity_das
+            params:
+                compounding: coherent
+        params:
+            with_batch_dim: false
+            jit_options: null
+    - reshape_grid
+    -   name: normalize
+        params:
+            output_range:
+            - 0.0
+            - 1.0
+    - log_compress
+    with_batch_dim: false
+    jit_options: pipeline
+parameters:
+    grid_type: cartesian
+    ylims:
+    - 0.0
+    - 0.0
+    dynamic_range:
+    - -40
+    - 0

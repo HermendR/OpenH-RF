@@ -1,0 +1,44 @@
+pipeline:
+    operations:
+    -   name: map
+        operations:
+        -   name: keras.ops.squeeze
+            params:
+                axis: 0
+                jit_compile: false
+        -   name: keras.ops.cast
+            params:
+                dtype: float32
+                jit_compile: false
+        -   name: demodulate
+            params:
+                jit_compile: false
+        -   name: apply_probe_pose
+            params:
+                jit_compile: false
+        -   name: beamform
+            params:
+                jit_options: null
+                with_batch_dim: false
+        -   name: keras.ops.expand_dims
+            params:
+                axis: 0
+                jit_compile: false
+        params:
+            argnames:
+            - data
+            - probe_translation
+            - probe_rotation
+            batch_size: 1
+            with_batch_dim: false
+    -   name: keras.ops.sum
+        params:
+            axis: 0
+    - envelope_detect
+    -   name: normalize
+        params:
+            output_range:
+            - 0.0
+            - 1.0
+    - log_compress
+    with_batch_dim: false

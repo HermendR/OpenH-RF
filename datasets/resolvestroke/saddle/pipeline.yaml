@@ -1,0 +1,20 @@
+parameters:
+  grid_type: polar
+  polar_limits: [-0.45, 0.45]     # sector half-angle in rad (≈ ±26°)
+  zlims: [0.01, 0.12]             # on-axis depth range in m (reconstruct.py offsets the apex)
+  grid_size_z: 420                # radial samples
+  grid_size_x: 220                # angular samples
+  grid_size_y: 1                  # 1 => 2D sector (unlocks polar grid)
+  dynamic_range: [-40, 0]         # display dB range (40 dB)
+
+pipeline:
+  operations:
+    - name: keras.ops.cast
+      params:
+        dtype: float32
+    - name: beamform
+      params:
+        beamformer: delay_and_sum
+    - name: envelope_detect
+    - name: normalize
+    - name: log_compress

@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest", "ruff"]
+test = ["pytest", "ruff==0.16.8"]
 gpu = ["jax[cuda12]"]
 torch = ["torch"]
 tf = ["tensorflow"]
