@@ -18,6 +18,15 @@ size_categories:
 
 # OpenH-RF — Cardiac pre-beamformed RF channel data (paired with DAS targets)
 
+![Apical four-chamber view reconstructed from pre-beamformed channel data](assets/bmode.png)
+
+Apical four-chamber view: frame 8 of [`data/c1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/cardiac/data/c1.hdf5),
+reconstructed by `reconstruct.py`.
+
+![One 32-frame cardiac cine loop](assets/cine.gif)
+
+One cine loop (32 frames) from `data/c1.hdf5`.
+
 ## Dataset Description
 
 Real, **in-vivo human** pre-beamformed ultrasound **channel data** for cardiac
@@ -106,13 +115,14 @@ per acquisition line, receive dynamic focusing) → envelope detection →
 normalization → log compression → sector scan conversion. Run:
 
 ```
-python reconstruct.py data/a1.hdf5 --frame 15 --out bmode_a1.png
+python reconstruct.py
 ```
 
-Reference output: `bmode_a1.png`. Each frame is also paired with its conventional
-delay-and-sum reconstruction in `beamformed_data` (the target for the raw→image
-learning task) — note its depth scale is approximate because the acquisition axial
-rate is not stored (see Known Issues).
+Reference output: `bmode.png` — frame 8 of `data/c1.hdf5`, shown above. Each
+frame is also paired with its conventional delay-and-sum reconstruction in
+`beamformed_data` (the target for the raw→image learning task) — note its depth
+scale is approximate because the acquisition axial rate is not stored (see Known
+Issues).
 
 ## Known Issues
 
