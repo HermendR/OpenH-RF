@@ -24,7 +24,7 @@ Dataset consisting of raw RF data and speed of sound measurements acquired in an
 
 ## Dataset Description
 
-This is a dataset consisting of 580K raw RF frames (plane wave) and associated SoS measurements using a programmable research scanner configured for high frame rate imaging. We used a rigorous image collection protocol based on landmarking according to bone markers to ensure image consistency. This data was collected as part of the following study:
+This is a dataset consisting of 18,720 raw RF frames (plane wave; 580,320 frame-transmits) and associated SoS measurements using a programmable research scanner configured for high frame rate imaging. We used a rigorous image collection protocol based on landmarking according to bone markers to ensure image consistency. This data was collected as part of the following study:
 
 D. Xiao, P. De La Torre, M. Saif El Nasr, A. J. Y. Chee, M. Mourtzakis, and A. C. H. Yu, “LivePulse-Echo Speed-of-Sound Estimation for Quality Assessment of Large Muscles in Humans,”Ultrasound in Medicine & Biology, vol. 51, no. 11, pp. 1925–1935, Nov. 2025.
 
@@ -96,7 +96,7 @@ All `coordinates` arrays are per-pixel Cartesian positions in metres, last axis
 
 **Current OpenH-RF release:** 1,248 HDF5 files; 576.19 GB (576,186,417,152 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-Data was collected from 39 participants, each with 32 unique images spanning calf/bicep/quad, axis and muscle state. For each imaging location, 15 frames were made per limb under minimal contact and with pressure. Given that each frame consisted of 31 steered plane waves, our protocol yielded a total of 15 repeats × 31 frames × 8 views × 2 sides × 2 pressure settings = 14880 raw RF frames per participant. In total, our dataset is expected to contain 580k frames of raw RF data.
+Data was collected from 39 participants, each with 32 unique images spanning calf/bicep/quad, axis and muscle state. For each imaging location, 15 frames were made per limb under minimal contact and with pressure. Given that each frame consisted of 31 steered plane waves, our protocol yielded a total of 15 repeats × 31 transmits × 8 views × 2 sides × 2 pressure settings = 14,880 frame-transmits per participant, i.e. 480 stored frames per participant. In total the dataset contains 18,720 stored frames and 580,320 frame-transmits (see the table below).
 
 All 1,248 HDF5 files are uploaded; current stored size and format version are reported above.
 

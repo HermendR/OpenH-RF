@@ -112,9 +112,9 @@ All spatial maps carry per-pixel Cartesian `coordinates` in meters, last axis `[
 
 **Current OpenH-RF release:** 590 HDF5 files; 228.54 GB (228,538,449,920 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-- **590 acquisitions (4,541 frames) from 15 subjects**, one continuous
+- **590 acquisitions (4,539 frames) from 15 subjects**, one continuous
 dataset: 51 acquisitions / 411 frames (Subjects 01–03) from the first
-acquisition round and 539 acquisitions / 4,130 frames (Subjects 04–15) from
+acquisition round and 539 acquisitions / 4,128 frames (Subjects 04–15) from
 the second.
 - **File naming:** one HDF5 per acquisition, `Subject_XX_acq_NNN.hdf5`
 (acquisitions numbered per subject in acquisition order).
