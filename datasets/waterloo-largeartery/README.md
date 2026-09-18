@@ -119,7 +119,7 @@ The frame count in these examples is truncated for demonstration; full acquisiti
 **Current OpenH-RF release:** 15 HDF5 files; 941.96 GB (941,958,804,227 bytes) stored; root `zea_version` **0.1.5**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
 Data was collected from 15 participants and consists of 15 acquisitions (one per participant), containing
-24,000 frames of raw RF data per acquisition. Each participant performed isometric plantarflexion 
+12,000 frames of raw RF data per acquisition. Each participant performed isometric plantarflexion 
 contractions at 8 Kg under head up tilt of 40 degrees.
 
 ## Subject Metadata
@@ -129,7 +129,7 @@ contractions at 8 Kg under head up tilt of 40 degrees.
 | **Total Number of Subjects** | 15 |
 | **Total Number of Files (Acquisitions)** | 15 |
 | **Sex Composition** | M: 8, F: 7  |
-| **Total RF Frames** | 360,000 |
+| **Total RF Frames** | 180,000 |
 
 ## Known Issues
 

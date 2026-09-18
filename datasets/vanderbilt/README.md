@@ -84,8 +84,10 @@ Subject Metadata below apply to both the original and migrated text fields.
 
 **Current OpenH-RF release:** 165 HDF5 files; 185.58 GB (185,584,517,120 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-- **Samples:** 82 cineloops (32 frames each) from 29 patients — 2,624 fundamental frames
+- **Samples:** 82 cineloops (32 frames each) from 30 patients — 2,624 fundamental frames
 - Plus a matching set of 2,624 harmonic frames (same cineloops, harmonic sequence)
+- Plus one CIRS phantom validation acquisition (`CIRS_validation/CIRS_fundamental.hdf5`,
+  32 frames), giving the 165 files and 5,280 frames of the current release
 - **Train / validation / test split:** N/A
 
 ## Subject Metadata

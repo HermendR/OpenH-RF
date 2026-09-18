@@ -69,7 +69,7 @@ the frames prior to workspace parameter freezing were removed from the raw chann
 
 | Field | Shape                        | Dtype | Units | Description |
 |---|------------------------------|---|---|---|
-| `tracks/track_0/data/raw_data` | (nframes, 128, 4096, 128, 1) | int16 | ADC counts | Raw per-element RF channel data: (frames, transmits, axial samples, elements, 1) |
+| `tracks/track_0/data/raw_data` | (nframes, 128, 2176, 128, 1) | int16 | ADC counts | Raw per-element RF channel data: (frames, transmits, axial samples, elements, 1); the axial dimension is 2176 in 29 of the 30 acquisitions and 2048 in the remaining one |
 | `tracks/track_0/scan/t0_delays` | (128, 128)                   | float32 | s | Per-transmit, per-element transmit delay |
 | `tracks/track_0/scan/tx_apodizations` | (128, 128)                   | float32 | unitless (0-1) | Per-transmit, per-element transmit apodization weight |
 | `tracks/track_0/scan/polar_angles` | (128,)                       | float32 | rad | Per-transmit polar steering angle |

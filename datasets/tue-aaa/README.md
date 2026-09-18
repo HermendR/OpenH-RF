@@ -55,7 +55,7 @@ zea file format. Subject metadata is stored under `metadata/subject` (`age`, `se
 
 **Current OpenH-RF release:** 15 HDF5 files; 53.08 GB (53,077,606,400 bytes) stored; root `zea_version` **0.1.4**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-- **Samples / frames:** 500 acquisitions
+- **Samples / frames:** 15 acquisitions (one HDF5 file each), 500 frames per acquisition — 7,500 frames total
 - **Stored HDF5 size:** 53.08 GB (53,077,606,400 bytes).
 
 | Field | Shape | dtype | Units | Description |
@@ -64,7 +64,7 @@ zea file format. Subject metadata is stored under `metadata/subject` (`age`, `se
 
 ## Subject Metadata
 
-Patients are dominantly male, aged 63–90, and scanned in the Netherlands.
+Patients are dominantly male (13 M / 2 F), aged 66–87, and scanned in the Netherlands.
 
 ## Data Validation
 

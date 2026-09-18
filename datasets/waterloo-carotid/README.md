@@ -126,7 +126,8 @@ The frame count in these examples is truncated for demonstration; full acquisiti
 Data was collected from 8 participants, spanning carotid arteries (Common Carotid
 Artery and Internal Carotid Artery) in both longitudinal and cross-sectional
 views. In total, the dataset consists of 93 acquisitions, containing
-36,000/60,000 frames of raw RF data per acquisition.
+30,000 or 36,000 frames of raw RF data per acquisition (47 acquisitions of
+30,000 frames and 46 of 36,000 frames).
 
 ## Subject Metadata
 
@@ -135,7 +136,7 @@ views. In total, the dataset consists of 93 acquisitions, containing
 | **Total Number of Subjects** | 8 |
 | **Total Number of Files (Acquisitions)** | 93 |
 | **Sex Composition** | M: 6 (75.0%), F: 2 (25.0%) |
-| **Total RF Frames** | 4,476,000 |
+| **Total RF Frames** | 3,066,000 |
 
 ## Known Issues
 

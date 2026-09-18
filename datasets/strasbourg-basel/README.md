@@ -321,7 +321,7 @@ Every file has the same field structure; `n_frames` and `n_ax` vary per scan (se
 
 **Current OpenH-RF release:** 9 HDF5 files; 200.75 GB (200,745,025,536 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-Nine acquisitions, one continuous sweep each; 1428 frames in total. No train / val /
+Nine acquisitions, one continuous sweep each; 1,427 frames in total. No train / val /
 test split (each file is a single reference acquisition). Every scan has one tracked
 probe pose per frame.
 
