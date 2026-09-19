@@ -2,6 +2,10 @@
 
 *An in-vivo human breast plane-wave raw-channel ultrasound sub-dataset for the OpenH-RF foundation initiative.*
 
+![DAS B-mode reconstruction of a biopsy-proven invasive ductal carcinoma (S01_D1)](assets/main.png)
+
+Delay-and-sum reconstruction of the raw RF channel data in `data/S01_D1.hdf5`. Produced by `reconstruct.py`.
+
 ## Dataset Description
 
 Breast OpenH-RF contains pre-beamformed RF channel-capture data from in-vivo breast ultrasound exams performed on a clinical, FDA-cleared scanner. Every acquisition is a 9-angle plane-wave compounding sequence with a 192-element linear array, paired with a B-mode reference image and a clinically verified diagnostic label. The intended research contribution is two-fold: (1) provide a clinically-grounded benchmark for **sound-speed and attenuation imaging** (Section 6.3 of the RFP) on real human breast tissue with biopsy-proven outcomes and (2) supply a high-quality plane-wave compounding corpus for **generalized reconstruction** research (Section 6.1: super-resolution, aberration correction, adaptive transmit design). Pathology and BI-RADS labels additionally enable benchmarking of **ultrasound interpretation** (Section 6.5).
@@ -19,7 +23,7 @@ Breast OpenH-RF contains pre-beamformed RF channel-capture data from in-vivo bre
 
 ## License / Terms of Use
 
-**CC BY 4.0** (see [`LICENCE`](LICENCE)).
+**CC BY 4.0** ([Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/)).
 
 ## Intended Usage
 

@@ -57,7 +57,7 @@ PARAMETERS = {
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/kaist-snubh-barreleye/data/S32_D2.hdf5"
+INPUT = "hf://nvidia/OpenH-RF/kaist-snubh-barreleye/data/S01_D1.hdf5"
 SAVE_YAML = False  # write pipeline.yaml / pipeline_simple.yaml from the pipelines below
 OUTPUT = _HERE / "reconstruct.png"
 
