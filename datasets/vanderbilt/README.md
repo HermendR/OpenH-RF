@@ -19,6 +19,22 @@ size_categories:
 
 # Multi-Frame Focused Transmit Echocardiography Channel Dataset
 
+![Apical view of the left atrial appendage](assets/main.png)
+![Cineloop of the left atrial appendage](assets/118420_1_Focused_Uncoded_TX.gif)
+
+One cineloop of a fundamental focused-transmit acquisition,
+[`data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5).
+
+`zea` renders it straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5 \
+  --config hf://nvidia/OpenH-RF/vanderbilt/pipeline.yaml \
+  --n-frames 10
+```
+
 ## Dataset Description
 
 This multi-frame focused transmit echocardiography channel dataset contains over 2000 frames of fundamental and harmonic data acquired with the P4-2v probe on a Verasonics Vantage 128. This dataset was originally acquired to visualize the left atrial appendage in patients following transesophageal echocardiography. Some patients have atrial fibrillation, which can cause blood clots to form in the appendage.
