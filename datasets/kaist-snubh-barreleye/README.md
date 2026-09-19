@@ -2,6 +2,25 @@
 
 *An in-vivo human breast plane-wave raw-channel ultrasound sub-dataset for the OpenH-RF foundation initiative.*
 
+![DAS B-mode reconstruction of a biopsy-proven invasive ductal carcinoma (S01_D1)](assets/main.png)
+
+Delay-and-sum reconstruction of the raw RF channel data in `data/S01_D1.hdf5`. Produced by `reconstruct.py`.
+
+`zea` renders it straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/kaist-snubh-barreleye/data/S01_D1.hdf5 \
+  --config hf://nvidia/OpenH-RF/kaist-snubh-barreleye/pipeline.yaml \
+  --n-frames 1 \
+  --save-as png
+```
+
+This is a single-frame acquisition, so `zea process` outputs a `.png` rather
+than a `.gif` — this requires a `zea` build newer than the currently pinned
+0.1.6 (single-frame PNG output landed after that release).
+
 ## Dataset Description
 
 Breast OpenH-RF contains pre-beamformed RF channel-capture data from in-vivo breast ultrasound exams performed on a clinical, FDA-cleared scanner. Every acquisition is a 9-angle plane-wave compounding sequence with a 192-element linear array, paired with a B-mode reference image and a clinically verified diagnostic label. The intended research contribution is two-fold: (1) provide a clinically-grounded benchmark for **sound-speed and attenuation imaging** (Section 6.3 of the RFP) on real human breast tissue with biopsy-proven outcomes and (2) supply a high-quality plane-wave compounding corpus for **generalized reconstruction** research (Section 6.1: super-resolution, aberration correction, adaptive transmit design). Pathology and BI-RADS labels additionally enable benchmarking of **ultrasound interpretation** (Section 6.5).
@@ -19,7 +38,7 @@ Breast OpenH-RF contains pre-beamformed RF channel-capture data from in-vivo bre
 
 ## License / Terms of Use
 
-**CC BY 4.0** (see [`LICENCE`](LICENCE)).
+**CC BY 4.0** ([Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/)).
 
 ## Intended Usage
 
@@ -142,20 +161,19 @@ Plane-wave transmit beamforming is used, with all 192 elements activated on each
 
 ## Data Validation
 
-A reference reconstruction is provided in [`reconstruct.py`](reconstruct.py). It defines the DAS pipeline directly in code (via zea ops) and applies, to the raw RF channel data:
+[`reconstruct.py`](reconstruct.py) reconstructs a B-mode from `raw_data` using the `zea.Pipeline` defined in [`pipeline.yaml`](pipeline.yaml):
 
 ```
 cast(float32) → band-pass filter (1–12 MHz) → demodulate → DAS beamform → envelope detect → normalize → log compression
 ```
 
-The 1–12 MHz band-pass rejects a persistent sub-MHz band before coherent beamforming, which allows to produce a clean B-mode directly from the raw RF. Run it to reproduce a reference B-mode from any delivered file:
+The 1–12 MHz band-pass rejects a persistent sub-MHz band before coherent beamforming, which allows it to produce a clean B-mode directly from the raw RF. Run:
 
-```bash
-python reconstruct.py --input hdf5/original/S01_D1.hdf5     # single file
-python reconstruct.py --compare S01_D1                      # DAS vs. scanner reference B-mode
+```
+python reconstruct.py
 ```
 
-`python reconstruct.py --save-yaml` exports the pipeline as `pipeline.yaml` if a shareable recipe is needed (the script itself does not load it).
+Reference output: `main.png` — `data/S01_D1.hdf5` (biopsy-proven invasive ductal carcinoma), shown above.
 
 ## Known Issues
 
