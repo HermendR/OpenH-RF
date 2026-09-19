@@ -19,7 +19,6 @@ size_categories:
 
 # Multi-Frame Focused Transmit Echocardiography Channel Dataset
 
-![Apical view of the left atrial appendage](assets/main.png)
 ![Cineloop of the left atrial appendage](assets/118420_1_Focused_Uncoded_TX.gif)
 
 One cineloop of a fundamental focused-transmit acquisition,
