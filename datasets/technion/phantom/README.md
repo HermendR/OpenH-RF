@@ -23,6 +23,16 @@ size_categories:
 Frame 6 of [`data/ph.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/phantom/data/ph.hdf5), reconstructed by
 `reconstruct.py`.
 
+`zea` renders it straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/technion/phantom/data/ph.hdf5 \
+  --config hf://nvidia/OpenH-RF/technion/phantom/pipeline.yaml \
+  --n-frames 1
+```
+
 ## Dataset Description
 
 Pre-beamformed ultrasound **channel data** from a tissue-mimicking phantom,
