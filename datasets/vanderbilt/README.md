@@ -23,6 +23,8 @@ size_categories:
 
 This multi-frame focused transmit echocardiography channel dataset contains over 2000 frames of fundamental and harmonic data acquired with the P4-2v probe on a Verasonics Vantage 128. This dataset was originally acquired to visualize the left atrial appendage in patients following transesophageal echocardiography. Some patients have atrial fibrillation, which can cause blood clots to form in the appendage.
 
+Each dataset follows the naming convention of `subject_id`_`view_number`_`sequence_type`. `subject_id` is a six-digit random number. `view_number` distinguishes between multiple views acquired on the same subject. `sequence_type` is either Focused_Uncoded_TX or Harmonic_Focused_Uncoded_TX. 
+
 ## Dataset Contributor(s)
 
 Brett Byram (PI), Christopher Khan, Ying-Chun (Preston) Pan, Zoe Marshall
