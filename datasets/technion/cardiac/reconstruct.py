@@ -32,9 +32,9 @@ HERE = Path(__file__).parent
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-ZEA_FILE = "hf://nvidia/OpenH-RF/technion/cardiac/data/e3.hdf5"
+ZEA_FILE = "hf://nvidia/OpenH-RF/technion/cardiac/data/c1.hdf5"
 CONFIG = "hf://nvidia/OpenH-RF/technion/cardiac/pipeline.yaml"
-FRAME = 0
+FRAME = 8
 OUT = HERE / "bmode.png"
 
 
