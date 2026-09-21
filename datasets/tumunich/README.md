@@ -18,6 +18,19 @@ size_categories:
 
 # Robotic Tracked Ultrasound — Verasonics L11-5gH, vascular arm, CIRS 054GS and CIRS 074 thyroid phantoms
 
+<table>
+  <tr>
+    <td width="30%"><img src="assets/acquisition_description.jpg" width="100%"/></td>
+    <td width="20%"><img src="assets/reconstructed.png" width="100%"/></td>
+    <td width="60%"><img src="assets/panorama_reconstructed.png" width="100%"/></td>
+  </tr>
+  <tr>
+    <td align="center">Acquisition setup</td>
+    <td align="center">Reconstruction</td>
+    <td align="center">Panoramic reconstruction (based on robotic tracking)</td>
+  </tr>
+</table>
+
 ## Dataset Description
 
 Robotically tracked freehand ultrasound of three tissue-mimicking phantoms, acquired with a Verasonics
