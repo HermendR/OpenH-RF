@@ -10,17 +10,15 @@ array, so a reconstruction has to compound all 21 acquisitions to cover the full
 probe. Transmit uses a 64-element aperture; receive is multiplexed into three
 42/44-element blocks that tile the 128 elements. The grey levels reproduce the
 Verasonics display mapping, making them directly comparable to the VSX B-mode
-stored in the file as ``data/image``. The reconstruction is written as a bare
-raster, one pixel per grid point, following the sample as
-``<input>_reconstructed.png`` unless OUTPUT says otherwise.
+stored in the file as ``data/image``.
 
-Requires zea>=0.1.6 (https://github.com/tue-bmd/zea), the library that does the
+Requires zea>=0.1.7 (https://github.com/tue-bmd/zea), the library that does the
 ultrasound processing here, together with one of its Keras backends (JAX,
 PyTorch or TensorFlow). Installation instructions are at
 https://zea.readthedocs.io/en/latest/installation.html.
 
 Usage:
-    python reconstruct.py
+    uv run python reconstruct.py
 """
 
 import os
@@ -72,6 +70,14 @@ DYNAMIC_RANGE = [-40, 0]  # dB range shown
 # pulse feedthrough clipped at the ADC rail: the same value on every driven element
 # (~32000 against a typical echo of ~284), on exactly the elements that transmit.
 FEEDTHROUGH_SAMPLES = 2
+
+
+def coords_to_imshow_mm(coords):
+    """openh-rf per-pixel coordinates (z, x, 3), last axis [x, y, z] in metres
+    -> mpl imshow extent [left, right, bottom, top] in mm."""
+    x = coords[..., 0]
+    z = coords[..., 2]
+    return [x.min() * 1e3, x.max() * 1e3, z.max() * 1e3, z.min() * 1e3]
 
 
 # These ops are defined here, not in zea: a pipeline.yaml naming them resolves
@@ -182,16 +188,26 @@ def main():
     zea.init_device()
 
     with zea.File(str(INPUT)) as f:
+        display_coords = f.data.image.coordinates[:]
         generated = reconstruct_frame(f, FRAME)
         print(f"Reconstructed: {generated.shape}")
 
-    plt.imsave(
-        OUTPUT,
+    extent = coords_to_imshow_mm(display_coords)
+    zea.visualize.set_mpl_style()
+    fig, ax = plt.subplots(figsize=(6, 8))
+
+    ax.imshow(
         generated,
+        aspect="equal",
         cmap="gray",
+        extent=extent,
         vmin=DYNAMIC_RANGE[0],
         vmax=DYNAMIC_RANGE[1],
     )
+    ax.set_xlabel("Lateral [mm]")
+    ax.set_ylabel("Depth [mm]")
+    plt.tight_layout()
+    plt.savefig(OUTPUT, dpi=150, bbox_inches="tight")
     print(f"Saved {OUTPUT}")
 
 

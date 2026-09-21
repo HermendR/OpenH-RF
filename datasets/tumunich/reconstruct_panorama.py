@@ -203,13 +203,30 @@ def main():
     panorama = blend_panorama(frames, offsets)
     print(f"Panorama: {panorama.shape} ({panorama.shape[1] * column_spacing * 1e3:.1f} mm wide)")
 
-    plt.imsave(
-        OUTPUT,
+    # Lateral axis is the probe's own, extended by the sweep: canvas column 0 is
+    # the left edge of the frame taken furthest along the travel.
+    lateral_start = (float(coordinates[..., 0].min()) + float(displacement[selected].min())) * 1e3
+    extent = [
+        lateral_start,
+        lateral_start + panorama.shape[1] * column_spacing * 1e3,
+        float(coordinates[..., 2].max()) * 1e3,
+        0.0,
+    ]
+
+    zea.visualize.set_mpl_style()
+    fig, ax = plt.subplots(figsize=(16, 9))
+    ax.imshow(
         panorama,
+        aspect="equal",
         cmap="gray",
+        extent=extent,
         vmin=DYNAMIC_RANGE[0],
         vmax=DYNAMIC_RANGE[1],
     )
+    ax.set_xlabel("Lateral [mm]")
+    ax.set_ylabel("Depth [mm]")
+    plt.tight_layout()
+    plt.savefig(OUTPUT, dpi=150, bbox_inches="tight")
     print(f"Saved {OUTPUT}")
 
 
