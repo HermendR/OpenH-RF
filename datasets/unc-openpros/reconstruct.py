@@ -8,10 +8,11 @@ pretrained InversionNet.
 
 The waveform data are converted back to the tensor layout used by the OpenPros
 models and given the same signed-log and min-max preprocessing as the official
-OpenPros implementation. The network's normalized prediction is mapped back to
-the physical speed-of-sound range (1300--3600 m/s), then saved two ways: a
-side-by-side comparison against the ground truth (``pred_sos.png``) and a
-clean, unlabeled hero image of just the prediction (``assets/main.png``).
+OpenPros implementation, as defined in ``pipeline.yaml`` (loaded straight from
+the Hub). The network's normalized prediction is mapped back to the physical
+speed-of-sound range (1300--3600 m/s), then saved two ways: a side-by-side
+comparison against the ground truth (``pred_sos.png``) and a clean, unlabeled
+hero image of just the prediction (``assets/main.png``).
 
 Requires zea>=0.1.6 (https://github.com/tue-bmd/zea), the library that does the
 ultrasound processing here, together with one of its Keras backends (JAX,
@@ -29,52 +30,28 @@ os.environ.setdefault("MPLBACKEND", "Agg")
 
 from pathlib import Path
 
+import custom_ops  # noqa: F401 - registers MyRearrange/LogTransform with zea's ops_registry
 import keras
 import matplotlib.pyplot as plt
+import network_ops  # noqa: F401 - registers InversionNetInference with zea's ops_registry
 import zea
-from custom_ops import LogTransform, MyRearrange
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-from network_ops import InversionNetInference
 from zea import Config, File, Pipeline
-from zea.ops import Normalize
 
 HERE = Path(__file__).parent
-CONFIG = HERE / "pipeline.yaml"
 OUTPUT = HERE / "pred_sos.png"
 MAIN_OUTPUT = HERE / "assets" / "main.png"
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/unc-openpros/data/3_04_P_prostate_51.hdf5"
+ZEA_FILE = "hf://nvidia/OpenH-RF/unc-openpros/data/3_04_P_prostate_51.hdf5"
+CONFIG = "hf://nvidia/OpenH-RF/unc-openpros/pipeline.yaml"
 # The file holds 1140 acquisitions; the figure shows the first.
 SAMPLES = 1  # acquisitions to run through the network
 
 SOS_CMAP = "turbo"  # high-contrast, multi-hue colormap for the SOS maps
 SOS_RANGE = (1300, 3600)  # physical speed-of-sound range, m/s
-
-
-def build_pipeline() -> Pipeline:
-    """Match the official OpenPros inference preprocessing and postprocessing:
-    restore the original four acquisition blocks (SS, SR, RR, RS), apply the
-    sign-preserving log1p transform with k=1e5, and min-max normalize its
-    configured data range to [-1, 1]. After network inference, undo the label
-    normalization by mapping the prediction from [-1, 1] to the physical SOS
-    range of 1300--3600 m/s."""
-    return Pipeline(
-        operations=[
-            MyRearrange(),  # rearrange data to the layout expected by the network
-            LogTransform(data_min=-0.25, data_max=0.45, k=1e5),
-            Normalize(output_range=(-1, 1)),
-            InversionNetInference(preset="inversionnet-openpros"),
-            Normalize(input_range=(-1, 1), output_range=SOS_RANGE),
-        ]
-    )
-
-
-def write_config(pipeline: Pipeline, path: Path) -> None:
-    """Serialize the pipeline to a YAML config file."""
-    pipeline.to_config().to_yaml(str(path))
 
 
 def plot_comparison(sos, pred, path: Path) -> None:
@@ -114,12 +91,10 @@ def plot_main(pred, path: Path) -> None:
 def main():
     zea.init_device(verbose=False)
 
-    # Define the pipeline in code, save it to pipeline.yaml, then load that
-    # YAML back in -- pipeline.yaml is the single source of truth from here on.
-    write_config(build_pipeline(), CONFIG)
-    pipeline = Pipeline.from_config(Config.from_path(str(CONFIG)))
+    config = Config.from_path(str(CONFIG))
+    pipeline = Pipeline.from_config(config)
 
-    with File(INPUT) as f:
+    with File(ZEA_FILE) as f:
         raw = f.data.raw_data[:SAMPLES]
         sos = f.data.sos_map.values[:SAMPLES]  # gt
 
