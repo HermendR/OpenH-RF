@@ -87,7 +87,7 @@ python convert.py
 python reconstruct.py
 ```
 
-The reconstruction script checks the input shapes and writes `pred_sos.png`, a side-by-side comparison of the predicted and ground-truth SOS maps. Use `--write_config` to serialize the pipeline to `pipeline.yaml`, `--load_config` to restore it, and `--use_zea_vis_style` to apply the ZEA plotting style.
+The reconstruction script defines the pipeline in code, serializes it to [`pipeline.yaml`](pipeline.yaml) (also published on the Hub at [`hf://nvidia/OpenH-RF/unc-openpros/pipeline.yaml`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/pipeline.yaml)), then loads that config back in before running it. It checks the input shapes and writes two files: `pred_sos.png`, a side-by-side comparison of the predicted and ground-truth SOS maps, and [`assets/main.png`](assets/main.png), a clean, unlabeled hero image of just the prediction.
 
 ## Known Issues
 
