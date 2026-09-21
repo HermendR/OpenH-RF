@@ -1,4 +1,31 @@
+---
+pretty_name: "OpenH-RF — OpenPros Limited-View Prostate USCT"
+license: cc-by-4.0
+task_categories:
+  - image-to-image
+tags:
+  - ultrasound
+  - rf
+  - openh-rf
+  - prostate
+  - usct
+  - speed-of-sound
+  - full-waveform-inversion
+  - simulation
+language:
+  - en
+size_categories:
+  - 100K<n<1M
+---
+
 # OpenPros - Limited-View Prostate Ultrasound Computed Tomography
+
+![Speed-of-sound map of a prostate slice, predicted by InversionNet](assets/main.png)
+
+Speed of sound predicted from the limited-view waveform data of the first acquisition in
+[`data/3_04_P_prostate_51.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5),
+rendered by [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/unc-openpros/reconstruct.py)
+with the pretrained OpenPros InversionNet. See **Data Validation** below.
 
 ## Dataset Description
 
