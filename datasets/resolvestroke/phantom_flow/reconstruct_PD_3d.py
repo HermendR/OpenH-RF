@@ -54,7 +54,7 @@ from zea.internal.registry import ops_registry
 from zea.ops import Operation
 
 HERE = Path(__file__).parent
-CONFIG = HERE / "pipeline_PD_3d.yaml"
+CONFIG = "hf://nvidia/OpenH-RF/resolvestroke/phantom_flow/pipeline_PD_3d.yaml"
 
 # Clip definitions (matching the combined file structure)
 CLIPS = [
@@ -76,7 +76,7 @@ COLORMAP = "hot"
 # run against your own copy.
 INPUT = "hf://nvidia/OpenH-RF/resolvestroke/phantom_flow/phantom_flow.hdf5"
 N_FRAMES = N_FRAMES_BF
-OUTPUT = None
+OUT = HERE / f"{Path(INPUT).stem}_PD_montage.png"
 
 # The 3D sector-volume grid (limits, depth, resolution) and the high-pass params
 # all live in pipeline_PD_3d.yaml (`grid:` block and tissue_highpass params).
@@ -204,7 +204,6 @@ def load_reference_mips(f):
 
 
 def main():
-    out_path = OUTPUT or Path(f"{Path(INPUT).stem}_PD_montage.png")
 
     n_bf = N_FRAMES
     zea.init_device()
@@ -218,7 +217,7 @@ def main():
 
     pd_volumes, (r, alpha, beta, apex), ref = beamform_clips(config, pipeline, hp_cutoff, n_bf)
 
-    render(pd_volumes, r, alpha, beta, apex, ref, n_bf, hp_cutoff, out_path)
+    render(pd_volumes, r, alpha, beta, apex, ref, n_bf, hp_cutoff)
 
 
 def beamform_clips(config, pipeline, hp_cutoff, n_bf):
@@ -232,11 +231,7 @@ def beamform_clips(config, pipeline, hp_cutoff, n_bf):
         parameters = f.load_parameters(**config.parameters)
         total_frames = f.data.raw_data.shape[0]
 
-        # Apex = virtual source behind the array; from the config or |focus_distances|.
-        apex = g.get("distance_to_apex")
-        if apex is None:
-            focus = float(np.abs(np.ravel(parameters.focus_distances)[0]))
-            apex = focus if focus > 0 else 0.0
+        apex = float(g["distance_to_apex"])  # virtual source behind the array
 
         grid, (r, alpha, beta) = build_sector_volume_grid(
             azimuth_limits,
@@ -283,7 +278,7 @@ def beamform_clips(config, pipeline, hp_cutoff, n_bf):
     return pd_volumes, (r, alpha, beta, apex), ref
 
 
-def render(pd_volumes, r, alpha, beta, apex, ref, n_bf, hp_cutoff, out_path):
+def render(pd_volumes, r, alpha, beta, apex, ref, n_bf, hp_cutoff):
     """Montage of all clips (x-z / y-z MIPs) plus the reference mvi column."""
     ref_xz, ref_yz, ext_xz, ext_yz = ref
 
@@ -348,8 +343,8 @@ def render(pd_volumes, r, alpha, beta, apex, ref, n_bf, hp_cutoff, out_path):
         fontweight="bold",
     )
     fig.tight_layout()
-    fig.savefig(str(out_path), dpi=150, bbox_inches="tight")
-    print(f"\nSaved montage: {out_path}")
+    fig.savefig(str(OUT), dpi=150, bbox_inches="tight")
+    print(f"\nSaved montage: {OUT}")
 
 
 if __name__ == "__main__":

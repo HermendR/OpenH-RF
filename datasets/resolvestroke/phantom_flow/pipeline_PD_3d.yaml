@@ -6,6 +6,7 @@ grid:
   azimuth_limits: [-0.45, 0.45]     # x-z fan half-angle [rad] (≈ ±26°)
   elevation_limits: [-0.45, 0.45]   # y-z fan half-angle [rad]
   zlims: [0.01, 0.11]               # on-axis depth range [m]
+  distance_to_apex: 0.022           # virtual source behind the array
   n_radial: 200                     # samples along each ray (~depth, 0.5 mm)
   n_azimuth: 80                     # rays in the x-z plane
   n_elevation: 80                   # rays in the y-z plane

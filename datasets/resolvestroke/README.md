@@ -1,3 +1,26 @@
+---
+pretty_name: "OpenH-RF - Resolve Stroke Transcranial CEUS, Flow and Imaging Phantom Channel Data"
+license: cc-by-4.0
+task_categories:
+  - other
+tags:
+  - ultrasound
+  - iq
+  - openh-rf
+  - 3d
+  - matrix-probe
+  - diverging-wave
+  - contrast-enhanced
+  - power-doppler
+  - transcranial
+  - clinical
+  - phantom
+language:
+  - en
+size_categories:
+  - 100K<n<1M
+---
+
 # OpenH-RF - Resolve Stroke datasets
 
 <a href="assets/main_image.png"><img src="assets/main_image_small.png" alt="Transcranial contrast-enhanced power Doppler of a human subject (SP03-Left, bolus +10 s), x-z maximum-intensity projection" width="360"></a>

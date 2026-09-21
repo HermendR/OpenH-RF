@@ -33,7 +33,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from zea import Config, File, Pipeline
 
 HERE = Path(__file__).parent
-CONFIG = HERE / "pipeline.yaml"
+CONFIG = "hf://nvidia/OpenH-RF/resolvestroke/saddle/pipeline.yaml"
 HF_DIR = "hf://nvidia/OpenH-RF/resolvestroke/saddle/data"
 
 # --- Inputs -----------------------------------------------------------------
@@ -41,7 +41,7 @@ HF_DIR = "hf://nvidia/OpenH-RF/resolvestroke/saddle/data"
 # the 20 clinical acquisitions (SP01-Left-1 ... SP10-Right) or the phantom PMP01.
 # Swap INPUT for a local path to run against your own copy.
 INPUT = f"{HF_DIR}/PMP01.hdf5"
-OUTPUT = None  # Output PNG path (default: <input-stem>_bmode.png next to this script)
+OUT = HERE / f"{Path(INPUT).stem}_bmode.png"
 
 
 def reconstruct(input_path, config, pipeline=None):
@@ -53,16 +53,9 @@ def reconstruct(input_path, config, pipeline=None):
         (x, y, z) sample positions in metres.
     """
     with File(str(input_path)) as f:
+        # pipeline.yaml pins distance_to_apex (the virtual source behind the array);
+        # zea takes zlims as on-axis depth and adds the apex to the radii itself.
         parameters = f.load_parameters(**config.parameters)
-        if parameters.grid_type == "polar":
-            # For a diverging wave the polar-grid apex is the virtual source
-            # (|focus_distances|); derive it unless pipeline.yaml pins it. zea takes
-            # zlims as on-axis depth and adds the apex to the radii itself.
-            apex = config.parameters.get("distance_to_apex")
-            if apex is None:
-                focus = float(np.abs(np.ravel(parameters.focus_distances)[0]))
-                apex = focus if focus > 0 else 0.0
-            parameters = f.load_parameters(**{**config.parameters, "distance_to_apex": apex})
         raw = f.data.raw_data[0:1]  # single frame → (1, n_tx, n_ax, n_el, n_ch)
 
     pipeline = pipeline or Pipeline.from_config(config)
@@ -74,7 +67,6 @@ def reconstruct(input_path, config, pipeline=None):
 
 
 def main():
-    out_path = Path(OUTPUT) if OUTPUT else HERE / f"{Path(INPUT).stem}_bmode.png"
 
     zea.init_device()
     config = Config.from_path(str(CONFIG))
@@ -115,10 +107,10 @@ def main():
     cax = make_axes_locatable(ax).append_axes("right", size="5%", pad=0.05)
     fig.colorbar(pm, cax=cax, label="dB")
     fig.tight_layout()
-    fig.savefig(str(out_path), dpi=120, bbox_inches="tight")
+    fig.savefig(str(OUT), dpi=120, bbox_inches="tight")
 
     print(f"Reconstructed  : {image.shape}")
-    print(f"Saved          : {out_path}")
+    print(f"Saved          : {OUT}")
 
 
 if __name__ == "__main__":

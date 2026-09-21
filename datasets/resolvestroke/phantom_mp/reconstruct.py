@@ -35,14 +35,14 @@ from zea import Config, File, Pipeline
 from zea.beamform.pixelgrid import polar_pixel_grid
 
 HERE = Path(__file__).parent
-CONFIG = HERE / "pipeline.yaml"
+CONFIG = "hf://nvidia/OpenH-RF/resolvestroke/phantom_mp/pipeline.yaml"
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 INPUT = "hf://nvidia/OpenH-RF/resolvestroke/phantom_mp/phantom_mp.hdf5"
 FRAME = 0
-OUTPUT = None
+OUT = HERE / f"{Path(INPUT).stem}_bmode.png"
 
 
 def sector_grids(p, apex):
@@ -59,7 +59,6 @@ def sector_grids(p, apex):
 
 
 def main():
-    out_path = OUTPUT or Path(f"{Path(INPUT).stem}_bmode.png")
 
     zea.init_device()
     config = Config.from_path(str(CONFIG))
@@ -71,7 +70,7 @@ def main():
     tgc = np.asarray(parameters.tgc_gain_curve, np.float32)
     raw = np.asarray(raw, np.float32) / tgc.reshape(1, 1, -1, 1, 1)
 
-    apex = float(np.abs(np.ravel(parameters.focus_distances)[0]))  # virtual-source depth
+    apex = float(config.parameters.distance_to_apex)  # virtual source behind the array
     grid = sector_grids(config.parameters, apex)  # (2, n_r, n_theta, 3): [x-z, y-z]
 
     # Beamform both fans in one pass; reshape_grid restores the (2, n_r, n_theta) shape.
@@ -108,8 +107,8 @@ def main():
         fig.colorbar(pm, cax=cax, label="dB")
 
     fig.tight_layout()
-    fig.savefig(str(out_path), dpi=150, bbox_inches="tight")
-    print(f"Saved: {out_path}")
+    fig.savefig(str(OUT), dpi=150, bbox_inches="tight")
+    print(f"Saved: {OUT}")
 
 
 if __name__ == "__main__":

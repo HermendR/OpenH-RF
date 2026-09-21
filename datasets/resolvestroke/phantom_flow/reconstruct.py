@@ -37,14 +37,14 @@ from zea import Config, File, Pipeline
 from zea.beamform.pixelgrid import polar_pixel_grid
 
 HERE = Path(__file__).parent
-CONFIG = HERE / "pipeline.yaml"
+CONFIG = "hf://nvidia/OpenH-RF/resolvestroke/phantom_flow/pipeline.yaml"
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 INPUT = "hf://nvidia/OpenH-RF/resolvestroke/phantom_flow/phantom_flow.hdf5"
 FRAME = 0
-OUTPUT = None
+OUT = HERE / f"{Path(INPUT).stem}_bmode.png"
 
 
 def reverse_tgc(raw, parameters):
@@ -59,7 +59,7 @@ def reverse_tgc(raw, parameters):
     return np.asarray(raw, dtype=np.float32) / tgc.reshape(1, 1, -1, 1, 1)
 
 
-def build_sector_grids(config, parameters):
+def build_sector_grids(config):
     """Build two perpendicular 2D sector grids (x-z and y-z) for a diverging wave.
 
     zea's polar grid only supports the x-z plane (y = 0), so the y-z sector is
@@ -70,11 +70,7 @@ def build_sector_grids(config, parameters):
         in Cartesian (x, y, z) metres; apex is the virtual-source depth in metres.
     """
     p = config.parameters
-    # Diverging-wave apex = virtual source behind the array (|focus_distances|).
-    apex = p.get("distance_to_apex")
-    if apex is None:
-        focus = float(np.abs(np.ravel(parameters.focus_distances)[0]))
-        apex = focus if focus > 0 else 0.0
+    apex = float(p.distance_to_apex)  # virtual source behind the array
 
     polar_limits = tuple(float(v) for v in p["polar_limits"])
     z0, z1 = (float(v) for v in p["zlims"])
@@ -104,7 +100,6 @@ def beamform_sector(pipeline, parameters, raw, grid):
 
 
 def main():
-    out_path = OUTPUT or Path(f"{Path(INPUT).stem}_bmode.png")
 
     zea.init_device()
     config = Config.from_path(str(CONFIG))
@@ -114,7 +109,7 @@ def main():
         raw = f.data.raw_data[FRAME : FRAME + 1]  # (1, n_tx, n_ax, n_el, n_ch)
 
     raw = reverse_tgc(raw, parameters)  # undo hardware TGC before beamforming
-    grid_xz, grid_yz, apex = build_sector_grids(config, parameters)
+    grid_xz, grid_yz, apex = build_sector_grids(config)
     print(f"raw_data shape : {raw.shape}")
     print(f"sector grid    : {grid_xz.shape}  (polar, apex={apex * 1e3:.1f} mm)")
 
@@ -154,8 +149,8 @@ def main():
     print(f"y-z sector     : {yz_slice.shape}")
 
     fig.tight_layout()
-    fig.savefig(str(out_path), dpi=150, bbox_inches="tight")
-    print(f"Saved          : {out_path}")
+    fig.savefig(str(OUT), dpi=150, bbox_inches="tight")
+    print(f"Saved          : {OUT}")
 
 
 if __name__ == "__main__":
