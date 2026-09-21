@@ -72,7 +72,7 @@ The converted release identifies its content as a simulation and stores composit
 
 ## Data Validation
 
-[`reconstruct.py`](reconstruct.py) defines a `zea.Pipeline` that reproduces the OpenPros InversionNet preprocessing and postprocessing:
+[`reconstruct.py`](reconstruct.py) loads [`pipeline.yaml`](pipeline.yaml) (also published on the Hub at [`hf://nvidia/OpenH-RF/unc-openpros/pipeline.yaml`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/pipeline.yaml)), a `zea.Pipeline` that reproduces the OpenPros InversionNet preprocessing and postprocessing:
 
 1. Restore the original acquisition-block order: body/body, body/rectum, rectum/rectum, and rectum/body.
 2. Apply the sign-preserving logarithmic transform `sign(x) * log1p(abs(1e5 * x))`.
@@ -87,7 +87,7 @@ python convert.py
 python reconstruct.py
 ```
 
-The reconstruction script checks the input shapes and writes `pred_sos.png`, a side-by-side comparison of the predicted and ground-truth SOS maps. Use `--write_config` to serialize the pipeline to `pipeline.yaml`, `--load_config` to restore it, and `--use_zea_vis_style` to apply the ZEA plotting style.
+The reconstruction script checks the input shapes and writes two files: `pred_sos.png`, a side-by-side comparison of the predicted and ground-truth SOS maps, and [`assets/main.png`](assets/main.png), a clean, unlabeled hero image of just the prediction.
 
 ## Known Issues
 
