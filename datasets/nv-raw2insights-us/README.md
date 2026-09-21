@@ -21,6 +21,12 @@ size_categories:
 
 # NV-Raw2Insights-US — Simulated FSA Channel Data with Sound-Speed, Aberration, and Segmentation Ground Truth
 
+![DBUA B-mode reconstruction and estimated sound speed using NV-Raw2Insights-US data](assets/dbua-reconstruction.gif)
+
+*DBUA results using synthetic validation sample 0084 from NV-Raw2Insights-US: B-mode (left) and estimated sound speed (right). Bulk-speed calibration is followed by 400 spatial-refinement iterations, with fixed display scales. These are DBUA reconstructions, not predictions from an NV-Raw2Insights-US model.*
+
+<!-- assets/main.png is the unlabelled final B-mode panel from this run, for the dataset collage. -->
+
 ## Dataset Description
 
 NV-Raw2Insights-US is a **simulated full-synthetic-aperture (FSA)** ultrasound

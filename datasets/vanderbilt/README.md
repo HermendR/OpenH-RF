@@ -19,9 +19,26 @@ size_categories:
 
 # Multi-Frame Focused Transmit Echocardiography Channel Dataset
 
+![Cineloop of the left atrial appendage](assets/118420_1_Focused_Uncoded_TX.gif)
+
+One cineloop of a fundamental focused-transmit acquisition,
+[`data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5).
+
+`zea` renders it straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5 \
+  --config hf://nvidia/OpenH-RF/vanderbilt/pipeline.yaml \
+  --n-frames 10
+```
+
 ## Dataset Description
 
 This multi-frame focused transmit echocardiography channel dataset contains over 2000 frames of fundamental and harmonic data acquired with the P4-2v probe on a Verasonics Vantage 128. This dataset was originally acquired to visualize the left atrial appendage in patients following transesophageal echocardiography. Some patients have atrial fibrillation, which can cause blood clots to form in the appendage.
+
+Each dataset follows the naming convention of `subject_id`_`view_number`_`sequence_type`. `subject_id` is a six-digit random number. `view_number` distinguishes between multiple views acquired on the same subject. `sequence_type` is either Focused_Uncoded_TX or Harmonic_Focused_Uncoded_TX. 
 
 ## Dataset Contributor(s)
 
@@ -84,8 +101,10 @@ Subject Metadata below apply to both the original and migrated text fields.
 
 **Current OpenH-RF release:** 165 HDF5 files; 185.58 GB (185,584,517,120 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-- **Samples:** 82 cineloops (32 frames each) from 29 patients — 2,624 fundamental frames
+- **Samples:** 82 cineloops (32 frames each) from 30 patients — 2,624 fundamental frames
 - Plus a matching set of 2,624 harmonic frames (same cineloops, harmonic sequence)
+- Plus one CIRS phantom validation acquisition (`CIRS_validation/CIRS_fundamental.hdf5`,
+  32 frames), giving the 165 files and 5,280 frames of the current release
 - **Train / validation / test split:** N/A
 
 ## Subject Metadata

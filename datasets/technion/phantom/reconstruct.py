@@ -34,7 +34,7 @@ HERE = Path(__file__).parent
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/technion/phantom/data/ph.hdf5"
 CONFIG = "hf://nvidia/OpenH-RF/technion/phantom/pipeline.yaml"
-FRAME = 0
+FRAME = 6
 OUT = HERE / "bmode.png"
 
 

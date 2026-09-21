@@ -18,6 +18,21 @@ size_categories:
 
 # OpenH-RF — Tissue-mimicking phantom pre-beamformed RF channel data
 
+![Tissue-mimicking phantom with point targets and an anechoic cyst](assets/bmode.png)
+
+Frame 6 of [`data/ph.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/phantom/data/ph.hdf5), reconstructed by
+`reconstruct.py`.
+
+`zea` renders it straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/technion/phantom/data/ph.hdf5 \
+  --config hf://nvidia/OpenH-RF/technion/phantom/pipeline.yaml \
+  --n-frames 1
+```
+
 ## Dataset Description
 
 Pre-beamformed ultrasound **channel data** from a tissue-mimicking phantom,
@@ -90,11 +105,11 @@ in `pipeline.yaml` (delay-and-sum on a polar scanline grid → envelope →
 normalization → log compression → sector scan conversion). Run:
 
 ```
-python reconstruct.py data/ph.hdf5 --frame 6 --out bmode_ph.png
+python reconstruct.py
 ```
 
-Reference output: `bmode_ph.png` — resolvable point targets and a well-defined
-anechoic cyst at ~65 mm.
+Reference output: `bmode.png` — frame 6 of `data/ph.hdf5`, shown above:
+resolvable point targets and a well-defined anechoic cyst at ~65 mm.
 
 ## Known Issues
 

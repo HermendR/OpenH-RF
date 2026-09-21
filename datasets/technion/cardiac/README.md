@@ -18,6 +18,20 @@ size_categories:
 
 # OpenH-RF — Cardiac pre-beamformed RF channel data (paired with DAS targets)
 
+![Apical four-chamber view, one 32-frame cardiac cine loop](assets/cine.gif)
+
+Apical four-chamber view: one cine loop (32 frames) from [`data/c1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/cardiac/data/c1.hdf5).
+
+`zea` renders it straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/technion/cardiac/data/c1.hdf5 \
+  --config hf://nvidia/OpenH-RF/technion/cardiac/pipeline.yaml \
+  --n-frames 32
+```
+
 ## Dataset Description
 
 Real, **in-vivo human** pre-beamformed ultrasound **channel data** for cardiac
@@ -106,13 +120,14 @@ per acquisition line, receive dynamic focusing) → envelope detection →
 normalization → log compression → sector scan conversion. Run:
 
 ```
-python reconstruct.py data/a1.hdf5 --frame 15 --out bmode_a1.png
+python reconstruct.py
 ```
 
-Reference output: `bmode_a1.png`. Each frame is also paired with its conventional
-delay-and-sum reconstruction in `beamformed_data` (the target for the raw→image
-learning task) — note its depth scale is approximate because the acquisition axial
-rate is not stored (see Known Issues).
+Reference output: `bmode.png` — frame 8 of `data/c1.hdf5` (in `assets/`). Each
+frame is also paired with its conventional delay-and-sum reconstruction in
+`beamformed_data` (the target for the raw→image learning task) — note its depth
+scale is approximate because the acquisition axial rate is not stored (see Known
+Issues).
 
 ## Known Issues
 

@@ -18,6 +18,20 @@ size_categories:
 
 # OpenH-RF — Bladder pre-beamformed RF channel data
 
+![Transverse suprapubic view of the bladder, one 10-frame cine loop](assets/cine.gif)
+
+Transverse suprapubic view: one cine loop (10 frames) from [`data/a1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/bladder/data/a1.hdf5).
+
+`zea` renders it straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/technion/bladder/data/a1.hdf5 \
+  --config hf://nvidia/OpenH-RF/technion/bladder/pipeline.yaml \
+  --n-frames 10
+```
+
 ## Dataset Description
 
 Real, **in-vivo human** pre-beamformed ultrasound **channel data** for bladder
@@ -115,17 +129,18 @@ Age and sex were not recorded for these acquisitions.
 
 `reconstruct.py` reconstructs a B-mode from `raw_data` using the `zea.Pipeline`
 defined in `pipeline.yaml`: delay-and-sum beamforming on a polar scanline grid
-(one image line per transmit, receive dynamic focusing at f-number 1) → envelope
+(one image line per transmit, receive dynamic focusing) → envelope
 detection → normalization → log compression → sector scan conversion. Run it on
 any file to reproduce a reference frame:
 
 ```
-python reconstruct.py data/s2.hdf5 --frame 54 --out bmode_s2.png
+python reconstruct.py
 ```
 
-Reference output: `bmode_s2.png`. The pipeline matches the acquisition's own
-receive-beamforming geometry (`code/processing/`), so the reconstruction
-reproduces the expected sector B-mode.
+Reference output: `bmode.png` — frame 30 of `data/a1.hdf5` (in `assets/`). The
+pipeline matches the acquisition's own receive-beamforming geometry
+(`code/processing/`), so the reconstruction reproduces the expected sector
+B-mode.
 
 ## Known Issues
 
