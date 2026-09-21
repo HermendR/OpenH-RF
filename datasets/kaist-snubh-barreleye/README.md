@@ -161,7 +161,7 @@ Plane-wave transmit beamforming is used, with all 192 elements activated on each
 
 ## Data Validation
 
-[`reconstruct.py`](reconstruct.py) reconstructs a B-mode from `raw_data` using the `zea.Pipeline` defined in [`pipeline.yaml`](pipeline.yaml):
+[`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/kaist-snubh-barreleye/reconstruct.py) reconstructs a B-mode from `raw_data` using the `zea.Pipeline` defined in [`pipeline.yaml`](pipeline.yaml):
 
 ```
 cast(float32) → band-pass filter (1–12 MHz) → demodulate → DAS beamform → envelope detect → normalize → log compression
