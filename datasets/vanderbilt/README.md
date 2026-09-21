@@ -114,7 +114,7 @@ Subject Metadata below apply to both the original and migrated text fields.
 
 ## Data Validation
 
-A `zea.Pipeline` (cast → demodulate → DAS beamforming → envelope detection → normalization → log compression → scan conversion) reconstructs the B-mode image from the raw channel data and is defined in [pipeline.yaml](pipeline.yaml). Run [reconstruct.py](reconstruct.py) to reproduce it, e.g. `python reconstruct.py --input my_file.hdf5 --n_frames 32`.
+A `zea.Pipeline` (cast → demodulate → DAS beamforming → envelope detection → normalization → log compression → scan conversion) reconstructs the B-mode image from the raw channel data and is defined in [pipeline.yaml](pipeline.yaml). Run [reconstruct.py](https://github.com/open-h/OpenH-RF/blob/main/datasets/vanderbilt/reconstruct.py) to reproduce it; set `INPUT` and `N_FRAMES` at the top of the script to pick a file and how many frames to beamform.
 
 ## Known Issues
 

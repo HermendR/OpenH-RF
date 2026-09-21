@@ -124,7 +124,7 @@ None
 
 ## Data Validation
 
-[reconstruct.py](./reconstruct.py)
+[reconstruct.py](https://github.com/open-h/OpenH-RF/blob/main/datasets/tue-carotid/reconstruct.py)
 [pipeline.yaml](./pipeline.yaml)
 
 ## Known Issues

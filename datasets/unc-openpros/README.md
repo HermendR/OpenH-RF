@@ -39,7 +39,7 @@ OpenPros was created by Hanchen Wang, Yixuan Wu, Yinan Feng, Peng Jin, Luoyuan Z
 
 ## Dataset Format
 
-The package uses the `zea` HDF5 format. Run [`convert.py`](convert.py) to create  `openpros_sample.hdf5` from the original OpenPros NumPy arrays. The converter does not demodulate, decimate, filter, or normalize the RF values. It adds a singleton channel dimension and changes the original four 10-transmit blocks into a physical `20 transmits × 322 receivers` representation:
+The package uses the `zea` HDF5 format. Run `convert.py` to create  `openpros_sample.hdf5` from the original OpenPros NumPy arrays. The converter does not demodulate, decimate, filter, or normalize the RF values. It adds a singleton channel dimension and changes the original four 10-transmit blocks into a physical `20 transmits × 322 receivers` representation:
 
 | HDF5 region | Source side | Receiver side | Original transmit channels |
 |---|---|---|---|
@@ -72,7 +72,7 @@ The converted release identifies its content as a simulation and stores composit
 
 ## Data Validation
 
-[`reconstruct.py`](reconstruct.py) loads [`pipeline.yaml`](pipeline.yaml) (also published on the Hub at [`hf://nvidia/OpenH-RF/unc-openpros/pipeline.yaml`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/pipeline.yaml)), a `zea.Pipeline` that reproduces the OpenPros InversionNet preprocessing and postprocessing:
+[`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/unc-openpros/reconstruct.py) loads [`pipeline.yaml`](pipeline.yaml) (also published on the Hub at [`hf://nvidia/OpenH-RF/unc-openpros/pipeline.yaml`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/pipeline.yaml)), a `zea.Pipeline` that reproduces the OpenPros InversionNet preprocessing and postprocessing:
 
 1. Restore the original acquisition-block order: body/body, body/rectum, rectum/rectum, and rectum/body.
 2. Apply the sign-preserving logarithmic transform `sign(x) * log1p(abs(1e5 * x))`.

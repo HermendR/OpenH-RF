@@ -34,7 +34,7 @@ fractured femur phantoms, scanned with a handheld point-of-care probe, inverted 
 to pre-beamformed RF and packaged in the OpenH-RF `zea` format.
 
 Each phantom was swept three times (`distal`, `proximal`, `wholebone`), giving nine
-`zea` HDF5 files in [`data/`](data/). Every scan is robot-tracked: the probe was
+`zea` HDF5 files in [`data/`](BoneSRF/data/). Every scan is robot-tracked: the probe was
 mounted on a robotic arm and its pose recorded separately. Each file also carries
 that phantom's CT scan and multi-label segmentation.
 
@@ -173,7 +173,7 @@ see [Known Issues](#known-issues). Converted to the `zea` format in 2026.
 
 ## License / Terms of Use
 
-CC BY 4.0, see [`LICENCE`](LICENCE). The CT and segmentation data inside the files
+CC BY 4.0, see [the licence deed](https://creativecommons.org/licenses/by/4.0/). The CT and segmentation data inside the files
 is released under the same terms. The femur geometry behind the 3D-printed phantoms
 comes from a CC BY 4.0–licensed bone model dataset.
 
@@ -264,7 +264,7 @@ CT-to-ultrasound registration is provided.
 ## Dataset Format
 
 Submitted in the [`zea` file format](https://zea.readthedocs.io/en/openh-rf-latest/)
-as nine HDF5 files in [`data/`](data/), blosc-compressed.
+as nine HDF5 files in [`data/`](BoneSRF/data/), blosc-compressed.
 
 The channel data was recovered from the probe's real, beamformed RF output by
 CGLS-inverting a `zea.inverse.DASOperator` built from the known acquisition
@@ -348,7 +348,7 @@ Clarius L20HD3 linear array at 10 MHz / ~5.1 cm depth / single transmit focus.
 All nine files pass the `zea` data spec, both `File.validate()` (structural) and
 `File.validate_spec()` (dtype, shape and dimension consistency). `reconstruct.py`
 runs end-to-end on every scan; the images in
-[`reference_bmodes/`](reference_bmodes/) are its output.
+`reference_bmodes/` are its output.
 
 ## Known Issues
 - **Fracture patterns are not documented per phantom.** The location, type
