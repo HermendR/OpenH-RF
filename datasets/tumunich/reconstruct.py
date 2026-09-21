@@ -5,21 +5,20 @@ Dataset link: https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/tumunich
 
 B-mode reconstruction of walking-aperture robotic ultrasound sweep channel data.
 
-Each steering angle is acquired three times with the 64-element transmit and
-receive aperture walked across the array, so a reconstruction has to compound
-all 21 acquisitions to cover the full probe. The grey levels reproduce the
+Each steering angle is acquired three times with the aperture walked across the
+array, so a reconstruction has to compound all 21 acquisitions to cover the full
+probe. Transmit uses a 64-element aperture; receive is multiplexed into three
+42/44-element blocks that tile the 128 elements. The grey levels reproduce the
 Verasonics display mapping, making them directly comparable to the VSX B-mode
-stored in the file as ``data/image``, which is rendered alongside. The
-comparison figure follows the sample as ``<input>_reconstructed.png``, unless
-OUTPUT says otherwise.
+stored in the file as ``data/image``.
 
-Requires zea>=0.1.6 (https://github.com/tue-bmd/zea), the library that does the
+Requires zea>=0.1.7 (https://github.com/tue-bmd/zea), the library that does the
 ultrasound processing here, together with one of its Keras backends (JAX,
 PyTorch or TensorFlow). Installation instructions are at
 https://zea.readthedocs.io/en/latest/installation.html.
 
 Usage:
-    python reconstruct.py
+    uv run python reconstruct.py
 """
 
 import os
@@ -66,6 +65,11 @@ INPUT = "hf://nvidia/OpenH-RF/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf
 OUTPUT = None  # PNG to write (default: <input>_reconstructed.png next to the sample)
 FRAME = 0  # Zero-based frame index to reconstruct
 DYNAMIC_RANGE = [-40, 0]  # dB range shown
+
+# Leading fast-time samples to blank before beamforming. Samples 0-1 are transmit
+# pulse feedthrough clipped at the ADC rail: the same value on every driven element
+# (~32000 against a typical echo of ~284), on exactly the elements that transmit.
+FEEDTHROUGH_SAMPLES = 2
 
 
 def coords_to_imshow_mm(coords):
@@ -125,6 +129,7 @@ def reconstruct_frame(f, frame):
     n_tx = f.scan.polar_angles.shape[0]
     selected = list(range(n_tx))
     raw = np.asarray(f.data.raw_data[frame : frame + 1, selected]).copy()
+    raw[:, :, :FEEDTHROUGH_SAMPLES] = 0
 
     sound_speed = float(np.asarray(f.scan.sound_speed))
     initial_times = np.asarray(f.scan.initial_times, dtype=np.float64)
@@ -167,7 +172,11 @@ def reconstruct_frame(f, frame):
     # The grid starts at the imaging start depth, so pad the near field back on
     # to line the result up with the stored Verasonics B-mode.
     axial_spacing = (end_depth - start_depth) / (generated.shape[0] - 1)
-    generated = np.pad(generated, ((round(start_depth / axial_spacing), 0), (0, 0)))
+    generated = np.pad(
+        generated,
+        ((round(start_depth / axial_spacing), 0), (0, 0)),
+        constant_values=DYNAMIC_RANGE[0],
+    )
     return generated
 
 
@@ -186,6 +195,7 @@ def main():
     extent = coords_to_imshow_mm(display_coords)
     zea.visualize.set_mpl_style()
     fig, ax = plt.subplots(figsize=(6, 8))
+
     ax.imshow(
         generated,
         aspect="equal",
