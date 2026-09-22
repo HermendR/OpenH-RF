@@ -133,7 +133,7 @@ The original 120 HDF5 files passed zea 0.1.3 `File.validate()` and
 finite values, coordinates, labels, min/max, and the documented frame-broadcast
 behavior. The original files used zea 0.1.3's default Blosc/Zstd+bitshuffle compression.
 
-![Reference zea reconstruction of ac1_15m_SK frame 0](ac1_15m_SK_pipeline.png)
+![Reference zea reconstruction of ac1_15m_SK frame 0](assets/ac1_15m_SK_pipeline.png)
 
 The reference uses frame 0 and the common 597 x 300 zea grid at approximately
 3-25 mm depth.

@@ -54,7 +54,7 @@ March 2022 and March 2025.
 
 ## License / Terms of Use
 
-CC BY 4.0. See [LICENSE](./LICENSE).
+CC BY 4.0. See [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Intended Usage
 

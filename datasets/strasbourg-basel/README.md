@@ -34,7 +34,7 @@ fractured femur phantoms, scanned with a handheld point-of-care probe, inverted 
 to pre-beamformed RF and packaged in the OpenH-RF `zea` format.
 
 Each phantom was swept three times (`distal`, `proximal`, `wholebone`), giving nine
-`zea` HDF5 files in [`data/`](BoneSRF/data/). Every scan is robot-tracked: the probe was
+`zea` HDF5 files. Every scan is robot-tracked: the probe was
 mounted on a robotic arm and its pose recorded separately. Each file also carries
 that phantom's CT scan and multi-label segmentation.
 
@@ -264,7 +264,7 @@ CT-to-ultrasound registration is provided.
 ## Dataset Format
 
 Submitted in the [`zea` file format](https://zea.readthedocs.io/en/openh-rf-latest/)
-as nine HDF5 files in [`data/`](BoneSRF/data/), blosc-compressed.
+as nine HDF5 files.
 
 The channel data was recovered from the probe's real, beamformed RF output by
 CGLS-inverting a `zea.inverse.DASOperator` built from the known acquisition

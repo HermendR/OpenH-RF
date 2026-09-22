@@ -168,7 +168,7 @@ contractions at 8 Kg under head up tilt of 40 degrees.
    Lateral ($v_x$) and axial ($v_z$) dealiased velocity components are computed from the multi-angle Doppler frequency estimates using GPU-accelerated extended least-squares estimation.
 
 The full LITMUS processing pipeline (GPU DAS beamforming + multi-angle vector
-Doppler) is documented in [`convert.py`](convert.py). That script is included for
+Doppler) is documented by the contributors. That documentation is provided for
 provenance and reproducibility; it depends on the LITMUS core Python package and
 the raw acquisition frames, so it is not runnable from this folder alone.
 
@@ -200,7 +200,7 @@ LITMUS GPU stack.
 
 The result is written to `reconstruct_output.png`:
 
-![reference reconstruction](reconstruct_output.png)
+![reference reconstruction](assets/reconstruct_output.png)
 
 ### Example Usage of reconstruct.py
 

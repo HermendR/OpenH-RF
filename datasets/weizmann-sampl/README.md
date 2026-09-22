@@ -116,11 +116,10 @@ apply window → demodulate → DAS beamform (with native, per-element/per-pixel
 lens correction) → envelope detect → normalize → log compress. See that file
 for the grid size, dynamic range and lens-correction parameters.
 
-Example reconstruction, run via `python reconstruct.py --data-dir subjects
---n-scans 3 --n-frames 3 --seed 0 --output three_patients_grid.png`
-(3 subjects, 3 randomly sampled frames each):
+Three frames from each of three subjects, reconstructed with the `pipeline.yaml`
+in this folder:
 
-![3 frames from 3 different subjects](three_patients_grid.png)
+![3 frames from 3 different subjects](assets/three_patients_grid.png)
 
 All 9 sampled frames, across 3 different subjects, show consistent diffuse
 in-vivo tissue speckle with no reconstruction artifacts, confirming the

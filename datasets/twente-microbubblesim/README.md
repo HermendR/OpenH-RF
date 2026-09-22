@@ -43,7 +43,7 @@ simulated data, not clinical, phantom, or in-vivo animal data.
 ## License / Terms of Use
 
 This dataset is released under the Creative Commons Attribution 4.0
-International license (CC BY 4.0). See [LICENCE](LICENCE). The contributors
+International license (CC BY 4.0). See [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/). The contributors
 confirm that the simulated RF outputs, bubble ground truth, pulse waveforms,
 calibrated P4-1 inputs, and incorporated assets used to produce this dataset
 are cleared for public redistribution under CC BY 4.0, consistent with the

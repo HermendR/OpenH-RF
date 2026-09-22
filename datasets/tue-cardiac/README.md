@@ -99,7 +99,7 @@ The recordings were acquired in 2026.
 
 The dataset license is [Creative Commons Attribution 4.0 International
 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). The full license
-text is provided in [`LICENSE`](LICENSE).
+text is provided at [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## Intended Usage
 

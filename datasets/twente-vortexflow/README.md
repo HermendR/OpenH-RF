@@ -38,14 +38,14 @@ data. The intended task is **blood-flow imaging and Doppler processing** (RFP ta
 
 ### Phantom
 The front and the back of the flow chamber are made from medical-grade gelatin to facilitate ultrasound transmission. A cylinder with a diameter of 6 mm is placed inside the flow chamber which generates a von Kármán vortex street. The distance between the walls of the flow chamber is about 3 cm. A schematic of the setup is shown in Figure 1. 
-![Figure 1: Ultrasound - optical flow phantom setup](setup.png)
+![Figure 1: Ultrasound - optical flow phantom setup](assets/setup.png)
 
 The elevation focus of the transducer is aligned with the optical light sheet, see Figure 2.
-![Figure 2: Alignment of the acoustical beam and the lightsheet](setup_side.png)
+![Figure 2: Alignment of the acoustical beam and the lightsheet](assets/setup_side.png)
 
 ### Contrast
 Optical scattering was facilitated by hollow glass beads (mean particle size: 9-13 micrometer, Manufacturer: Sigma-Aldrich, PubChem Substance ID: 24867590). The acoustical scatter was enhanced by adding in-house produced microbubbles. The microbubble size distribution is shown in Figure 3.
-![Figure 3: Microbubble size distribution](MB_size_distribution.png)
+![Figure 3: Microbubble size distribution](assets/MB_size_distribution.png)
 
 ### Acquisition parameters
 The acquisition settings for all six datasets are summarized in Table 1.

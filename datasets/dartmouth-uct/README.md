@@ -102,10 +102,7 @@ plane**, y = elevation), and the voxel-level ground truth as native zea map fiel
 per-pixel `coordinates`). Tissue class is stored in `metadata/annotations`
 (`anatomy`, `label`); only fields with no standard spec home (z-plane indices,
 element focus) are zea `CustomElement`s under the top-level `custom/` group. Files
-are laid out by simulation type: `data/2d/` (2D-sim) and `data/3d/` (3D-sim),
-produced by
-[`convert_2d_to_zea.py`](convert_2d_to_zea.py) and
-[`convert_3d_to_zea.py`](convert_3d_to_zea.py) respectively.
+are laid out by simulation type: `data/2d/` (2D-sim) and `data/3d/` (3D-sim).
 
 **Pre-processing applied before packaging:**
 - 2D-sim: temporal decimation by 3× (20 MHz → 6.67 MHz native simulation rate).
