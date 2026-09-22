@@ -159,20 +159,22 @@ The pipeline applies: `Cast(float32) → Demodulate → Beamform(DAS, 100 patche
 
 To reconstruct:
 ```bash
-python reconstruct.py --input AcqData_PVoltage80_TVoltage3.4.hdf5 --frame 10
+python reconstruct.py
 ```
+
+`ZEA_FILE` and `FRAME` at the top of the script select the acquisition and frame.
 
 Reference B-mode image (AcqData_PVoltage80_TVoltage3.4.hdf5, frame 10):
 
-![Reference B-mode reconstruction](reference_bmode.png)
+![Reference B-mode reconstruction](assets/reference_bmode.png)
 
-*Left: short imaging pulse track. Right: chirp track. Two horizontal phantom wall
+*Top: short imaging pulse track. Bottom: chirp track. Two horizontal phantom wall
 reflections are visible, with a speckle-filled flow chamber between them. Near-field
 reverberation and grating-lobe artifacts at the walls and the cylinder are acquisition-induced.*
 
 Reference mapping between camera and ultrasound image (AcqData_PVoltage80_TVoltage3.4.hdf5, frame 10):
 
-![Reference images of particles in flow](reference_mapping.png)
+![Reference images of particles in flow](assets/reference_mapping.png)
 *Top: short imaging pulse track. Bottom: synchronized camera recording. The walls of the phantom and the cylinder are visible in both images. In the ultrasound image, speckle is visible in between the walls (mainly bubble induced), whereas in the camera image the contrast is induced by the hollow glass beads. Light reflection artefacts are visible in the camera image near the cylinder and the walls.* 
 
 

@@ -25,6 +25,18 @@ size_categories:
 Cine loop of [`Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5), reconstructed from the raw
 channel data with the `pipeline.yaml` in this folder.
 
+`zea` renders it straight from the Hub:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5 \
+  --config hf://nvidia/OpenH-RF/waterloo-muscle/pipeline.yaml \
+  --n-frames 1 \
+  --save-as png
+```
+
+Swap `--n-frames 1 --save-as png` for `--save-as gif` to get the cine loop.
+
 
 Dataset consisting of raw RF data and speed of sound measurements acquired in an in vivo speed of sound study conducted by LITMUS @ University of Waterloo.
 

@@ -15,29 +15,20 @@ tags:
 
 *In-vivo intravascular ultrasound raw-channel acquisitions from a porcine study, with lumen, intima-media and guidewire segmentation.*
 
-![Reconstructed IVUS frames from acquisition 15_10_50_19 with lumen, intima-media and guidewire overlays](assets/15_10_50_19/overview_5_frames.png)
+![IVUS pullback: B-mode, segmentation overlay and pullback trajectory](assets/pullback.gif)
 
-Five frames across the pullback of
-[`15_10_50_19.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/mosaic-intelligence/data/15_10_50_19.hdf5),
-reconstructed from the raw channel data and overlaid with the segmentation shipped
-alongside it. Produced by `reconstruct.py`.
+![Five frames across the pullback with lumen, intima-media and guidewire overlays](assets/22_12_10_52/overview_5_frames.png)
 
-This data card consists of a collection of in-vivo intravascular ultrasound (IVUS) acquisitions from a porcine study. Each acquisition is saved in the *zea* file format.  The general dataset sections below (contributors, license, characterization, etc.) apply to all acquisitions, with individual subsections detailing each dataset's specific dimensions and which optional groups are present.
+Pullback through
+[`22_12_10_52.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/mosaic-intelligence/data/22_12_10_52.hdf5),
+reconstructed from the raw channel data. Left to right: B-mode, the same frame with the
+lumen and intima-media segmentation, and the linear-encoder pullback position with the
+current frame marked. Below, five frames from the same acquisition. Both produced by
+`reconstruct.py`.
 
-There are 9 acquisitions in total:
-
-**Group 1: `15_*` acquisitions (untracked, counterclockwise rotation):**
-- `15_10_18_21`
-- `15_10_50_19`
-- `15_16_45_06`
-
-**Group 2: `22_*` acquisitions (tracked, linear encoder pullback, clockwise rotation):**
-- `22_12_10_52`
-- `22_12_29_46`
-- `22_12_38_45`
-- `22_13_10_16`
-- `22_13_56_43`
-- `22_14_29_54`
+Nine in-vivo intravascular ultrasound (IVUS) acquisitions from a porcine study, each
+in the *zea* file format with per-frame lumen, intima-media and guidewire segmentation.
+Per-acquisition dimensions are in [Acquisitions](#acquisitions).
 
 ## Dataset Description
 
@@ -106,111 +97,32 @@ Fields that are in every acquisition:
 | `metadata/rotation/{samples, sampling_frequency, start_time_offset}` | `[1]` / scalar / scalar | float32 | — / Hz / s | Transducer rotation: `samples = +1` clockwise, `-1` counterclockwise |
 | `metadata/pullback_position/{samples, sampling_frequency, start_time_offset}` | `[n_frames]` / scalar / scalar | float32 | m / Hz / s | Linear encoder pullback position per frame (**tracked acquisitions only**) |
 
-## Per-dataset details
+## Acquisitions
 
-One data card per contributed sub-dataset. All fields follow the shared schema above. `n_ax = 8192`, `n_el = 1`, and `n_labels = 4` (`background`, `lumen`,
-`intima_media`, `guidewire`) for every acquisition.
+Nine acquisitions sharing the schema above: `n_ax = 8192`, `n_el = 1`, and four
+segmentation labels (`background`, `lumen`, `intima_media`, `guidewire`). The `15_*`
+acquisitions are untracked, rotate counterclockwise and use a non-square image grid;
+the `22_*` are tracked with a linear-encoder pullback and rotate clockwise.
 
-### `15_10_18_21` (untracked, counterclockwise)
-
-- Dimensions: `n_frames = 100`, `n_tx = 540`, `H = 985`, `W = 986`
-- Frame rate: ~3.33 Hz
-- Rotation: `metadata/rotation/samples = -1` (counterclockwise); `metadata/text_report = "Transducer rotation direction: counterclockwise."`
-- Tracking: **none** — no `metadata/pullback_position` group (source has no `frameAttributes.txt`)
-- **Stored HDF5 size:** 1.46 GB (1,456,209,920 bytes).
-- Note: the image/mask grid is non-square (`985 x 986`)
-
-![15_10_18_21 reconstruction overview](assets/15_10_18_21/overview_5_frames.png)
-
-### `15_10_50_19` (untracked, counterclockwise)
-
-- Dimensions: `n_frames = 60`, `n_tx = 360`, `H = 985`, `W = 986`
-- Frame rate: ~3.33 Hz
-- Rotation: `metadata/rotation/samples = -1` (counterclockwise)
-- Tracking: **none** — no `metadata/pullback_position` group
-- **Stored HDF5 size:** 592.12 MB (592,117,760 bytes).
-- Note: the image/mask grid is non-square (`985 x 986`)
-
-![15_10_50_19 reconstruction overview](assets/15_10_50_19/overview_5_frames.png)
-
-### `15_16_45_06` (untracked, counterclockwise)
-
-- Dimensions: `n_frames = 100`, `n_tx = 540`, `H = 985`, `W = 986`
-- Frame rate: ~3.33 Hz
-- Rotation: `metadata/rotation/samples = -1` (counterclockwise)
-- Tracking: **none** — no `metadata/pullback_position` group
-- **Stored HDF5 size:** 1.46 GB (1,456,275,456 bytes).
-- Note: the image/mask grid is non-square (`985 x 986`)
-
-![15_16_45_06 reconstruction overview](assets/15_16_45_06/overview_5_frames.png)
-
-### `22_12_10_52` (tracked, clockwise)
-
-- Dimensions: `n_frames = 150`, `n_tx = 540`, `H = W = 2048`
-- Frame rate: ~3.33 Hz
-- Rotation: `metadata/rotation/samples = +1` (clockwise)
-- Tracking: includes `metadata/pullback_position` `[150]` (linear encoder position per frame)
-- **Stored HDF5 size:** 2.36 GB (2,356,936,704 bytes).
-
-![22_12_10_52 reconstruction overview](assets/22_12_10_52/overview_5_frames.png)
-
-### `22_12_29_46` (tracked, clockwise)
-
-- Dimensions: `n_frames = 100`, `n_tx = 540`, `H = W = 2048`
-- Frame rate: ~8.33 Hz
-- Rotation: `metadata/rotation/samples = +1` (clockwise)
-- Tracking: includes `metadata/pullback_position` `[100]`
-- **Stored HDF5 size:** 1.60 GB (1,602,945,024 bytes).
-
-![22_12_29_46 reconstruction overview](assets/22_12_29_46/overview_5_frames.png)
-
-### `22_12_38_45` (tracked, clockwise)
-
-- Dimensions: `n_frames = 150`, `n_tx = 360`, `H = W = 2048`
-- Frame rate: ~8.33 Hz
-- Rotation: `metadata/rotation/samples = +1` (clockwise)
-- Tracking: includes `metadata/pullback_position` `[150]`
-- **Stored HDF5 size:** 1.58 GB (1,576,337,408 bytes).
-
-![22_12_38_45 reconstruction overview](assets/22_12_38_45/overview_5_frames.png)
-
-### `22_13_10_16` (tracked, clockwise)
-
-- Dimensions: `n_frames = 100`, `n_tx = 540`, `H = W = 2048`
-- Frame rate: ~8.33 Hz
-- Rotation: `metadata/rotation/samples = +1` (clockwise)
-- Tracking: includes `metadata/pullback_position` `[100]`
-- **Stored HDF5 size:** 1.54 GB (1,535,311,872 bytes).
-
-![22_13_10_16 reconstruction overview](assets/22_13_10_16/overview_5_frames.png)
-
-### `22_13_56_43` (tracked, clockwise)
-
-- Dimensions: `n_frames = 100`, `n_tx = 540`, `H = W = 2048`
-- Frame rate: ~8.33 Hz
-- Rotation: `metadata/rotation/samples = +1` (clockwise)
-- Tracking: includes `metadata/pullback_position` `[100]`
-- **Stored HDF5 size:** 1.53 GB (1,527,119,872 bytes).
-
-![22_13_56_43 reconstruction overview](assets/22_13_56_43/overview_5_frames.png)
-
-### `22_14_29_54` (tracked, clockwise)
-
-- Dimensions: `n_frames = 150`, `n_tx = 360`, `H = W = 2048`
-- Frame rate: ~3.33 Hz
-- Rotation: `metadata/rotation/samples = +1` (clockwise); `metadata/text_report = "Transducer rotation direction: clockwise."`
-- Tracking: includes `metadata/pullback_position` `[150]`
-- **Stored HDF5 size:** 1.65 GB (1,653,080,064 bytes).
-
-![22_14_29_54 reconstruction overview](assets/22_14_29_54/overview_5_frames.png)
+| Acquisition | Tracked | Frames | Transmits | Image grid | Frame rate | Size |
+|---|---|---:|---:|---|---:|---:|
+| `15_10_18_21` | no | 100 | 540 | 985x986 | 3.33 Hz | 1.46 GB |
+| `15_10_50_19` | no | 60 | 360 | 985x986 | 3.33 Hz | 592.12 MB |
+| `15_16_45_06` | no | 100 | 540 | 985x986 | 3.33 Hz | 1.46 GB |
+| `22_12_10_52` | yes | 150 | 540 | 2048x2048 | 3.33 Hz | 2.36 GB |
+| `22_12_29_46` | yes | 100 | 540 | 2048x2048 | 8.33 Hz | 1.60 GB |
+| `22_12_38_45` | yes | 150 | 360 | 2048x2048 | 8.33 Hz | 1.58 GB |
+| `22_13_10_16` | yes | 100 | 540 | 2048x2048 | 8.33 Hz | 1.54 GB |
+| `22_13_56_43` | yes | 100 | 540 | 2048x2048 | 8.33 Hz | 1.53 GB |
+| `22_14_29_54` | yes | 150 | 360 | 2048x2048 | 3.33 Hz | 1.65 GB |
 
 ## Dataset Quantification
 
-**Current OpenH-RF release:** 9 HDF5 files; 13.76 GB (13,756,334,080 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
+9 HDF5 files; 13.76 GB (13,756,334,080 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
 - Acquisitions: 9 (3 untracked `15_*`, 6 tracked `22_*`)
 - Frames per acquisition: 60–150 (1010 frames total across all acquisitions)
-- Frame rate: ~3.33 Hz or ~8.33 Hz depending on acquisition (see per-dataset table)
+- Frame rate: ~3.33 Hz or ~8.33 Hz depending on acquisition (see the table above)
 - Train / validation / test split: N/A
 - **Stored HDF5 size:** 13.76 GB (13,756,334,080 bytes).
 

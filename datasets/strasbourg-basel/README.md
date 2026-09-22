@@ -290,7 +290,7 @@ see [Known Issues](#known-issues).
 ### Fields
 
 Every file has the same field structure; `n_frames` and `n_ax` vary per scan (see
-[the nine scans](#the-nine-scans)).
+[Dataset Quantification](#dataset-quantification)).
 
 | Field | Shape | dtype | Units | Description |
 |---|---|---|---|---|

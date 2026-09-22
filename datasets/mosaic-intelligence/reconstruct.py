@@ -55,7 +55,7 @@ FRAME_COLORS = plt.get_cmap("tab10").colors
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-ZEA_FILE = "hf://nvidia/OpenH-RF/mosaic-intelligence/data/15_10_50_19.hdf5"
+ZEA_FILE = "hf://nvidia/OpenH-RF/mosaic-intelligence/data/22_12_10_52.hdf5"
 CONFIG = "hf://nvidia/OpenH-RF/mosaic-intelligence/pipeline.yaml"
 NUM_FRAMES = 5  # Number of frames to overlay, spaced evenly across the pullback
 FRAMES = None  # Explicit frame indices to overlay (overrides NUM_FRAMES)

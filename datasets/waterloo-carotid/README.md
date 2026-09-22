@@ -26,6 +26,18 @@ size_categories:
 Cine loop of [`Acq90.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-carotid/data/Acq90.hdf5), reconstructed from the raw
 channel data with the `pipeline.yaml` in this folder.
 
+`zea` renders it straight from the Hub:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/waterloo-carotid/data/Acq90.hdf5 \
+  --config hf://nvidia/OpenH-RF/waterloo-carotid/pipeline.yaml \
+  --n-frames 1 \
+  --save-as png
+```
+
+Swap `--n-frames 1 --save-as png` for `--save-as gif` to get the cine loop.
+
 
 Dataset consisting of raw RF data and vector velocity measurements of carotid
 arteries acquired in in vivo carotid artery studies conducted by LITMUS @

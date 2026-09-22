@@ -27,6 +27,18 @@ size_categories:
 Cine loop of [`Acq5.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-largeartery/data/Acq5.hdf5), reconstructed from the raw
 channel data with the `pipeline.yaml` in this folder.
 
+`zea` renders it straight from the Hub:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/waterloo-largeartery/data/Acq5.hdf5 \
+  --config hf://nvidia/OpenH-RF/waterloo-largeartery/pipeline.yaml \
+  --n-frames 1 \
+  --save-as png
+```
+
+Swap `--n-frames 1 --save-as png` for `--save-as gif` to get the cine loop.
+
 
 Dataset consisting of raw RF data and vector velocity measurements of femoral vein acquired in studies conducted by VORTEX @
 University of Waterloo.
