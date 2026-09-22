@@ -19,6 +19,14 @@ size_categories:
 
 # OpenH-RF — Ultrasound-Optical Flow Phantom Chamber Data
 
+![Optical camera view beside the B-mode reconstruction of a von Karman vortex street](assets/vortex_street.gif)
+
+The Photron high-speed camera view (left) and the B-mode reconstruction (right) of
+[`AcqData_PVoltage80_TVoltage3.4.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5).
+Both come from `track_0`, frame for frame, so the optical and acoustic views show the
+same instant of the vortex street.
+
+
 ## Dataset Description
 
 Pre-beamformed ultrasound channel-capture data acquired with a curved-array transducer

@@ -47,6 +47,24 @@ OUT = HERE / "assets" / "reconstruct_output.png"
 HF_CONFIG = "hf://nvidia/OpenH-RF/waterloo-muscle/pipeline.yaml"
 FRAME = 9
 
+# The reconstruction grid matches the stored B-mode so the two line up. Kept here
+# rather than derived per file so pipeline.yaml fully describes the reconstruction
+# and zea process reproduces it.
+PARAMETERS = {
+    "xlims": [-0.019, 0.019],
+    "zlims": [0.0, 0.080],
+    "grid_size_x": 381,
+    "grid_size_z": 801,
+    "dynamic_range": [-60, 0],
+}
+
+
+def write_config(pipeline: Pipeline, path) -> None:
+    """Serialize the pipeline and its acquisition parameters to pipeline.yaml."""
+    config = pipeline.to_config()
+    config["parameters"] = PARAMETERS
+    config.to_yaml(str(path))
+
 
 def build_pipeline() -> Pipeline:
     """Define the delay-and-sum B-mode pipeline in code."""
@@ -67,21 +85,12 @@ def main():
     zea.init_device()
 
     pipeline = build_pipeline()
-    pipeline.to_yaml(str(CONFIG))
+    write_config(pipeline, CONFIG)
 
     with File(str(ZEA_FILE)) as f:
         frame = min(max(0, FRAME), f.data.image.values.shape[0] - 1)
-
         raw = f.data.raw_data[frame : frame + 1]  # (1, n_tx, n_ax, n_el, 1)
-
-        # Reconstruct on the same grid as the stored B-mode so the panels line up.
-        coords = f.data.image.coordinates[:]  # (z, x, 3), last axis [x, y, z] in metres
-        parameters = f.load_parameters(
-            grid_size_z=coords.shape[0],
-            grid_size_x=coords.shape[1],
-            xlims=[float(coords[..., 0].min()), float(coords[..., 0].max())],
-            zlims=[float(coords[..., 2].min()), float(coords[..., 2].max())],
-        )
+        parameters = f.load_parameters(**PARAMETERS)
 
     inputs = pipeline.prepare_parameters(parameters)
     recon = pipeline(data=raw, **inputs, return_numpy=True)["data"][0]
@@ -92,7 +101,13 @@ def main():
     panel_h = 5.5
     img_aspect = (extent[1] - extent[0]) / (extent[2] - extent[3])
     fig, ax = plt.subplots(figsize=(panel_h * img_aspect, panel_h), constrained_layout=True)
-    ax.imshow(recon, cmap="gray", vmin=-60, vmax=0, extent=extent)
+    ax.imshow(
+        recon,
+        cmap="gray",
+        vmin=parameters.dynamic_range[0],
+        vmax=parameters.dynamic_range[1],
+        extent=extent,
+    )
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("z [mm]")
     ax.set_aspect("equal", adjustable="box")

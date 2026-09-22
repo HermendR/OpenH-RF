@@ -20,6 +20,12 @@ size_categories:
 
 # UW-Muscle RF
 
+![Reconstructed cineloop from Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5](assets/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.gif)
+
+Cine loop of [`Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5), reconstructed from the raw
+channel data with the `pipeline.yaml` in this folder.
+
+
 Dataset consisting of raw RF data and speed of sound measurements acquired in an in vivo speed of sound study conducted by LITMUS @ University of Waterloo.
 
 ## Dataset Description
