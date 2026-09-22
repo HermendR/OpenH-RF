@@ -161,7 +161,7 @@ def create_and_save_pipeline():
 # Main reconstruction
 # ============================================================
 def main():
-    zea.init_device(device="cpu", verbose=False)
+    zea.init_device(verbose=False)
 
     create_and_save_pipeline()
     pipeline = Pipeline.from_path(str(PIPELINE_FILE))
