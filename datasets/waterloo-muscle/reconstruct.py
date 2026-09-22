@@ -43,7 +43,7 @@ HERE = Path(__file__).parent
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5"
 CONFIG = HERE / "pipeline.yaml"
-OUT = HERE / "reconstruct_output.png"
+OUT = HERE / "assets" / "reconstruct_output.png"
 HF_CONFIG = "hf://nvidia/OpenH-RF/waterloo-muscle/pipeline.yaml"
 FRAME = 9
 
@@ -97,6 +97,7 @@ def main():
     ax.set_ylabel("z [mm]")
     ax.set_aspect("equal", adjustable="box")
 
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(OUT, dpi=150, bbox_inches="tight")
     print(f"Saved {OUT}")
 
