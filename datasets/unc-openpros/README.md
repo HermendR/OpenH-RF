@@ -1,4 +1,31 @@
+---
+pretty_name: "OpenH-RF — OpenPros Limited-View Prostate USCT"
+license: cc-by-4.0
+task_categories:
+  - image-to-image
+tags:
+  - ultrasound
+  - rf
+  - openh-rf
+  - prostate
+  - usct
+  - speed-of-sound
+  - full-waveform-inversion
+  - simulation
+language:
+  - en
+size_categories:
+  - 100K<n<1M
+---
+
 # OpenPros - Limited-View Prostate Ultrasound Computed Tomography
+
+![Speed-of-sound map of a prostate slice, predicted by InversionNet](assets/main.png)
+
+Speed of sound predicted from the limited-view waveform data of the first acquisition in
+[`data/3_04_P_prostate_51.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5),
+rendered by [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/unc-openpros/reconstruct.py)
+with the pretrained OpenPros InversionNet. See **Data Validation** below.
 
 ## Dataset Description
 
@@ -39,7 +66,7 @@ OpenPros was created by Hanchen Wang, Yixuan Wu, Yinan Feng, Peng Jin, Luoyuan Z
 
 ## Dataset Format
 
-The package uses the `zea` HDF5 format. Run `convert.py` to create  `openpros_sample.hdf5` from the original OpenPros NumPy arrays. The converter does not demodulate, decimate, filter, or normalize the RF values. It adds a singleton channel dimension and changes the original four 10-transmit blocks into a physical `20 transmits × 322 receivers` representation:
+The package uses the `zea` HDF5 format. The RF values are carried over from the original OpenPros NumPy arrays without demodulation, decimation, filtering, or normalization. The conversion adds a singleton channel dimension and changes the original four 10-transmit blocks into a physical `20 transmits × 322 receivers` representation:
 
 | HDF5 region | Source side | Receiver side | Original transmit channels |
 |---|---|---|---|
@@ -54,17 +81,13 @@ The file also stores source positions, probe geometry, scan parameters, subject 
 
 **Current OpenH-RF release:** 248 HDF5 files; 6.03 TB (6,031,699,279,872 bytes) stored; root `zea_version` **0.1.5**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-The original OpenPros source documentation reports 280,000 paired samples (approximately 6.8 TB) with an official split of 224,000 training, 28,000 validation, and 28,000 test samples. It is derived from four patient-level clinical anatomies and 62 ex vivo prostate specimens. Each source NumPy file used here contains 1,140 examples. 
+The original OpenPros source documentation reports 280,000 paired samples (approximately 6.8 TB) with an official split of 224,000 training, 28,000 validation, and 28,000 test samples. It is derived from four patient-level clinical anatomies and 62 ex vivo prostate specimens. Each published HDF5 file here holds 1,140 acquisitions.
 
-By default, `flag_single_sample = True` in `convert.py`, so the original converter example `openpros_sample.hdf5` contains only the first example (not the full HF release) and is approximately 20.5 MiB. Set the flag to `False` to convert all 1,140 examples in the selected source pair.
-
-| Field | Shape in default sample | dtype | Units | Description |
+| Field | Shape per file | dtype | Units | Description |
 |---|---|---|---|---|
-| `raw_data` | `(1, 20, 1000, 322, 1)` | float32 | — | Simulated full-waveform pressure/RF data |
-| `sos_map.values` | `(1, 401, 161, 1)` | float32 | m/s | Ground-truth speed-of-sound map |
+| `raw_data` | `(1140, 20, 1000, 322, 1)` | float32 | — | Simulated full-waveform pressure/RF data |
+| `sos_map.values` | `(1140, 401, 161, 1)` | float32 | m/s | Ground-truth speed-of-sound map |
 | `sos_map.coordinates` | `(401, 161, 3)` | float32 | m | Cartesian `(x, y, z)` grid coordinates |
-
-The leading dimension becomes `1140` when the complete selected source pair is converted.
 
 ## Subject Metadata
 
@@ -80,10 +103,9 @@ The converted release identifies its content as a simulation and stores composit
 4. Run the pretrained InversionNet model.
 5. Denormalize its output from `[-1, 1]` to the physical SOS range `1300–3600 m/s`.
 
-Run the end-to-end example with:
+Run the example with:
 
 ```bash
-python convert.py
 python reconstruct.py
 ```
 
