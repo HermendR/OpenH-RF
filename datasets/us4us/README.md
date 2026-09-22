@@ -19,6 +19,15 @@ size_categories:
   - n<1K
 ---
 
+# us4us Ring-Array USCT
+
+![Ring-array USCT reconstruction of a forearm cross-section](assets/s1_l_reconstruct.png)
+
+A left-forearm cross-section, slice 8 of
+[`data/s1_l.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/us4us/data/s1_l.hdf5),
+reconstructed by [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/us4us/reconstruct.py)
+beside the sinogram and reference image stored in the file.
+
 ## Dataset Description
 Raw RF data acquired with the us4us Ltd. us4R system and a Draminski ring probe.
 
@@ -79,7 +88,7 @@ No preprocessing was performed on the raw channel data.
 
 **Current OpenH-RF release:** 18 HDF5 files; 32.66 GB (32,658,423,808 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-  * Each HDF5 file contains 10 slices of the subject, except `reference_water.hdf5`, which contains a single slice.
+  * Each forearm HDF5 file contains 10 slices of the subject; `yezitronix-b-rg-1.2.hdf5` contains 11 and `reference_water.hdf5` a single slice.
   * Stored HDF5 file sizes vary: 1.89 GB to 1.95 GB excluding the water reference. `reference_water.hdf5` is 183,107,584 bytes (183.11 MB).
 
 
@@ -92,6 +101,7 @@ The dataset contains data from:
 
 ## Data Validation
   * The data files contain attenuation sinograms and images reconstructed from raw data using the filtered backprojection algorithm.
+  * [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/us4us/reconstruct.py) rebuilds both from `data/raw_data` and plots them beside the stored versions. Set `ZEA_FILE` and `FRAME` at the top of the script and run `python reconstruct.py`.
 
 
 ## Known Issues

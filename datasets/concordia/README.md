@@ -16,6 +16,24 @@ size_categories:
   - 1K<n<10K
 ---
 
+# SynthUS-FSA
+
+![B-mode reconstructions of the five SynthUS-FSA phantom classes](assets/classes.png)
+
+The five phantom classes, each reconstructed from `data/raw_data`:
+`image_0005`, `image_0470`, `image_0640`, `image_1100`, `image_1808`.
+
+`zea` renders any capture straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/concordia/data/image_0005.hdf5 \
+  --config hf://nvidia/OpenH-RF/concordia/pipeline.yaml \
+  --n-frames 1 \
+  --save-as png
+```
+
 ## Dataset Description
 
 SynthUS-FSA is a fully synthetic corpus of pre-beamformed full-synthetic-aperture (FSA)
@@ -259,8 +277,7 @@ reconstruction on physical mm axes next to the capture's class-specific label
 `data/diverse_source_image` for diverse, none for point-target — and the
 `data/scatterers` cloud coloured by |amplitude|, all on shared equal-aspect mm
 axes, confirming the label, reconstruction, and scatterer field are spatially
-registered. `examples/` holds one such figure for a representative capture of
-each of the five classes.
+registered. [`assets/reference_capture.png`](assets/reference_capture.png) is one such figure.
 
 ## Known Issues
 

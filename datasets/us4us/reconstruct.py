@@ -59,8 +59,8 @@ PROBE_RADIUS = 13e-2  # m; matches us4us's reconstruction_example.py and the mea
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-ZEA_FILE = "hf://nvidia/OpenH-RF/us4us/data/reference_water.hdf5"
-FRAME = 0
+ZEA_FILE = "hf://nvidia/OpenH-RF/us4us/data/s1_l.hdf5"
+FRAME = 8  # slice index within the acquisition (10 slices, 9 mm apart)
 APERTURE_OFFSET_2 = APERTURE_OFFSET
 PROBE_RADIUS_2 = PROBE_RADIUS  # ring radius in metres
 SMOOTH_SIGMA = 1.0  # post-FBP Gaussian smoothing

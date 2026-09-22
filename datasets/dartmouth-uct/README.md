@@ -1,5 +1,12 @@
 # OpenH-RF Sub-Dataset: 2D Ring-Array USCT Waveforms from 2D- and 3D-k-Wave Simulations
 
+![Ring-array USCT reflectivity reconstruction of a digital breast phantom, next to its ground-truth sound-speed and attenuation maps](assets/phantom_179604449_z200.png)
+
+A 2D-sim breast cross-section,
+[`data/2d/phantom_179604449_z200.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/dartmouth-uct/data/2d/phantom_179604449_z200.hdf5),
+reconstructed by [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/dartmouth-uct/reconstruct.py) beside the ground-truth sound-speed
+and attenuation maps stored in the file.
+
 ## Dataset Description
 
 This sub-dataset provides **pre-beamformed channel-domain radio-frequency
@@ -194,7 +201,7 @@ Not applicable — all data are synthetic. Aggregate phantom statistics:
 
 ## Data Validation
 
-A single reference reconstruction, [`reconstruct.py`](reconstruct.py), serves
+A single reference reconstruction, [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/dartmouth-uct/reconstruct.py), serves
 **both** sub-datasets. It builds a `zea.Pipeline` whose beamforming stage is
 zea's dedicated `zea.ops.USCTReflectivityDAS` — a round-trip time-of-flight
 Delay-And-Sum that, for every pixel, coherently sums over all transmit/receive
@@ -211,10 +218,10 @@ drive the reconstruction directly. A resulting image whose bright skin boundary
 traces the ground-truth contour confirms the geometry, timing, and transmit
 parameters were recorded correctly.
 
-```
-python reconstruct.py --input data/2d/phantom_xxx.hdf5
-python reconstruct.py --input data/3d/phantom_xxx.hdf5
-```
+Set `ZEA_FILE` at the top of the script and run `python reconstruct.py`; the
+figure at the top of this card is its output. `SOS_MAP = True` swaps the
+constant-sound-speed delays for a straight-ray integral through the
+ground-truth map.
 
 ## Known Issues
 
