@@ -16,6 +16,18 @@ size_categories:
 
 # Tracked Swept Synthetic Aperture Ultrasound Datasets
 
+*Freehand, optically tracked swept synthetic aperture (SSA) raw-channel ultrasound from phantoms and in-vivo quadriceps, for the OpenH-RF initiative.*
+
+| 2D ATS 539 phantom | 3D phantom | In-vivo quadriceps |
+|:---:|:---:|:---:|
+| ![Tracked SSA sweep through the 2D ATS 539 phantom](assets/ssa-sweep-phantom2d.gif) | ![Tracked SSA sweep through the 3D phantom](assets/ssa-sweep-phantom3d.gif) | ![Tracked SSA sweep along in-vivo quadriceps muscle](assets/ssa-sweep-invivo.gif) |
+| `Sub-dataset-1` | `Sub-dataset-2` | `Sub-dataset-3` |
+
+Motion-compensated tracked SSA reconstructions, one per sub-dataset. Each frame
+beamforms the raw RF channel data with its own tracked probe pose; a 40 mm window of
+frames is then coherently summed to synthesise a larger effective aperture, and the
+window slides along the freehand sweep. Produced by `reconstruct.py`.
+
 ## Dataset Description
 
 This dataset contains tracked swept synthetic aperture (SSA) ultrasound acquisitions from three targets: a 2D ATS 539 multipurpose imaging phantom, a 3D ultrasound imaging phantom, and in-vivo quadriceps muscle from healthy volunteer participants.
@@ -72,7 +84,7 @@ These targets may be used to assess spatial resolution, contrast, lesion visibil
 
 Each acquisition consisted of a freehand sweep in the lateral direciton of the transducer.
 All 64 array elements were used during receive. Diverging waves were generated using a negative virtual source while activating the 20 central array elements during transmit.
-For in-vivo targets the transducer was manually swept along the longitudinal direction of the quadriceps while transmitting diverging waves at 400 Hz. 
+For in-vivo targets the transducer was manually swept along the longitudinal direction of the quadriceps while transmitting diverging waves at 400 Hz.
 The transducer was optically tracked using an NDI Polaris Vega® XT optical tracking system manufactured by Northern Digital Inc., Ontario, Canada.
 
 ### Labeling Method
@@ -158,11 +170,22 @@ The pipeline performs:
 6. Normalization
 7. Log compression
 
-The reconstruction is defined in `pipeline.yaml` and executed using `reconstruct.py`. Representative reconstructed B-mode images are included with the dataset.
+The reconstruction is defined in `pipeline.yaml` and executed using `reconstruct.py`:
 
-A representative reconstructed in-vivo B-mode image is included at [`assets/main_bmode.png`](./assets/main_bmode.png).
+```bash
+python reconstruct.py
+```
 
-![Representative tracked SSA B-mode reconstruction](./assets/main_bmode.png)
+The script streams an acquisition straight from the Hub, selects tracked frames at
+roughly 1 mm lateral spacing, and writes the reconstruction to `ssa_bmode.png`. Point
+`DATA_FILE` at any acquisition in the corpus to reconstruct it.
+[`assets/main_bmode.png`](./assets/main_bmode.png) was produced this way, compounding
+the full sweep into one image; the loops at the top of this card slide a shorter
+aperture window along the sweep instead.
+
+`reconstruct.py` defines the custom `apply_probe_pose` operation that `pipeline.yaml`
+refers to, which applies the frame-wise `metadata/probe_pose` to the probe geometry
+and transmit origins before beamforming.
 
 ## Known Issues
 
