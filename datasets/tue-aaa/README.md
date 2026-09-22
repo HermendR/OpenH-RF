@@ -19,8 +19,15 @@ language:
 
 ![Reconstructed cineloop from AAA_subject11.hdf5](assets/AAA_subject11.gif)
 
-40 frames of [`AAA_subject11.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-aaa/data/AAA_subject11.hdf5), reconstructed from the raw
-channel data with the `pipeline.yaml` in this folder.
+Cine loop of [`AAA_subject11.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-aaa/data/AAA_subject11.hdf5),
+reconstructed from the raw channel data. `zea` renders the whole acquisition straight
+from the Hub:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/tue-aaa/data/AAA_subject11.hdf5 \
+  --config hf://nvidia/OpenH-RF/tue-aaa/pipeline.yaml \
+```
 
 
 ## Dataset Description
