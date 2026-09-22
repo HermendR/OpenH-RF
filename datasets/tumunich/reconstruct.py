@@ -50,7 +50,8 @@ from zea.ops.base import Operation
 
 HERE = Path(__file__).parent
 DEFAULT_INPUT = "hf://nvidia/OpenH-RF/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf5"
-CONFIG = HERE / "pipeline.yaml"
+CONFIG = HERE / "pipeline.yaml"  # written by build_pipeline(); this is what the run loads
+HF_CONFIG = "hf://nvidia/OpenH-RF/tumunich/pipeline.yaml"  # where CONFIG is published
 
 
 PARAMETERS = {
