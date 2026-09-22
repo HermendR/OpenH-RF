@@ -1,3 +1,11 @@
+parameters:
+    xlims: [-0.018, 0.018]
+    zlims: [0.0, 0.035]     # RF runs out at 40.7 mm
+    grid_size_x: 1014
+    grid_size_z: 1100
+    n_ch: 2                 # baseband IQ
+    selected_transmits: all
+    dynamic_range: [-60, 0]
 pipeline:
     operations:
     - beamform
