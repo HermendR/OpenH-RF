@@ -18,6 +18,21 @@ size_categories:
 
 # Data Card — Siemens In-vivo Raw Ultrasound Channel Data
 
+![DAS B-mode reconstructions of four anatomies from the Siemens FSA channel data](assets/anatomies.png)
+
+Four of the anatomies in this dataset, each beamformed from `data/raw_data`:
+`Subject_03_acq_018`, `Subject_02_acq_004`, `Subject_03_acq_008`,
+`Subject_05_acq_031`.
+
+`zea` renders any acquisition straight from the Hub with the
+`pipeline.yaml` in this folder. Try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/siemens-healthineers/data/Subject_03_acq_008.hdf5 \
+  --config hf://nvidia/OpenH-RF/siemens-healthineers/pipeline.yaml
+```
+
 ## Dataset Description
 
 This is an in-vivo full-synthetic-aperture (FSA) ultrasound raw channel-data
@@ -141,10 +156,16 @@ single probe and system; no pathology labels are asserted.
 ## Data Validation
 
 [`pipeline.yaml`](pipeline.yaml). `data/image` is produced by this same
-pipeline at conversion time, so `reconstruct.py` reproduces it exactly — a
-round-trip check that the probe geometry, transmit description, and timing are
-recorded correctly. Reference B-modes rendered by this pipeline — one per
-anatomy (breast, thyroid, axilla, carotid, neck, abdomen) — are in
+pipeline at conversion time, so `reconstruct.py` reproduces it — a round-trip
+check that the probe geometry, transmit description, and timing are recorded
+correctly. Reference B-modes rendered by this pipeline are in
+[`assets/`](assets), and the strip at the top of this card is four of them.
+
+![Carotid cineloop, ten frames](assets/Subject_03_acq_008.gif)
+
+Ten frames of `data/Subject_03_acq_008.hdf5`. `custom/contact` marks the first
+frame as off-subject — use those per-frame flags when picking frames, rather
+than assuming frame 0 is usable.
 
 
 ## Known Issues
