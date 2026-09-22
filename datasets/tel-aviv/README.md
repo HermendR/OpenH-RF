@@ -7,6 +7,12 @@ tags: [ultrasound, rf, openh-rf]
 
 # Ilovitsh Lab Mice Tumors & Water-Bead Phantoms
 
+![Reconstructed cineloop from 01-scan-3.hdf5](assets/01-scan-3.gif)
+
+Cine loop of [`01-scan-3.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tel-aviv/mouse_tumor/seg/01-scan-3.hdf5), reconstructed from the raw
+channel data with the `pipeline.yaml` in this folder.
+
+
 ## Dataset Description
 
 This dataset provides ultrasound data captured via a motorized 1D transducer array. It captures both in-vivo tumors in mice and in-silico water-bead phantoms, and was originally acquired as part of our work on implicit neural representations (INR) [1].

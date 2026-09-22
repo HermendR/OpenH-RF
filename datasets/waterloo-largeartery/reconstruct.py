@@ -7,7 +7,7 @@ B-mode reconstruction of steered plane-wave femoral vein channel data (UW-FemVei
 
 The display dynamic range lives in pipeline.yaml (``parameters.dynamic_range``);
 tweak it there and it is picked up for display. Where the vector-flow fields are
-present, a second panel overlays the vector velocity field using
+present, the vector velocity field is overlaid on the B-mode using
 ``draw_velocity_field`` -- a self-contained (numpy + matplotlib) helper
 reproduced below from the LITMUS core Python package
 (``litmus.core_py.visualization``), so this script has no dependency on the full
@@ -51,6 +51,16 @@ from zea.ops import (
 HERE = Path(__file__).parent
 
 DYNAMIC_RANGE = [-50, 0]  # dB; written to pipeline.yaml, tweak it there
+
+# Reconstruction grid, matching the stored B-mode. Written into pipeline.yaml so
+# zea process reproduces the same field of view.
+PARAMETERS = {
+    "xlims": [-0.019, 0.019],
+    "zlims": [0.010, 0.045],  # RF runs out at 48.5 mm; signal ends ~41.8 mm
+    "grid_size_x": 381,
+    "grid_size_z": 451,
+    "dynamic_range": DYNAMIC_RANGE,
+}
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
@@ -137,7 +147,7 @@ def build_config() -> Config:
             LogCompress(),
         ],
     ).to_config()
-    config["parameters"] = {"dynamic_range": DYNAMIC_RANGE}
+    config["parameters"] = PARAMETERS
     return config
 
 
@@ -156,16 +166,7 @@ def main():
         frame = min(max(0, FRAME), f.data.image.values.shape[0] - 1)
 
         raw = f.data.raw_data[frame : frame + 1]  # (1, n_tx, n_ax, n_el, 1)
-
-        # Reconstruct on the same grid as the stored B-mode so the panels line up.
-        coords = f.data.image.coordinates[:]  # (z, x, 3), last axis [x, y, z] in metres
-        parameters = f.load_parameters(
-            **config.get("parameters", {}),
-            grid_size_z=coords.shape[0],
-            grid_size_x=coords.shape[1],
-            xlims=[float(coords[..., 0].min()), float(coords[..., 0].max())],
-            zlims=[float(coords[..., 2].min()), float(coords[..., 2].max())],
-        )
+        parameters = f.load_parameters(**config.get("parameters", {}))
 
         has_velocity = all(
             k in f.data for k in ("vector_velocity_x", "vector_velocity_z", "power_doppler")
@@ -190,41 +191,32 @@ def main():
                 print("Using dealiased vector velocity fields.")
             else:
                 print("No dealiased vector velocity fields in file: using raw estimates.")
+
     inputs = pipeline.prepare_parameters(parameters)
     recon = pipeline(data=raw, **inputs, return_numpy=True)["data"][0]
     extent = [v * 1e3 for v in parameters.extent_imshow]  # metres -> mm
     vmin, vmax_db = parameters.dynamic_range
 
     zea.visualize.set_mpl_style()
-    n_panels = 2 if has_velocity else 1
-    # Size each panel to the image aspect ratio so the axes hug the B-mode.
     panel_h = 5.0
     img_aspect = (extent[1] - extent[0]) / (extent[2] - extent[3])
-    fig, axes = plt.subplots(
-        1,
-        n_panels,
-        figsize=(panel_h * img_aspect * n_panels, panel_h),
-        constrained_layout=True,
-    )
-    imshow_kw = dict(cmap="gray", vmin=vmin, vmax=vmax_db, extent=extent)
-
-    axes[0].imshow(recon, **imshow_kw)
+    fig, ax = plt.subplots(figsize=(panel_h * img_aspect, panel_h), constrained_layout=True)
+    ax.imshow(recon, cmap="gray", vmin=vmin, vmax=vmax_db, extent=extent)
 
     if has_velocity:
         mag = np.sqrt(vx**2 + vz**2)
         valid = (power >= POWER_THRESHOLD) & ~np.isnan(mag)
-        if VMAX is not None:
-            v_scale = VMAX
-        else:
-            v_scale = float(np.percentile(mag[valid], 99)) if np.any(valid) else 1.0
-        axes[1].imshow(recon, **imshow_kw)
-        q = draw_velocity_field(axes[1], vx, vz, power, POWER_THRESHOLD, extent, vmax=v_scale)
+        v_scale = (
+            VMAX
+            if VMAX is not None
+            else (float(np.percentile(mag[valid], 99)) if np.any(valid) else 1.0)
+        )
+        q = draw_velocity_field(ax, vx, vz, power, POWER_THRESHOLD, extent, vmax=v_scale)
         q.set_clim(0, v_scale)
 
-    for ax in axes:
-        ax.set_xlabel("x [mm]")
-        ax.set_ylabel("z [mm]")
-        ax.set_aspect("equal", adjustable="box")
+    ax.set_xlabel("x [mm]")
+    ax.set_ylabel("z [mm]")
+    ax.set_aspect("equal", adjustable="box")
 
     Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(OUT, dpi=150, bbox_inches="tight")

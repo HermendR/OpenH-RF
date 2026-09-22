@@ -21,6 +21,12 @@ size_categories:
 
 # UW-Carotid RF
 
+![Reconstructed cineloop from Acq90.hdf5](assets/Acq90.gif)
+
+Cine loop of [`Acq90.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-carotid/data/Acq90.hdf5), reconstructed from the raw
+channel data with the `pipeline.yaml` in this folder.
+
+
 Dataset consisting of raw RF data and vector velocity measurements of carotid
 arteries acquired in in vivo carotid artery studies conducted by LITMUS @
 University of Waterloo. The dataset consists of longitudinal and cross-sectional

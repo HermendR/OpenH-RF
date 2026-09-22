@@ -24,7 +24,7 @@ size_categories:
 
 ![Reconstructed cineloop from Acq5.hdf5](assets/Acq5.gif)
 
-40 frames of [`Acq5.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-largeartery/data/Acq5.hdf5), reconstructed from the raw
+Cine loop of [`Acq5.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-largeartery/data/Acq5.hdf5), reconstructed from the raw
 channel data with the `pipeline.yaml` in this folder.
 
 

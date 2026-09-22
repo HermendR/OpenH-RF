@@ -14,6 +14,12 @@ tags:
 
 # OpenH-RF Thyroid Clinical Scans
 
+![Reconstructed cineloop from 30_1.hdf5](assets/30_1.gif)
+
+Cine loop of [`30_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/weizmann-sampl/data/30_1.hdf5), reconstructed from the raw
+channel data with the `pipeline.yaml` in this folder.
+
+
 ## Dataset Description
 
 The data set consists of clinical ultrasound channel data acquired

@@ -50,6 +50,16 @@ HERE = Path(__file__).parent
 
 DYNAMIC_RANGE = [-50, 0]  # dB; written to pipeline.yaml, tweak it there
 
+# Reconstruction grid, matching the stored B-mode. Written into pipeline.yaml so
+# zea process reproduces the same field of view.
+PARAMETERS = {
+    "xlims": [-0.019, 0.019],
+    "zlims": [0.0, 0.030],
+    "grid_size_x": 381,
+    "grid_size_z": 301,
+    "dynamic_range": DYNAMIC_RANGE,
+}
+
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
@@ -133,7 +143,7 @@ def build_config() -> Config:
             LogCompress(),
         ],
     ).to_config()
-    config["parameters"] = {"dynamic_range": DYNAMIC_RANGE}
+    config["parameters"] = PARAMETERS
     return config
 
 
@@ -148,16 +158,7 @@ def main():
         frame = min(max(0, FRAME), f.data.image.values.shape[0] - 1)
 
         raw = f.data.raw_data[frame : frame + 1]  # (1, n_tx, n_ax, n_el, 1)
-
-        # Reconstruct on the same grid as the stored B-mode so the panels line up.
-        coords = f.data.image.coordinates[:]  # (z, x, 3), last axis [x, y, z] in metres
-        parameters = f.load_parameters(
-            **config.get("parameters", {}),
-            grid_size_z=coords.shape[0],
-            grid_size_x=coords.shape[1],
-            xlims=[float(coords[..., 0].min()), float(coords[..., 0].max())],
-            zlims=[float(coords[..., 2].min()), float(coords[..., 2].max())],
-        )
+        parameters = f.load_parameters(**config.get("parameters", {}))
 
         has_velocity = all(
             k in f.data for k in ("vector_velocity_x", "vector_velocity_z", "power_doppler")
