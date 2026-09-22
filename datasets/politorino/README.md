@@ -20,7 +20,7 @@ size_categories:
 
 ![Reconstructed cineloop from PAT02_w1.hdf5](assets/PAT02_w1.gif)
 
-40 frames of [`PAT02_w1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/politorino/data/PAT02_w1.hdf5), reconstructed from the raw
+Cine loop of [`PAT02_w1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/politorino/data/PAT02_w1.hdf5), reconstructed from the raw
 channel data with the `pipeline.yaml` in this folder.
 
 
