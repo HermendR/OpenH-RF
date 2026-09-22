@@ -50,7 +50,7 @@ HERE = Path(__file__).resolve().parent
 ZEA_FILE = (
     "hf://nvidia/OpenH-RF/ubc/module_A/acquisitions/case_1.83/ubc_swave_cirs_1.83_p10_f13.hdf5"
 )
-OUTPUT = HERE / "results" / "reconstruct_1.83_p10_f13.png"
+OUT = HERE / "results" / "reconstruct_1.83_p10_f13.png"
 FRAME = 0
 
 NORMALIZATION_PERCENTILE = 99.5
@@ -146,9 +146,9 @@ def save_bmode(bmode, parameters, output_path: Path):
 
 def main() -> None:
     bmode, parameters = reconstruct(ZEA_FILE, FRAME)
-    save_bmode(bmode, parameters, OUTPUT)
+    save_bmode(bmode, parameters, OUT)
     print(f"Sector B-mode : {bmode.shape}")
-    print(f"Saved         : {OUTPUT}")
+    print(f"Saved         : {OUT}")
 
 
 if __name__ == "__main__":

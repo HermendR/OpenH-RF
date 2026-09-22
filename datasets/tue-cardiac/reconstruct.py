@@ -20,8 +20,6 @@ Usage:
     python reconstruct.py
 """
 
-from __future__ import annotations
-
 import os
 
 os.environ.setdefault("KERAS_BACKEND", "jax")
@@ -53,15 +51,15 @@ TRACKS = tuple(PIPELINE_FOR_TRACK)
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/tue-cardiac/data/subject-012.hdf5"
-TRACK = "focused_fund"  # one of TRACKS; must match PIPELINE below
+TRACK = "focused_fund"  # one of TRACKS; must match CONFIG below
 FRAME = 0
-PIPELINE = "hf://nvidia/OpenH-RF/tue-cardiac/pipelines/pipeline.yaml"
+CONFIG = "hf://nvidia/OpenH-RF/tue-cardiac/pipelines/pipeline.yaml"
 OUT = HERE / "assets" / f"{Path(ZEA_FILE).stem}_{TRACK}_frame-{FRAME:03d}.png"
 DEVICE = None  # e.g. cpu, cuda:0, auto:1
 
 
-def main() -> int:
-    pipeline_path = PIPELINE or HERE / "pipelines" / PIPELINE_FOR_TRACK[TRACK]
+def main():
+    pipeline_path = CONFIG or HERE / "pipelines" / PIPELINE_FOR_TRACK[TRACK]
     OUT.parent.mkdir(parents=True, exist_ok=True)
 
     zea.init_device(device=DEVICE, verbose=False)
@@ -113,8 +111,7 @@ def main() -> int:
     figure.savefig(OUT, dpi=150, bbox_inches="tight", metadata={})
     plt.close(figure)
     print(f"saved {OUT}")
-    return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

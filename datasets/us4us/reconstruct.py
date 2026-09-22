@@ -59,7 +59,7 @@ PROBE_RADIUS = 13e-2  # m; matches us4us's reconstruction_example.py and the mea
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/us4us/data/reference_water.hdf5"
+ZEA_FILE = "hf://nvidia/OpenH-RF/us4us/data/reference_water.hdf5"
 FRAME = 0
 APERTURE_OFFSET_2 = APERTURE_OFFSET
 PROBE_RADIUS_2 = PROBE_RADIUS  # ring radius in metres
@@ -295,13 +295,13 @@ def validate_geometry(rf, tx_position, rx_positions, sound_speed, initial_time, 
 
 
 def main():
-    input_path = str(INPUT)
+    input_path = str(ZEA_FILE)
     if "://" not in input_path:
         candidate = Path(input_path)
         if not candidate.is_absolute():
             candidate = HERE / candidate
         if not candidate.exists():
-            raise FileNotFoundError(f"{INPUT} not found (looked in cwd and {HERE}).")
+            raise FileNotFoundError(f"{ZEA_FILE} not found (looked in cwd and {HERE}).")
         input_path = str(candidate)
     output_path = HERE / f"{Path(input_path).stem}_reconstruct.png"
 

@@ -24,6 +24,7 @@ os.environ.setdefault("MPLBACKEND", "Agg")
 
 from pathlib import Path
 
+import keras
 import matplotlib.pyplot as plt
 import numpy as np
 import zea
@@ -75,7 +76,7 @@ def reconstruct(source: str, scan: str, frame: int, config: Config) -> None:
     pipeline = Pipeline.from_config(config)
     outputs = pipeline(data=raw, **pipeline.prepare_parameters(parameters))
 
-    recon = np.array(outputs["data"])  # (n_frames, grid_z, grid_x, n_ch)
+    recon = keras.ops.convert_to_numpy(outputs["data"])  # (n_frames, grid_z, grid_x, n_ch)
     # No envelope_detect in pipeline.yaml (see its comments), so the trailing
     # n_ch=1 axis survives to the output; squeeze it for a 2D image.
     image = zea.display.to_8bit(np.squeeze(recon[0]), dynamic_range=parameters.dynamic_range)

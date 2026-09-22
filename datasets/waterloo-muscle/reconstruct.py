@@ -37,16 +37,14 @@ from zea.ops import (
 )
 
 HERE = Path(__file__).parent
-DEFAULT_INPUT = "hf://nvidia/OpenH-RF/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5"
-DEFAULT_PIPELINE = HERE / "pipeline.yaml"
-DEFAULT_OUTPUT = HERE / "reconstruct_output.png"
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5"
-OUTPUT = DEFAULT_OUTPUT
-PIPELINE = "pipeline.yaml"
+ZEA_FILE = "hf://nvidia/OpenH-RF/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5"
+CONFIG = HERE / "pipeline.yaml"
+OUT = HERE / "reconstruct_output.png"
+HF_CONFIG = "hf://nvidia/OpenH-RF/waterloo-muscle/pipeline.yaml"
 FRAME = 9
 
 
@@ -69,9 +67,9 @@ def main():
     zea.init_device()
 
     pipeline = build_pipeline()
-    pipeline.to_yaml(str(PIPELINE))
+    pipeline.to_yaml(str(CONFIG))
 
-    with File(str(INPUT)) as f:
+    with File(str(ZEA_FILE)) as f:
         frame = min(max(0, FRAME), f.data.image.values.shape[0] - 1)
 
         raw = f.data.raw_data[frame : frame + 1]  # (1, n_tx, n_ax, n_el, 1)
@@ -99,8 +97,8 @@ def main():
     ax.set_ylabel("z [mm]")
     ax.set_aspect("equal", adjustable="box")
 
-    plt.savefig(OUTPUT, dpi=150, bbox_inches="tight")
-    print(f"Saved {OUTPUT}")
+    plt.savefig(OUT, dpi=150, bbox_inches="tight")
+    print(f"Saved {OUT}")
 
 
 if __name__ == "__main__":

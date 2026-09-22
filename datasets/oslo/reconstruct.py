@@ -40,6 +40,7 @@ os.environ.setdefault("MPLBACKEND", "Agg")
 
 from pathlib import Path
 
+import keras
 import matplotlib.pyplot as plt
 import numpy as np
 import zea
@@ -95,7 +96,7 @@ def reconstruct(
     outputs = pipeline(data=data, **pipeline.prepare_parameters(parameters))
     image = np.array(
         zea.display.to_8bit(
-            np.squeeze(np.array(outputs["data"])),
+            np.squeeze(keras.ops.convert_to_numpy(outputs["data"])),
             dynamic_range=parameters.dynamic_range,
         )
     )

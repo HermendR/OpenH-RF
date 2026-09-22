@@ -36,8 +36,8 @@ HERE = Path(__file__).parent
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/siemens-healthineers/data/Subject_01_acq_006.hdf5"
-OUTPUT = None  # PNG path (default: <input>_recon.png)
+ZEA_FILE = "hf://nvidia/OpenH-RF/siemens-healthineers/data/Subject_01_acq_006.hdf5"
+OUT = None  # PNG path (default: <input>_recon.png)
 FRAME = 0
 DEPTH_M = 0.035  # reconstruct down to 35 mm
 SAVE_PIPELINE = None  # Optionally write the pipeline to a reusable pipeline.yaml
@@ -51,11 +51,11 @@ def coords_to_imshow_mm(coords):
 
 
 def main():
-    output = OUTPUT or Path(Path(INPUT).stem + "_recon.png")
+    output = OUT or HERE / f"{Path(ZEA_FILE).stem}_recon.png"
 
     zea.init_device()
 
-    with zea.File(str(INPUT)) as f:
+    with zea.File(str(ZEA_FILE)) as f:
         raw = f.data.raw_data[:]
         img_coords = f.data.image.coordinates[:]
         # Acquisition parameters straight from the file; reconstruction grid

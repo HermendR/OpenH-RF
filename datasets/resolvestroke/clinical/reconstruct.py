@@ -46,9 +46,9 @@ TGC_DB_PER_CM = 1.5  # display-only linear TGC (dB gain per cm of depth)
 # --- Inputs -----------------------------------------------------------------
 # One script serves all 20 clinical acquisitions; pick one with SUBJECT (the
 # subdirectory / file stem on the Hub, e.g. "SP07-Right"). Defaults stream straight
-# from the published corpus. Swap INPUT for a local path to run against your own copy.
+# from the published corpus. Swap ZEA_FILE for a local path to run against your own copy.
 SUBJECT = "SP02-Left-2"
-INPUT = f"hf://nvidia/OpenH-RF/resolvestroke/clinical/{SUBJECT}/{SUBJECT}.hdf5"
+ZEA_FILE = f"hf://nvidia/OpenH-RF/resolvestroke/clinical/{SUBJECT}/{SUBJECT}.hdf5"
 FRAME = 0
 OUT = HERE / f"{SUBJECT}_bmode.png"
 
@@ -125,7 +125,7 @@ def main():
     zea.init_device()
     config = Config.from_path(str(CONFIG))
 
-    with File(str(INPUT)) as f:
+    with File(str(ZEA_FILE)) as f:
         parameters = f.load_parameters(**config.parameters)
         raw = f.data.raw_data[FRAME : FRAME + 1]  # (1, n_tx, n_ax, n_el, n_ch)
 

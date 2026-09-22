@@ -49,7 +49,6 @@ from zea.ops import (
 from zea.ops.base import Operation
 
 HERE = Path(__file__).parent
-DEFAULT_INPUT = "hf://nvidia/OpenH-RF/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf5"
 CONFIG = HERE / "pipeline.yaml"  # written by build_pipeline(); this is what the run loads
 HF_CONFIG = "hf://nvidia/OpenH-RF/tumunich/pipeline.yaml"  # where CONFIG is published
 
@@ -62,8 +61,8 @@ PARAMETERS = {
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf5"
-OUTPUT = None  # PNG to write (default: <input>_reconstructed.png next to the sample)
+ZEA_FILE = "hf://nvidia/OpenH-RF/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf5"
+OUT = HERE / f"{Path(ZEA_FILE).stem}_reconstructed.png"
 FRAME = 0  # Zero-based frame index to reconstruct
 DYNAMIC_RANGE = [-40, 0]  # dB range shown
 
@@ -182,13 +181,10 @@ def reconstruct_frame(f, frame):
 
 
 def main():
-    global OUTPUT
-    if OUTPUT is None:
-        OUTPUT = Path(f"{Path(INPUT).stem}_reconstructed.png")
 
     zea.init_device()
 
-    with zea.File(str(INPUT)) as f:
+    with zea.File(str(ZEA_FILE)) as f:
         display_coords = f.data.image.coordinates[:]
         generated = reconstruct_frame(f, FRAME)
         print(f"Reconstructed: {generated.shape}")
@@ -208,8 +204,8 @@ def main():
     ax.set_xlabel("Lateral [mm]")
     ax.set_ylabel("Depth [mm]")
     plt.tight_layout()
-    plt.savefig(OUTPUT, dpi=150, bbox_inches="tight")
-    print(f"Saved {OUTPUT}")
+    plt.savefig(OUT, dpi=150, bbox_inches="tight")
+    print(f"Saved {OUT}")
 
 
 if __name__ == "__main__":

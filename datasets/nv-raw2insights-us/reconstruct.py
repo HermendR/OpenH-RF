@@ -40,8 +40,8 @@ HERE = Path(__file__).resolve().parent
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/nv-raw2insights-us/data/nv_r2i_us_validation_0084.hdf5"
-OUTPUT = HERE / "nv_raw2insights_us_reconstructed.png"
-PIPELINE_FILE = HERE / "pipeline.yaml"
+OUT = HERE / "nv_raw2insights_us_reconstructed.png"
+CONFIG = HERE / "pipeline.yaml"
 
 
 def coords_to_imshow_mm(coords):
@@ -83,8 +83,8 @@ def main():
 
     print(f"raw_data: {raw.shape}")
 
-    build_pipeline().to_yaml(str(PIPELINE_FILE))
-    config = zea.Config.from_path(str(PIPELINE_FILE))
+    build_pipeline().to_yaml(str(CONFIG))
+    config = zea.Config.from_path(str(CONFIG))
     pipeline = zea.Pipeline.from_config(config)
 
     params = pipeline.prepare_parameters(parameters)
@@ -184,8 +184,8 @@ def main():
 
     fig.suptitle(f"openh-rf sample (phase error: {phase_err[0]:.2f} rad)", fontsize=14, y=1.02)
     plt.tight_layout()
-    plt.savefig(OUTPUT, dpi=150, bbox_inches="tight")
-    print(f"Saved {OUTPUT}")
+    plt.savefig(OUT, dpi=150, bbox_inches="tight")
+    print(f"Saved {OUT}")
 
 
 if __name__ == "__main__":

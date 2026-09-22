@@ -111,7 +111,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - **Stored HDF5 size:** 1.46 GB (1,456,209,920 bytes).
 - Note: the image/mask grid is non-square (`985 x 986`)
 
-![15_10_18_21 reconstruction overview](../outputs/15_10_18_21/overview_5_frames.png)
+![15_10_18_21 reconstruction overview](outputs/15_10_18_21/overview_5_frames.png)
 
 ### `15_10_50_19` (untracked, counterclockwise)
 
@@ -122,7 +122,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - **Stored HDF5 size:** 592.12 MB (592,117,760 bytes).
 - Note: the image/mask grid is non-square (`985 x 986`)
 
-![15_10_50_19 reconstruction overview](../outputs/15_10_50_19/overview_5_frames.png)
+![15_10_50_19 reconstruction overview](outputs/15_10_50_19/overview_5_frames.png)
 
 ### `15_16_45_06` (untracked, counterclockwise)
 
@@ -133,7 +133,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - **Stored HDF5 size:** 1.46 GB (1,456,275,456 bytes).
 - Note: the image/mask grid is non-square (`985 x 986`)
 
-![15_16_45_06 reconstruction overview](../outputs/15_16_45_06/overview_5_frames.png)
+![15_16_45_06 reconstruction overview](outputs/15_16_45_06/overview_5_frames.png)
 
 ### `22_12_10_52` (tracked, clockwise)
 
@@ -143,7 +143,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - Tracking: includes `metadata/pullback_position` `[150]` (linear encoder position per frame)
 - **Stored HDF5 size:** 2.36 GB (2,356,936,704 bytes).
 
-![22_12_10_52 reconstruction overview](../outputs/22_12_10_52/overview_5_frames.png)
+![22_12_10_52 reconstruction overview](outputs/22_12_10_52/overview_5_frames.png)
 
 ### `22_12_29_46` (tracked, clockwise)
 
@@ -153,7 +153,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - Tracking: includes `metadata/pullback_position` `[100]`
 - **Stored HDF5 size:** 1.60 GB (1,602,945,024 bytes).
 
-![22_12_29_46 reconstruction overview](../outputs/22_12_29_46/overview_5_frames.png)
+![22_12_29_46 reconstruction overview](outputs/22_12_29_46/overview_5_frames.png)
 
 ### `22_12_38_45` (tracked, clockwise)
 
@@ -163,7 +163,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - Tracking: includes `metadata/pullback_position` `[150]`
 - **Stored HDF5 size:** 1.58 GB (1,576,337,408 bytes).
 
-![22_12_38_45 reconstruction overview](../outputs/22_12_38_45/overview_5_frames.png)
+![22_12_38_45 reconstruction overview](outputs/22_12_38_45/overview_5_frames.png)
 
 ### `22_13_10_16` (tracked, clockwise)
 
@@ -173,7 +173,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - Tracking: includes `metadata/pullback_position` `[100]`
 - **Stored HDF5 size:** 1.54 GB (1,535,311,872 bytes).
 
-![22_13_10_16 reconstruction overview](../outputs/22_13_10_16/overview_5_frames.png)
+![22_13_10_16 reconstruction overview](outputs/22_13_10_16/overview_5_frames.png)
 
 ### `22_13_56_43` (tracked, clockwise)
 
@@ -183,7 +183,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - Tracking: includes `metadata/pullback_position` `[100]`
 - **Stored HDF5 size:** 1.53 GB (1,527,119,872 bytes).
 
-![22_13_56_43 reconstruction overview](../outputs/22_13_56_43/overview_5_frames.png)
+![22_13_56_43 reconstruction overview](outputs/22_13_56_43/overview_5_frames.png)
 
 ### `22_14_29_54` (tracked, clockwise)
 
@@ -193,7 +193,7 @@ One data card per contributed sub-dataset. All fields follow the shared schema a
 - Tracking: includes `metadata/pullback_position` `[150]`
 - **Stored HDF5 size:** 1.65 GB (1,653,080,064 bytes).
 
-![22_14_29_54 reconstruction overview](../outputs/22_14_29_54/overview_5_frames.png)
+![22_14_29_54 reconstruction overview](outputs/22_14_29_54/overview_5_frames.png)
 
 ## Dataset Quantification
 
@@ -225,7 +225,7 @@ Animal study data — no human subjects.
 
 A `zea.Pipeline` reconstructs the IVUS B-mode from the raw channel data
 (RF → envelope → normalization → log compression → scan conversion). See
-[reconstruct.py](../reconstruct.py) and [pipeline.yaml](../pipeline.yaml). Linear encoder position (when applicable) and segmentation masks are overlayed on the B-modes.
+[reconstruct.py](reconstruct.py) and [pipeline.yaml](pipeline.yaml). Linear encoder position (when applicable) and segmentation masks are overlayed on the B-modes.
 
 ## Known Issues
 

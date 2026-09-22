@@ -52,10 +52,8 @@ from zea.ops import (
 )
 
 HERE = Path(__file__).parent
-DEFAULT_INPUT = (
-    "hf://nvidia/OpenH-RF/twente-cavitation/data/cavitation_bubbles_10kPa_01mL_per_min.hdf5"
-)
 CONFIG = HERE / "pipeline.yaml"
+HF_CONFIG = "hf://nvidia/OpenH-RF/twente-cavitation/pipeline.yaml"
 
 
 # Grid at half-wavelength sampling over the full aperture.
@@ -79,9 +77,9 @@ BEAMFORMER_KWARGS = {"subarray_size": 32, "diagonal_loading": 1e-2}
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/twente-cavitation/data/cavitation_bubbles_10kPa_01mL_per_min.hdf5"
-OUTPUT = None  # Output PNG path (default: input file name with a .png extension)
-FRAMES = 20  # Number of frames to average
+ZEA_FILE = "hf://nvidia/OpenH-RF/twente-cavitation/data/cavitation_bubbles_10kPa_01mL_per_min.hdf5"
+OUT = HERE / f"{Path(ZEA_FILE).stem}.png"
+N_FRAMES = 20  # Number of frames to average
 DEVICE = "auto:1"  # Device to use (e.g. 'cpu', 'cuda:0', or 'auto:1')
 
 
@@ -101,9 +99,6 @@ def build_pipeline() -> Pipeline:
 
 
 def main():
-    global OUTPUT
-    if OUTPUT is None:
-        OUTPUT = Path(Path(INPUT).stem + ".png")
 
     zea.init_device(device=DEVICE, verbose=False)
 
@@ -116,9 +111,9 @@ def main():
     config = Config.from_path(str(CONFIG))
     pipeline = Pipeline.from_config(config)
 
-    with File(str(INPUT)) as f:
+    with File(str(ZEA_FILE)) as f:
         parameters = f.load_parameters(**config.parameters)
-        raw = f.data.raw_data[:FRAMES]  # (n_frames, n_tx, n_ax, n_el, 1)
+        raw = f.data.raw_data[:N_FRAMES]  # (n_frames, n_tx, n_ax, n_el, 1)
 
     # Passive-acquisition overrides (see module docstring).
     parameters["tx_apodizations"] = np.ones_like(np.asarray(parameters["tx_apodizations"]))
@@ -145,10 +140,10 @@ def main():
     ax.set_ylabel("Z (mm)")
     cax = make_axes_locatable(ax).append_axes("right", size="5%", pad=0.05)
     fig.colorbar(im, cax=cax, label="dB")
-    plt.savefig(str(OUTPUT), bbox_inches="tight", dpi=100)
+    plt.savefig(str(OUT), bbox_inches="tight", dpi=100)
     plt.close()
 
-    print(f"Saved          : {OUTPUT}")
+    print(f"Saved          : {OUT}")
 
 
 if __name__ == "__main__":

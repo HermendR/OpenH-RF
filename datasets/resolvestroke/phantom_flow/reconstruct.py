@@ -42,9 +42,9 @@ CONFIG = "hf://nvidia/OpenH-RF/resolvestroke/phantom_flow/pipeline.yaml"
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/resolvestroke/phantom_flow/phantom_flow.hdf5"
+ZEA_FILE = "hf://nvidia/OpenH-RF/resolvestroke/phantom_flow/phantom_flow.hdf5"
 FRAME = 0
-OUT = HERE / f"{Path(INPUT).stem}_bmode.png"
+OUT = HERE / f"{Path(ZEA_FILE).stem}_bmode.png"
 
 
 def reverse_tgc(raw, parameters):
@@ -104,7 +104,7 @@ def main():
     zea.init_device()
     config = Config.from_path(str(CONFIG))
 
-    with File(str(INPUT)) as f:
+    with File(str(ZEA_FILE)) as f:
         parameters = f.load_parameters(**config.parameters)
         raw = f.data.raw_data[FRAME : FRAME + 1]  # (1, n_tx, n_ax, n_el, n_ch)
 

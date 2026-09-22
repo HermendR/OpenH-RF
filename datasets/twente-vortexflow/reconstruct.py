@@ -37,21 +37,17 @@ PIPELINE_YAMLS = {
     "chirp": HERE / "pipeline_chirp.yaml",
 }
 
-# Frame index used for the reference reconstruction.
-DEFAULT_FRAME = 10
-DEFAULT_XLIMS = (-0.08, 0.08)
-DEFAULT_ZLIMS = (0.05, 0.10)
-DEFAULT_GRID_SIZE_Z = 480
+XLIMS = (-0.08, 0.08)
+ZLIMS = (0.05, 0.10)
+GRID_SIZE_Z = 480
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5"
-FRAME = DEFAULT_FRAME  # Frame index to reconstruct (default: %(default)s)
-OUTPUT = HERE / "reference_bmode.png"  # Output PNG path (default: %(default)s)
-OUTPUT_2X1 = (
-    HERE / "reference_mapping.png"
-)  # Output PNG path for 2x1 paired view (default: %(default)s)
+ZEA_FILE = "hf://nvidia/OpenH-RF/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5"
+FRAME = 10
+OUT = HERE / "reference_bmode.png"
+OUT_2X1 = HERE / "reference_mapping.png"
 
 
 def build_pipeline() -> zea.Pipeline:
@@ -78,14 +74,14 @@ def build_pipeline() -> zea.Pipeline:
 
 
 def main() -> None:
-    input_path = str(INPUT)
+    input_path = str(ZEA_FILE)
     if "://" not in input_path:
         candidate = Path(input_path)
         if not candidate.is_absolute():
             candidate = HERE / candidate
         if not candidate.exists():
             raise FileNotFoundError(
-                f"Input file not found: {candidate}. Set INPUT to a file inside {HERE}."
+                f"Input file not found: {candidate}. Set ZEA_FILE to a file inside {HERE}."
             )
         input_path = str(candidate)
 
@@ -115,10 +111,10 @@ def main() -> None:
             # Reconstruct one frame.
             params = track.load_parameters()
             # Apply fixed image limits before parameter prep so beamforming uses this FOV.
-            params.xlims = DEFAULT_XLIMS
-            params.zlims = DEFAULT_ZLIMS
+            params.xlims = XLIMS
+            params.zlims = ZLIMS
             # Enforce square reconstruction sampling (same physical pixel size in x and z).
-            params.grid_size_z = DEFAULT_GRID_SIZE_Z
+            params.grid_size_z = GRID_SIZE_Z
             x_span = params.xlims[1] - params.xlims[0]
             z_span = params.zlims[1] - params.zlims[0]
             params.grid_size_x = max(1, int(round(params.grid_size_z * x_span / z_span)))
@@ -146,9 +142,9 @@ def main() -> None:
             ax.set_ylabel("Depth [mm]")
 
     plt.tight_layout()
-    plt.savefig(OUTPUT, dpi=150)
+    plt.savefig(OUT, dpi=150)
     plt.close(fig)
-    print(f"Saved {OUTPUT}")
+    print(f"Saved {OUT}")
 
     # Build requested 2x1 view:
     # top = short imaging pulse ultrasound
@@ -181,9 +177,9 @@ def main() -> None:
             axes2[1].set_axis_off()
 
         fig2.tight_layout()
-        fig2.savefig(OUTPUT_2X1, dpi=150)
+        fig2.savefig(OUT_2X1, dpi=150)
         plt.close(fig2)
-        print(f"Saved {OUTPUT_2X1}")
+        print(f"Saved {OUT_2X1}")
 
 
 if __name__ == "__main__":

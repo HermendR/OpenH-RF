@@ -39,9 +39,9 @@ HF_DIR = "hf://nvidia/OpenH-RF/resolvestroke/saddle/data"
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Any of the 21 files works:
 # the 20 clinical acquisitions (SP01-Left-1 ... SP10-Right) or the phantom PMP01.
-# Swap INPUT for a local path to run against your own copy.
-INPUT = f"{HF_DIR}/PMP01.hdf5"
-OUT = HERE / f"{Path(INPUT).stem}_bmode.png"
+# Swap ZEA_FILE for a local path to run against your own copy.
+ZEA_FILE = f"{HF_DIR}/PMP01.hdf5"
+OUT = HERE / f"{Path(ZEA_FILE).stem}_bmode.png"
 
 
 def reconstruct(input_path, config, pipeline=None):
@@ -70,7 +70,7 @@ def main():
 
     zea.init_device()
     config = Config.from_path(str(CONFIG))
-    image, grid, grid_type = reconstruct(INPUT, config)
+    image, grid, grid_type = reconstruct(ZEA_FILE, config)
     print(f"grid           : {grid.shape}  ({grid_type})")
 
     # Display dynamic range from pipeline.yaml (default 40 dB).

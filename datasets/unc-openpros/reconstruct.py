@@ -39,7 +39,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from zea import Config, File, Pipeline
 
 HERE = Path(__file__).parent
-OUTPUT = HERE / "pred_sos.png"
+OUT = HERE / "pred_sos.png"
 MAIN_OUTPUT = HERE / "assets" / "main.png"
 
 # --- Inputs -----------------------------------------------------------------
@@ -103,8 +103,8 @@ def main():
     outputs = pipeline(data=raw)["data"]
     print(f"reconstructed shape: {outputs.shape}")
 
-    plot_comparison(sos, outputs, OUTPUT)
-    print(f"Saved comparison plot: {OUTPUT}")
+    plot_comparison(sos, outputs, OUT)
+    print(f"Saved comparison plot: {OUT}")
 
     plot_main(outputs, MAIN_OUTPUT)
     print(f"Saved hero image: {MAIN_OUTPUT}")

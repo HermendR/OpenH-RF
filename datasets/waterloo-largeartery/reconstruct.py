@@ -49,18 +49,16 @@ from zea.ops import (
 )
 
 HERE = Path(__file__).parent
-DEFAULT_INPUT = "hf://nvidia/OpenH-RF/waterloo-largeartery/data/Acq5.hdf5"
-DEFAULT_PIPELINE = HERE / "pipeline.yaml"
-DEFAULT_OUTPUT = HERE / "reconstruct_output.png"
 
 DYNAMIC_RANGE = [-50, 0]  # dB; written to pipeline.yaml, tweak it there
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/waterloo-largeartery/data/Acq5.hdf5"
-OUTPUT = DEFAULT_OUTPUT
-PIPELINE = "hf://nvidia/OpenH-RF/waterloo-largeartery/pipeline.yaml"
+ZEA_FILE = "hf://nvidia/OpenH-RF/waterloo-largeartery/data/Acq5.hdf5"
+CONFIG = HERE / "pipeline.yaml"
+OUT = HERE / "reconstruct_output.png"
+HF_CONFIG = "hf://nvidia/OpenH-RF/waterloo-largeartery/pipeline.yaml"
 FRAME = 100
 POWER_THRESHOLD = 50.0  # Power Doppler mask threshold (dB); covers the vein lumen
 VMAX = 1.0  # Velocity color-scale max (m/s) for the quiver overlay; None -> 99th pct
@@ -146,27 +144,17 @@ def build_config() -> Config:
 def main():
     zea.init_device()
 
-    # pipeline.yaml is the source of truth (pipeline + dynamic_range); (re)create
-    # it only if missing so manual tweaks to the dynamic range are preserved.
-    if True:
-        config = Config.from_path(str(PIPELINE))
-        # pipeline.yaml carries no parameters block, so supply the display range.
-        params = dict(config.get("parameters", {}) or {})
-        params.setdefault("dynamic_range", DYNAMIC_RANGE)
-        config["parameters"] = params
-    else:
-        config = build_config()
-        config.to_yaml(str(PIPELINE))
+    config = build_config()
+    config.to_yaml(str(CONFIG))
     pipeline = Pipeline.from_config(config)
 
     has_velocity = False
     dealiased = False
     vx = vz = power = None
 
-    with File(str(INPUT)) as f:
+    with File(str(ZEA_FILE)) as f:
         frame = min(max(0, FRAME), f.data.image.values.shape[0] - 1)
 
-        # breakpoint()
         raw = f.data.raw_data[frame : frame + 1]  # (1, n_tx, n_ax, n_el, 1)
 
         # Reconstruct on the same grid as the stored B-mode so the panels line up.
@@ -202,7 +190,6 @@ def main():
                 print("Using dealiased vector velocity fields.")
             else:
                 print("No dealiased vector velocity fields in file: using raw estimates.")
-    # breakpoint()
     inputs = pipeline.prepare_parameters(parameters)
     recon = pipeline(data=raw, **inputs, return_numpy=True)["data"][0]
     extent = [v * 1e3 for v in parameters.extent_imshow]  # metres -> mm
@@ -239,8 +226,8 @@ def main():
         ax.set_ylabel("z [mm]")
         ax.set_aspect("equal", adjustable="box")
 
-    plt.savefig(OUTPUT, dpi=150, bbox_inches="tight")
-    print(f"Saved {OUTPUT}")
+    plt.savefig(OUT, dpi=150, bbox_inches="tight")
+    print(f"Saved {OUT}")
 
 
 if __name__ == "__main__":

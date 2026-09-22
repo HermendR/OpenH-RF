@@ -62,7 +62,7 @@ PARAMETERS = {
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-INPUT = "hf://nvidia/OpenH-RF/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5"
+ZEA_FILE = "hf://nvidia/OpenH-RF/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5"
 N_FRAMES = 1
 DEVICE = None  # CUDA device ID (e.g. 'cuda:0', 'auto:1', or 'cpu')
 
@@ -94,7 +94,7 @@ def write_config(pipeline: Pipeline, path: Path) -> None:
 
 def main():
     # The input may be an hf:// URI, so write the PNG beside this script.
-    output_path = HERE / f"{Path(INPUT).stem}.png"
+    output_path = HERE / f"{Path(ZEA_FILE).stem}.png"
 
     zea.init_device(device=DEVICE, verbose=False)
 
@@ -105,7 +105,7 @@ def main():
 
     frames = list(range(N_FRAMES))
     # Load file: read acquisition parameters (with config overrides) and raw RF data
-    with File(str(INPUT)) as f:
+    with File(str(ZEA_FILE)) as f:
         parameters = f.load_parameters(**config.parameters)
 
         # Only grab and beamform the first frame

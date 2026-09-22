@@ -9,7 +9,7 @@ pipeline:
             - 3000000.0
             - 7000000.0
     - demodulate
-    - beamform
+    -   name: beamform
     - envelope_detect
     -   name: normalize
         params:
