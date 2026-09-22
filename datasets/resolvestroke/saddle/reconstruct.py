@@ -41,7 +41,7 @@ HF_DIR = "hf://nvidia/OpenH-RF/resolvestroke/saddle/data"
 # the 20 clinical acquisitions (SP01-Left-1 ... SP10-Right) or the phantom PMP01.
 # Swap ZEA_FILE for a local path to run against your own copy.
 ZEA_FILE = f"{HF_DIR}/PMP01.hdf5"
-OUT = HERE / f"{Path(ZEA_FILE).stem}_bmode.png"
+OUT = HERE / "assets" / f"{Path(ZEA_FILE).stem}_bmode.png"
 
 
 def reconstruct(input_path, config, pipeline=None):
@@ -107,6 +107,7 @@ def main():
     cax = make_axes_locatable(ax).append_axes("right", size="5%", pad=0.05)
     fig.colorbar(pm, cax=cax, label="dB")
     fig.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(OUT), dpi=120, bbox_inches="tight")
 
     print(f"Reconstructed  : {image.shape}")

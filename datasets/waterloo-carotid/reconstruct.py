@@ -55,7 +55,7 @@ DYNAMIC_RANGE = [-50, 0]  # dB; written to pipeline.yaml, tweak it there
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/waterloo-carotid/data/Acq90.hdf5"
 CONFIG = HERE / "pipeline.yaml"
-OUT = HERE / "reconstruct_output.png"
+OUT = HERE / "assets" / "reconstruct_output.png"
 HF_CONFIG = "hf://nvidia/OpenH-RF/waterloo-carotid/pipeline.yaml"
 FRAME = 100
 POWER_THRESHOLD = 38.0  # Power Doppler mask threshold (dB); this data peaks near 46
@@ -200,6 +200,7 @@ def main():
         ax.set_ylabel("z [mm]")
         ax.set_aspect("equal", adjustable="box")
 
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(str(OUT), dpi=150, bbox_inches="tight")
     print(f"Saved {OUT}")
 

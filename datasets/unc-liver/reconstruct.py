@@ -49,7 +49,7 @@ CONFIG = HERE / "pipeline.yaml"
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/unc-liver/data/fullwave_abdominal_wall_1283_reg.hdf5"
 FRAME = 0
-OUT = HERE / "bmode.png"
+OUT = HERE / "assets" / "bmode.png"
 SOS_MAP = False  # Also plot the ground-truth sos_map next to the B-mode (2 subplots)
 
 
@@ -177,6 +177,7 @@ def main() -> None:
         fig.colorbar(im, cax=cax, label="dB")
 
     fig.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUT, dpi=150, bbox_inches="tight")
     print(f"Saved reconstruction to {OUT}")
 

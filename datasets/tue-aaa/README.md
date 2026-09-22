@@ -17,6 +17,12 @@ language:
 
 # Abdominal Aortic Aneurysm (AAA) curved-array channel data
 
+![Reconstructed cineloop from AAA_subject11.hdf5](assets/AAA_subject11.gif)
+
+40 frames of [`AAA_subject11.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-aaa/data/AAA_subject11.hdf5), reconstructed from the raw
+channel data with the `pipeline.yaml` in this folder.
+
+
 ## Dataset Description
 
 This dataset contains ultrasound channel data acquired in vivo from patients with abdominal aortic aneurysms (AAA). The dataset consists of ultrafast acquisitions obtained using a curved array ultrasound transducer operating in diverging wave transmission mode with a Verasonics system. The data capture raw radio frequency (RF) channel signals at high frame rates, enabling access to the full spatiotemporal information.

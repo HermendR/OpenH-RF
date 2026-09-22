@@ -32,7 +32,7 @@ from zea import Config, File, Pipeline
 
 HERE = Path(__file__).parent
 CONFIG = HERE / "pipeline.yaml"
-OUTPUT_DIR = HERE / "reference_bmodes"
+OUTPUT_DIR = HERE / "assets"
 ASSETS = HERE / "assets"
 
 # The frame each scan's committed reference_bmodes/<scan>.png was rendered from.

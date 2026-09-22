@@ -13,6 +13,15 @@ tags:
 
 # Data Card — Mosaic Intelligence / NuevoSono in-vivo IVUS
 
+*In-vivo intravascular ultrasound raw-channel acquisitions from a porcine study, with lumen, intima-media and guidewire segmentation.*
+
+![Reconstructed IVUS frames from acquisition 15_10_50_19 with lumen, intima-media and guidewire overlays](assets/15_10_50_19/overview_5_frames.png)
+
+Five frames across the pullback of
+[`15_10_50_19.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/mosaic-intelligence/data/15_10_50_19.hdf5),
+reconstructed from the raw channel data and overlaid with the segmentation shipped
+alongside it. Produced by `reconstruct.py`.
+
 This data card consists of a collection of in-vivo intravascular ultrasound (IVUS) acquisitions from a porcine study. Each acquisition is saved in the *zea* file format.  The general dataset sections below (contributors, license, characterization, etc.) apply to all acquisitions, with individual subsections detailing each dataset's specific dimensions and which optional groups are present.
 
 There are 9 acquisitions in total:

@@ -303,7 +303,7 @@ def main():
         if not candidate.exists():
             raise FileNotFoundError(f"{ZEA_FILE} not found (looked in cwd and {HERE}).")
         input_path = str(candidate)
-    output_path = HERE / f"{Path(input_path).stem}_reconstruct.png"
+    output_path = HERE / "assets" / f"{Path(input_path).stem}_reconstruct.png"
 
     # Build with every parameter explicit, save to pipeline.yaml, then reload and
     # run from that file - so the YAML alone fully describes the reconstruction.
@@ -421,6 +421,7 @@ def main():
 
     fig.suptitle(f"{Path(input_path).name} — frame {FRAME}")
     fig.tight_layout()
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(str(output_path), bbox_inches="tight", dpi=100)
 
     print(f"Reconstructed  : {recon.shape}")

@@ -39,7 +39,7 @@ HERE = Path(__file__).parent
 ZEA_FILE = "hf://nvidia/OpenH-RF/tel-aviv/mouse_tumor/seg/01-scan-3.hdf5"
 CONFIG = "hf://nvidia/OpenH-RF/tel-aviv/mouse_tumor/pipeline.yaml"
 FRAME = 46
-OUT = HERE / "01-scan-3_frame046.png"
+OUT = HERE / "assets" / "01-scan-3_frame046.png"
 
 
 def main():
@@ -74,6 +74,7 @@ def main():
     ax.set_xlabel("Lateral [mm]")
     ax.set_ylabel("Axial depth [mm]")
     fig.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUT, dpi=300, bbox_inches="tight")
     print(f"Saved {OUT}")
 

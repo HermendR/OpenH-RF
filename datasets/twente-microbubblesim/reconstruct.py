@@ -84,7 +84,7 @@ def default_config_path(pulse: str) -> Path:
 
 def default_output_path(path: Path, pulse: str) -> Path:
     population = population_name(path)
-    return HERE / f"{population}_{pulse}.png"
+    return HERE / "assets" / f"{population}_{pulse}.png"
 
 
 def main() -> None:

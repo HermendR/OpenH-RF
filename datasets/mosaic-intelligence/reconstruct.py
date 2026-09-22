@@ -279,7 +279,7 @@ def main():
             )
         panels.append((frame, recon_gray, mask))
 
-    output = OUT or (HERE / "outputs" / Path(ZEA_FILE).stem / f"overview_{len(frames)}_frames.png")
+    output = OUT or (HERE / "assets" / Path(ZEA_FILE).stem / f"overview_{len(frames)}_frames.png")
     render_overview(panels, frames, labels, position_mm, frame_rate_hz, ALPHA, output)
 
 

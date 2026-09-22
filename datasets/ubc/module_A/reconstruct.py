@@ -50,7 +50,7 @@ HERE = Path(__file__).resolve().parent
 ZEA_FILE = (
     "hf://nvidia/OpenH-RF/ubc/module_A/acquisitions/case_1.83/ubc_swave_cirs_1.83_p10_f13.hdf5"
 )
-OUT = HERE / "results" / "reconstruct_1.83_p10_f13.png"
+OUT = HERE / "assets" / "reconstruct_1.83_p10_f13.png"
 FRAME = 0
 
 NORMALIZATION_PERCENTILE = 99.5

@@ -57,7 +57,7 @@ DYNAMIC_RANGE = [-50, 0]  # dB; written to pipeline.yaml, tweak it there
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/waterloo-largeartery/data/Acq5.hdf5"
 CONFIG = HERE / "pipeline.yaml"
-OUT = HERE / "reconstruct_output.png"
+OUT = HERE / "assets" / "reconstruct_output.png"
 HF_CONFIG = "hf://nvidia/OpenH-RF/waterloo-largeartery/pipeline.yaml"
 FRAME = 100
 POWER_THRESHOLD = 50.0  # Power Doppler mask threshold (dB); covers the vein lumen
@@ -226,6 +226,7 @@ def main():
         ax.set_ylabel("z [mm]")
         ax.set_aspect("equal", adjustable="box")
 
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(OUT, dpi=150, bbox_inches="tight")
     print(f"Saved {OUT}")
 

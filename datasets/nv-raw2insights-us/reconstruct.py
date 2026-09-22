@@ -40,7 +40,7 @@ HERE = Path(__file__).resolve().parent
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/nv-raw2insights-us/data/nv_r2i_us_validation_0084.hdf5"
-OUT = HERE / "nv_raw2insights_us_reconstructed.png"
+OUT = HERE / "assets" / "nv_raw2insights_us_reconstructed.png"
 CONFIG = HERE / "pipeline.yaml"
 
 
@@ -184,6 +184,7 @@ def main():
 
     fig.suptitle(f"openh-rf sample (phase error: {phase_err[0]:.2f} rad)", fontsize=14, y=1.02)
     plt.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(OUT, dpi=150, bbox_inches="tight")
     print(f"Saved {OUT}")
 

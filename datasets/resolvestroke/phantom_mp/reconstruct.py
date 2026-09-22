@@ -42,7 +42,7 @@ CONFIG = "hf://nvidia/OpenH-RF/resolvestroke/phantom_mp/pipeline.yaml"
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/resolvestroke/phantom_mp/phantom_mp.hdf5"
 FRAME = 0
-OUT = HERE / f"{Path(ZEA_FILE).stem}_bmode.png"
+OUT = HERE / "assets" / f"{Path(ZEA_FILE).stem}_bmode.png"
 
 
 def sector_grids(p, apex):
@@ -107,6 +107,7 @@ def main():
         fig.colorbar(pm, cax=cax, label="dB")
 
     fig.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(OUT), dpi=150, bbox_inches="tight")
     print(f"Saved: {OUT}")
 

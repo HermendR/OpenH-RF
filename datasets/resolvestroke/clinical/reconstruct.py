@@ -50,7 +50,7 @@ TGC_DB_PER_CM = 1.5  # display-only linear TGC (dB gain per cm of depth)
 SUBJECT = "SP02-Left-2"
 ZEA_FILE = f"hf://nvidia/OpenH-RF/resolvestroke/clinical/{SUBJECT}/{SUBJECT}.hdf5"
 FRAME = 0
-OUT = HERE / f"{SUBJECT}_bmode.png"
+OUT = HERE / "assets" / f"{SUBJECT}_bmode.png"
 
 
 def reverse_tgc(raw, parameters):
@@ -174,6 +174,7 @@ def main():
     print(f"y-z sector     : {yz_slice.shape}")
 
     fig.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(OUT), dpi=150, bbox_inches="tight")
     print(f"Saved          : {OUT}")
 

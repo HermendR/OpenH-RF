@@ -62,7 +62,7 @@ PARAMETERS = {
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf5"
-OUT = HERE / f"{Path(ZEA_FILE).stem}_reconstructed.png"
+OUT = HERE / "assets" / f"{Path(ZEA_FILE).stem}_reconstructed.png"
 FRAME = 0  # Zero-based frame index to reconstruct
 DYNAMIC_RANGE = [-40, 0]  # dB range shown
 
@@ -204,6 +204,7 @@ def main():
     ax.set_xlabel("Lateral [mm]")
     ax.set_ylabel("Depth [mm]")
     plt.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(OUT, dpi=150, bbox_inches="tight")
     print(f"Saved {OUT}")
 

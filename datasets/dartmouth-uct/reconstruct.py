@@ -182,7 +182,7 @@ def crop_to_grid(gt, grid):
 
 def main():
     suffix = "_sos.png" if SOS_MAP else ".png"
-    output_path = HERE / (Path(ZEA_FILE).stem + suffix)
+    output_path = HERE / "assets" / (Path(ZEA_FILE).stem + suffix)
 
     zea.init_device(device=DEVICE, verbose=True)
 
@@ -246,6 +246,7 @@ def main():
         fig.colorbar(handle, cax=cax)
     fig.suptitle(Path(ZEA_FILE).name)
     fig.tight_layout()
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(str(output_path), bbox_inches="tight", dpi=100)
 
     print(f"Reconstructed  : {recon.shape}")

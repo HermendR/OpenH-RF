@@ -35,7 +35,7 @@ HERE = Path(__file__).parent
 ZEA_FILE = "hf://nvidia/OpenH-RF/technion/phantom/data/ph.hdf5"
 CONFIG = "hf://nvidia/OpenH-RF/technion/phantom/pipeline.yaml"
 FRAME = 6
-OUT = HERE / "bmode.png"
+OUT = HERE / "assets" / "bmode.png"
 
 
 def main():
@@ -65,6 +65,7 @@ def main():
     cax = make_axes_locatable(ax).append_axes("right", size="5%", pad=0.05)
     fig.colorbar(im, cax=cax, label="a.u. (8-bit)")
     fig.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(OUT), dpi=130, bbox_inches="tight")
     print(f"raw {raw.shape} -> B-mode {recon.shape}; saved {OUT}")
 

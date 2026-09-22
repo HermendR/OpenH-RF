@@ -59,7 +59,7 @@ PARAMETERS = {
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/tue-aaa/data/AAA_subject11.hdf5"
-OUT = HERE / "AAApatient01_bmode.png"
+OUT = HERE / "assets" / "AAApatient01_bmode.png"
 HF_CONFIG = "hf://nvidia/OpenH-RF/tue-aaa/pipeline.yaml"
 DEVICE = None  # CUDA device ID (e.g. 'cuda:0', 'auto:1', or 'cpu')
 
@@ -118,6 +118,7 @@ def main():
     )
     plt.xlabel("X (mm)")
     plt.ylabel("Z (mm)")
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(str(OUT), bbox_inches="tight", dpi=100)
 
     print(f"Reconstructed  : {recon.shape}")

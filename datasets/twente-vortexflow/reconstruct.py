@@ -46,8 +46,8 @@ GRID_SIZE_Z = 480
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5"
 FRAME = 10
-OUT = HERE / "reference_bmode.png"
-OUT_2X1 = HERE / "reference_mapping.png"
+OUT = HERE / "assets" / "reference_bmode.png"
+OUT_2X1 = HERE / "assets" / "reference_mapping.png"
 
 
 def build_pipeline() -> zea.Pipeline:
@@ -142,6 +142,7 @@ def main() -> None:
             ax.set_ylabel("Depth [mm]")
 
     plt.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(OUT, dpi=150)
     plt.close(fig)
     print(f"Saved {OUT}")
@@ -177,6 +178,7 @@ def main() -> None:
             axes2[1].set_axis_off()
 
         fig2.tight_layout()
+        Path(OUT_2X1).parent.mkdir(parents=True, exist_ok=True)
         fig2.savefig(OUT_2X1, dpi=150)
         plt.close(fig2)
         print(f"Saved {OUT_2X1}")

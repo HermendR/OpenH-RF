@@ -78,7 +78,7 @@ BEAMFORMER_KWARGS = {"subarray_size": 32, "diagonal_loading": 1e-2}
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/twente-cavitation/data/cavitation_bubbles_10kPa_01mL_per_min.hdf5"
-OUT = HERE / f"{Path(ZEA_FILE).stem}.png"
+OUT = HERE / "assets" / f"{Path(ZEA_FILE).stem}.png"
 N_FRAMES = 20  # Number of frames to average
 DEVICE = "auto:1"  # Device to use (e.g. 'cpu', 'cuda:0', or 'auto:1')
 
@@ -140,6 +140,7 @@ def main():
     ax.set_ylabel("Z (mm)")
     cax = make_axes_locatable(ax).append_axes("right", size="5%", pad=0.05)
     fig.colorbar(im, cax=cax, label="dB")
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(str(OUT), bbox_inches="tight", dpi=100)
     plt.close()
 

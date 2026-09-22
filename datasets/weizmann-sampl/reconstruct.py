@@ -63,7 +63,7 @@ FRAME_COUNT = 15  # Number of frames to sample (systematic mode)
 
 
 def reconstruct_single(config):
-    output_path = OUT or HERE / f"{Path(ZEA_FILE).stem}.png"
+    output_path = OUT or HERE / "assets" / f"{Path(ZEA_FILE).stem}.png"
 
     with File(str(ZEA_FILE)) as f:
         n_frames_available = f.data.raw_data.shape[0]
@@ -96,6 +96,7 @@ def reconstruct_single(config):
     plt.imshow(image, extent=extent_mm, cmap="gray")
     plt.xlabel("X (mm)")
     plt.ylabel("Z (mm)")
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(str(output_path), bbox_inches="tight", dpi=100)
 
     print(f"Reconstructed  : {recon.shape}")
@@ -134,7 +135,7 @@ def reconstruct_grid(config):
         rows.append((path.stem, list(zip(frame_indices, images, [extent_mm] * len(images)))))
         print(f"raw_data shape   : {raw.shape}  ({path.stem})")
 
-    _save_grid(rows, OUT or HERE / "random_grid.png", frame_label_offset=0)
+    _save_grid(rows, OUT or HERE / "assets" / "random_grid.png", frame_label_offset=0)
 
 
 def reconstruct_systematic_grid(config):
@@ -177,7 +178,7 @@ def reconstruct_systematic_grid(config):
         rows.append((patient, list(zip(valid, images, [extent_mm] * len(images)))))
         print(f"raw_data shape   : {raw.shape}  ({patient}, frame numbers {valid})")
 
-    _save_grid(rows, OUT or HERE / "search_grid.png", frame_label_offset=0)
+    _save_grid(rows, OUT or HERE / "assets" / "search_grid.png", frame_label_offset=0)
 
 
 def _save_grid(rows, output_path, frame_label_offset):
@@ -199,6 +200,7 @@ def _save_grid(rows, output_path, frame_label_offset):
             ax.set_ylabel("Z (mm)")
 
     fig.tight_layout()
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(output_path), bbox_inches="tight", dpi=100)
     print(f"Saved          : {output_path}")
 

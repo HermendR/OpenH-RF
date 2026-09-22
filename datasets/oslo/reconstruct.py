@@ -122,7 +122,8 @@ def reconstruct(
     ax.set_ylabel("z [mm]")
     ax.set_title(Path(path).stem, fontsize=8)
 
-    out_path = HERE / (Path(path).stem + suffix)
+    out_path = HERE / "assets" / (Path(path).stem + suffix)
+    Path(out_path).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(out_path), bbox_inches="tight", dpi=110)
     plt.close(fig)
     print(f"{Path(path).parent.name}/{Path(path).name} -> {out_path.name}")

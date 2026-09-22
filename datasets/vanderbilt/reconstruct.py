@@ -94,7 +94,7 @@ def write_config(pipeline: Pipeline, path: Path) -> None:
 
 def main():
     # The input may be an hf:// URI, so write the PNG beside this script.
-    output_path = HERE / f"{Path(ZEA_FILE).stem}.png"
+    output_path = HERE / "assets" / f"{Path(ZEA_FILE).stem}.png"
 
     zea.init_device(device=DEVICE, verbose=False)
 
@@ -129,6 +129,7 @@ def main():
     )
     plt.xlabel("X (m)")
     plt.ylabel("Z (m)")
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(str(output_path), bbox_inches="tight", dpi=100)
 
     print(f"Reconstructed  : {recon.shape}")

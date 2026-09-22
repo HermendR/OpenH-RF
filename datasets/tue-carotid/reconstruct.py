@@ -36,7 +36,7 @@ HERE = Path(__file__).parent
 ZEA_FILE = "hf://nvidia/OpenH-RF/tue-carotid/data/5_long_bifur_R_0000.hdf5"
 CONFIG = "hf://nvidia/OpenH-RF/tue-carotid/pipeline.yaml"
 FRAME = 0
-OUT = HERE / "zea_carotid_2023_sample.png"
+OUT = HERE / "assets" / "zea_carotid_2023_sample.png"
 
 
 def main():
@@ -65,6 +65,7 @@ def main():
     plt.xlabel("x [mm]")
     plt.ylabel("z [mm]")
     plt.title("TU/e carotid 2023 sample")
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(str(OUT), dpi=300, bbox_inches="tight")
     print(f"Saved to {OUT}")
 

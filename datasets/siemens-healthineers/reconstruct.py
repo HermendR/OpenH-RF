@@ -51,7 +51,7 @@ def coords_to_imshow_mm(coords):
 
 
 def main():
-    output = OUT or HERE / f"{Path(ZEA_FILE).stem}_recon.png"
+    output = OUT or HERE / "assets" / f"{Path(ZEA_FILE).stem}_recon.png"
 
     zea.init_device()
 
@@ -95,6 +95,7 @@ def main():
     ax.set_xlabel("Lateral [mm]")
     ax.set_ylabel("Depth [mm]")
     plt.tight_layout()
+    Path(output).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output, dpi=150, bbox_inches="tight")
     print(f"Saved {output}")
 

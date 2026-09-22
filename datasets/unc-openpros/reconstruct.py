@@ -39,7 +39,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from zea import Config, File, Pipeline
 
 HERE = Path(__file__).parent
-OUT = HERE / "pred_sos.png"
+OUT = HERE / "assets" / "pred_sos.png"
 MAIN_OUTPUT = HERE / "assets" / "main.png"
 
 # --- Inputs -----------------------------------------------------------------

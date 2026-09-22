@@ -37,7 +37,7 @@ HERE = Path(__file__).parent
 # local path to run against your own copy.
 ZEA_FILE = "hf://nvidia/OpenH-RF/kaist-snubh-barreleye/data/S01_D1.hdf5"
 CONFIG = "hf://nvidia/OpenH-RF/kaist-snubh-barreleye/pipeline.yaml"
-OUT = HERE / "main.png"
+OUT = HERE / "assets" / "reconstruction.png"
 
 
 def main():
@@ -67,6 +67,7 @@ def main():
     ax.set_ylabel("depth [mm]")
     ax.set_title(f"{Path(ZEA_FILE).stem} — patient {patient} ({label})")
     fig.tight_layout()
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(OUT), dpi=130, bbox_inches="tight")
     print(f"raw {raw.shape} -> B-mode {recon.shape}; saved {OUT}")
 

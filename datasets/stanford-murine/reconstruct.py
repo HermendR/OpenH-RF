@@ -40,7 +40,7 @@ ZEA_FILE = (
     "Rat3/ExposedLiver/DATA_Tracks_20190319_115804.hdf5"
 )
 CONFIG_DIR = "hf://nvidia/OpenH-RF/stanford-murine"  # holds the pipeline_*.yaml configs
-OUT_DIR = HERE  # every PNG is written here
+OUT_DIR = HERE / "assets"  # every PNG is written here
 
 
 def metadata_scalar(group, name: str) -> float:

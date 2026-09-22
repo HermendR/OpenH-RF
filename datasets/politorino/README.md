@@ -18,6 +18,12 @@ size_categories:
 
 # Data Card — High Frame Rate Fascicle Tracking - PoliTO - Torino, Italy
 
+![Reconstructed cineloop from PAT02_w1.hdf5](assets/PAT02_w1.gif)
+
+40 frames of [`PAT02_w1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/politorino/data/PAT02_w1.hdf5), reconstructed from the raw
+channel data with the `pipeline.yaml` in this folder.
+
+
 ## Dataset Description
 
 The dataset comprises in-vivo human musculoskeletal raw ultrasound data during dynamic tasks. It includes the acquisition of the medial gastrocnemius on 5 healthy volunteers  during heel raises and treadmill walking. The data is acquired with a Verasonics Vantage 256 research platform and a 128-element linear array probe (L11-5v) at 500 fps for 9.6 s per acquisition. Each subject was imaged during six task conditions: cyclical heel raises and drops at a fixed frequency provided by a metronome at 60 (hr1), 90 (hr2), and 120 bpm (hr3) and walking at 2 (w1), 4 (w2), and 5 (w3) km/h. We provide the raw data, the beamformed DAS and FDMAS images, and the automated fascicle tracking obtained with UltraTimTrack (https://github.com/timvanderzee/UltraTimTrack). The tracking data was obtained on the first 9s of sub-sampled .mp4 videos at three frame rates: 25 fps, 50 fps and 125 fps. The tracking data is provided for each frame rate and a Python code is provided to correctly visualize the data on the reconstructed images.  **Data type: in-vivo**
