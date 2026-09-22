@@ -36,8 +36,8 @@ The source data are available from Figshare:
 - [Murine liver acquisitions](https://doi.org/10.25452/figshare.plus.28291985)
 - [Sound-speed phantom and meat-layer acquisitions](https://doi.org/10.25452/figshare.plus.28291988)
 
-The converted demo dataset is hosted at
-[openh-rf/stanford](https://huggingface.co/datasets/openh-rf/stanford).
+The converted dataset is hosted at
+[nvidia/OpenH-RF/stanford-murine](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/stanford-murine).
 
 ## Dataset Contributors
 
