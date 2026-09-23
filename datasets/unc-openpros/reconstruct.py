@@ -39,19 +39,19 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from zea import Config, File, Pipeline
 
 HERE = Path(__file__).parent
-OUT = HERE / "assets" / "pred_sos.png"
+OUT = HERE / "assets" / "comparison.png"
 MAIN_OUTPUT = HERE / "assets" / "main.png"
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
 # local path to run against your own copy.
-ZEA_FILE = "hf://nvidia/OpenH-RF/unc-openpros/data/3_04_P_prostate_51.hdf5"
+ZEA_FILE = "hf://nvidia/OpenH-RF/unc-openpros/data/3_01_P_prostate_00.hdf5"
 CONFIG = "hf://nvidia/OpenH-RF/unc-openpros/pipeline.yaml"
 # The file holds 1140 acquisitions; the figure shows the first.
 SAMPLES = 1  # acquisitions to run through the network
 
 SOS_CMAP = "turbo"  # high-contrast, multi-hue colormap for the SOS maps
-SOS_RANGE = (1300, 3600)  # physical speed-of-sound range, m/s
+SOS_RANGE = (1300, 1700)  # physical speed-of-sound range, m/s
 
 
 def plot_comparison(sos, pred, path: Path) -> None:

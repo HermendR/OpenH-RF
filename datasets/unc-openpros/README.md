@@ -21,9 +21,12 @@ size_categories:
 
 # OpenPros - Limited-View Prostate Ultrasound Computed Tomography
 
-![Speed-of-sound map of a prostate slice, predicted by InversionNet](assets/main.png)
+<img width="100%" align="center" src="assets/comparison.png" 
+  alt="Comparison of the ground truth speed-of-sound map of a prostate slice (left) and the prediction by InversionNet (right)"/>
 
-*Speed of sound predicted from the limited-view waveform data of the first acquisition in [`data/3_04_P_prostate_51.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5) with the pretrained OpenPros InversionNet.*
+<!-- ![Speed-of-sound map of a prostate slice, predicted by InversionNet](assets/main.png) -->
+
+*Speed of sound predicted from the limited-view waveform data of the first acquisition in [`data/3_01_P_prostate_00.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5) with the pretrained OpenPros InversionNet.*
 
 ## Dataset Description
 
@@ -132,3 +135,16 @@ The converted release identifies its content as a simulation and stores composit
 ## Ethical Considerations
 
 The packaged RF data and SOS labels are simulated and contain no directly identifying patient information.
+
+## Citation
+
+```bibtex
+@inproceedings{wang2026openpros,
+  title={Openpros: A large-scale dataset for limited view prostate ultrasound computed tomography},
+  author={Wang, Hanchen and Wu, Yixuan and Feng, Yinan and Jin, Peng and Zhang, Luoyuan and Feng, Shihang and Wiskin, James and Turkbey, Baris and Pinto, Peter and Wood, Bradford and others},
+  booktitle={International Conference on Learning Representations},
+  volume={2026},
+  pages={113741--113759},
+  year={2026}
+}
+```
