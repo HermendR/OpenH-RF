@@ -19,15 +19,11 @@ language:
 
 ![Reconstructed cineloop from 30_1.hdf5](assets/30_1.gif)
 
-*Cine loop of a thyroid scan, [`data/30_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/weizmann-sampl/data/30_1.hdf5), reconstructed from the raw
-channel data with the `pipeline.yaml` in this folder.*
+*Cine loop of a thyroid scan, [`data/30_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/weizmann-sampl/data/30_1.hdf5), reconstructed from the raw channel data with the `pipeline.yaml` in this folder.*
 
 ## Dataset Description
 
-The data set consists of clinical ultrasound channel data acquired
-with a Verasonics Vantage 128 system and an L11-5v linear array probe, imaging
-the thyroid gland of 30 adult healthy volunteers. The scans were carried out by a senior radiologist
-who specializes in ultrasound thyroid imaging. The purpose of the scans is to provide a complete set of channel data of a thyroid gland scan of the full anatomy.
+The data set consists of clinical ultrasound channel data acquired with a Verasonics Vantage 128 system and an L11-5v linear array probe, imaging the thyroid gland of 30 adult healthy volunteers. The scans were carried out by a senior radiologist who specializes in ultrasound thyroid imaging. The purpose of the scans is to provide a complete set of channel data of a thyroid gland scan of the full anatomy.
 
 ## Dataset Contributor(s)
 
@@ -39,25 +35,17 @@ who specializes in ultrasound thyroid imaging. The purpose of the scans is to pr
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
-General-purpose ultrasound channel-data foundation model pretraining and
-evaluation — in particular DAS beamforming/reconstruction, inverse speed of sound imaging.
-Suitable as a base for future downstream tasks (e.g. thyroid
-segmentation, nodule detection) if paired with additional annotations from the B-mode images.
+General-purpose ultrasound channel-data foundation model pretraining and evaluation — in particular DAS beamforming/reconstruction, inverse speed of sound imaging. Suitable as a base for future downstream tasks (e.g. thyroid segmentation, nodule detection) if paired with additional annotations from the B-mode images.
 
 ## Dataset Characterization
 
 - **Data Collection Method:** clinical
 - **Labeling Method:** N/A — no annotations included
-- **Acquisition system:** Verasonics Vantage 128 system, L11-5v linear array
-  probe, center frequency 7.6 MHz (76.8% fractional
-  bandwidth), element width 0.27 mm, aperture width 38.1 mm; RF sampling
-  frequency 31.25 MHz, demodulation frequency 7.8125 MHz, assumed sound
-  speed 1540 m/s.
+- **Acquisition system:** Verasonics Vantage 128 system, L11-5v linear array probe, center frequency 7.6 MHz (76.8% fractional bandwidth), element width 0.27 mm, aperture width 38.1 mm; RF sampling frequency 31.25 MHz, demodulation frequency 7.8125 MHz, assumed sound speed 1540 m/s.
 
 ## Processing the Dataset
 
@@ -69,8 +57,7 @@ Set `ZEA_FILE` and `FRAME` at the top of the script to pick a scan and frame; se
 
 [zea v0.1.6](https://github.com/tue-bmd/zea)
 
-zea file format, one acquisition HDF5 file per subject. Before packaging,
-the frames prior to workspace parameter freezing were removed from the raw channel data frames.
+zea file format, one acquisition HDF5 file per subject. Before packaging, the frames prior to workspace parameter freezing were removed from the raw channel data frames.
 
 ## Dataset Quantification
 
@@ -118,45 +105,20 @@ the frames prior to workspace parameter freezing were removed from the raw chann
 
 ## Data Validation
 
-`reconstruct.py` runs the `zea.Pipeline` defined in `pipeline.yaml`, alongside
-this README, to reconstruct a B-mode image from the raw channel data: cast →
-apply window → demodulate → DAS beamform (with native, per-element/per-pixel
-lens correction) → envelope detect → normalize → log compress. See that file
-for the grid size, dynamic range and lens-correction parameters.
+`reconstruct.py` runs the `zea.Pipeline` defined in `pipeline.yaml`, alongside this README, to reconstruct a B-mode image from the raw channel data: cast → apply window → demodulate → DAS beamform (with native, per-element/per-pixel lens correction) → envelope detect → normalize → log compress. See that file for the grid size, dynamic range and lens-correction parameters.
 
-Three frames from each of three subjects, reconstructed with the `pipeline.yaml`
-in this folder:
+Three frames from each of three subjects, reconstructed with the `pipeline.yaml` in this folder:
 
 ![3 frames from 3 different subjects](assets/three_patients_grid.png)
 
-All 9 sampled frames, across 3 different subjects, show consistent diffuse
-in-vivo tissue speckle with no reconstruction artifacts, confirming the
-acquisition geometry, timing metadata, and native lens correction are
-correctly recorded/applied across the released dataset, not just a single
-acquisition.
+All 9 sampled frames, across 3 different subjects, show consistent diffuse in-vivo tissue speckle with no reconstruction artifacts, confirming the acquisition geometry, timing metadata, and native lens correction are correctly recorded/applied across the released dataset, not just a single acquisition.
 
 ## Known Issues
 
-- `decimSampleRate`, `quadDecim`, and `demodFrequency` are absent from the
-  raw Verasonics workspace (`BaselineWorkspace.mat`) and were instead
-  sourced from this session's recalibration checkpoint files,
-  where they were confirmed constant.
-- The default beamforming grid in `pipeline.yaml` (`grid_size_x=300`,
-  `grid_size_z=400`) is coarser than the half-wavelength Nyquist rate for
-  this probe/frequency; this only affects the resolution of the example
-  reconstruction images, not the released raw channel data.
-- The number of frames for each subject is variable, depending on the subject's
-  anatomy and the radiologist's scanning protocol. It may also be affected by
-  bottlenecks in the Verasonics system's data transfer rate,
-  which can cause "dropped frames" when the system cannot keep up with the
-  acquisition speed.
+- `decimSampleRate`, `quadDecim`, and `demodFrequency` are absent from the raw Verasonics workspace (`BaselineWorkspace.mat`) and were instead sourced from this session's recalibration checkpoint files, where they were confirmed constant.
+- The default beamforming grid in `pipeline.yaml` (`grid_size_x=300`, `grid_size_z=400`) is coarser than the half-wavelength Nyquist rate for this probe/frequency; this only affects the resolution of the example reconstruction images, not the released raw channel data.
+- The number of frames for each subject is variable, depending on the subject's anatomy and the radiologist's scanning protocol. It may also be affected by bottlenecks in the Verasonics system's data transfer rate, which can cause "dropped frames" when the system cannot keep up with the acquisition speed.
 
 ## Ethical Considerations
 
-This acquisition was performed under a Weizmann Institute IRB-approved research protocol,
-with informed consent obtained from the subject prior to scanning. The
-subjects are identified only by a de-identified code  with no directly
-identifying information (name, exact date of birth, medical record number)
-stored in the released file. No `acquisition_time` timestamp is embedded in
-the zea file, consistent with HIPAA Safe Harbor de-identification guidance
-for human-subject data.
+This acquisition was performed under a Weizmann Institute IRB-approved research protocol, with informed consent obtained from the subject prior to scanning. The subjects are identified only by a de-identified code  with no directly identifying information (name, exact date of birth, medical record number) stored in the released file. No `acquisition_time` timestamp is embedded in the zea file, consistent with HIPAA Safe Harbor de-identification guidance for human-subject data.

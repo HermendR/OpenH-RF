@@ -10,22 +10,15 @@ tags: [ultrasound, rf, openh-rf]
 
 ![Reconstructed cineloop from 01-scan-3.hdf5](assets/01-scan-3.gif)
 
-*Cine loop of the rotational sweep through a mouse tumor,
-[`mouse_tumor/seg/01-scan-3.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tel-aviv/mouse_tumor/seg/01-scan-3.hdf5),
-reconstructed from the raw channel data with `mouse_tumor/pipeline.yaml`.*
+*Cine loop of the rotational sweep through a mouse tumor, [`mouse_tumor/seg/01-scan-3.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tel-aviv/mouse_tumor/seg/01-scan-3.hdf5), reconstructed from the raw channel data with `mouse_tumor/pipeline.yaml`.*
 
 ## Dataset Description
 
-This dataset provides ultrasound data captured via a motorized 1D transducer array. It captures both in-vivo tumors in mice and in-silico water-bead phantoms, and was originally acquired as part of our work on implicit neural representations (INR) [1].
-The primary task for this released dataset is the segmentation of tumors (in mice) and water beads (in phantoms) from multi-angle ultrasound acquisitions. 
+This dataset provides ultrasound data captured via a motorized 1D transducer array. It captures both in-vivo tumors in mice and in-silico water-bead phantoms, and was originally acquired as part of our work on implicit neural representations (INR) [1]. The primary task for this released dataset is the segmentation of tumors (in mice) and water beads (in phantoms) from multi-angle ultrasound acquisitions.
 
-Data was acquired using a motorized 1D array transducer with 128 elements (IP104, Sonic Concepts) operated by a Vantage 256 system (Verasonics Inc.).
-For the in-vivo data, 5 breast cancer tumor-bearing mice were scanned under anesthesia.
-Each volume was sampled across a 180° rotation at 1.25° intervals, yielding 144 angular frames per acquisition.
-At each angle, five plane waves were steered linearly between -5° and 5°.
+Data was acquired using a motorized 1D array transducer with 128 elements (IP104, Sonic Concepts) operated by a Vantage 256 system (Verasonics Inc.). For the in-vivo data, 5 breast cancer tumor-bearing mice were scanned under anesthesia. Each volume was sampled across a 180° rotation at 1.25° intervals, yielding 144 angular frames per acquisition. At each angle, five plane waves were steered linearly between -5° and 5°.
 
-Each beamformed B-mode image was semi-manually annotated by a non-professional using MedSAM [2].
-Volumetric comparison of these segmentation masks against manual measurements produced a mean volumetric error of 6.8% ± 1.5%.
+Each beamformed B-mode image was semi-manually annotated by a non-professional using MedSAM [2]. Volumetric comparison of these segmentation masks against manual measurements produced a mean volumetric error of 6.8% ± 1.5%.
 
 ## Dataset Contributor(s)
 
@@ -38,8 +31,7 @@ Volumetric comparison of these segmentation masks against manual measurements pr
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -53,10 +45,7 @@ Segmentation of tumors in mice and water-bead phantoms.
 
 ## Processing the Dataset
 
-The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/tel-aviv/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the
-`pipeline.yaml` definitions in `mouse_tumor/` and `phantom/` and the
-[zea library](https://github.com/tue-bmd/zea). The script streams the data from the
-Hugging Face Hub and overlays the stored segmentation on the reconstructed B-mode.
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/tel-aviv/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definitions in `mouse_tumor/` and `phantom/` and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub and overlays the stored segmentation on the reconstructed B-mode.
 
 ## Dataset Format
 
@@ -77,8 +66,7 @@ Hugging Face Hub and overlays the stored segmentation on the reconstructed B-mod
 
 ## Subject Metadata
 
-5 tumor-bearing female FVB/NHanHsd mice (injected with Met-1 mouse breast carcinoma cells). 
-2 phantoms containing 3 water gel beads in an agarose mixture.
+5 tumor-bearing female FVB/NHanHsd mice (injected with Met-1 mouse breast carcinoma cells). 2 phantoms containing 3 water gel beads in an agarose mixture.
 
 | Subject / Phantom | Imaging Depth (cm) |
 |---|---|
@@ -101,5 +89,4 @@ Animal-related procedures were conducted in accordance with the guidelines provi
 The data has been cleared for release under CC BY 4.0 (institutional review approval TAU-MD-IL-2407-154–5).
 
 ## References
-[1] Grutman et al., “Implicit neural representation for scalable 3D reconstruction from sparse ultrasound images,” npj. Acoust., 2025. https://doi.org/10.1038/s44384-025-00018-5
-[2] Ma et al., “Segment anything in medical images,” Nat. Commun., 2024. https://www.nature.com/articles/s41467-024-44824-z
+[1] Grutman et al., “Implicit neural representation for scalable 3D reconstruction from sparse ultrasound images,” npj. Acoust., 2025. https://doi.org/10.1038/s44384-025-00018-5 [2] Ma et al., “Segment anything in medical images,” Nat. Commun., 2024. https://www.nature.com/articles/s41467-024-44824-z

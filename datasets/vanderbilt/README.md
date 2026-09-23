@@ -22,14 +22,13 @@ size_categories:
 
 ![Cineloop of the left atrial appendage](assets/118420_1_Focused_Uncoded_TX.gif)
 
-*One cineloop of a fundamental focused-transmit acquisition,
-[`data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5).*
+*One cineloop of a fundamental focused-transmit acquisition, [`data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5).*
 
 ## Dataset Description
 
 This multi-frame focused transmit echocardiography channel dataset contains over 2000 frames of fundamental and harmonic data acquired with the P4-2v probe on a Verasonics Vantage 128. This dataset was originally acquired to visualize the left atrial appendage in patients following transesophageal echocardiography. Some patients have atrial fibrillation, which can cause blood clots to form in the appendage.
 
-Each dataset follows the naming convention of `subject_id`_`view_number`_`sequence_type`. `subject_id` is a six-digit random number. `view_number` distinguishes between multiple views acquired on the same subject. `sequence_type` is either Focused_Uncoded_TX or Harmonic_Focused_Uncoded_TX. 
+Each dataset follows the naming convention of `subject_id`_`view_number`_`sequence_type`. `subject_id` is a six-digit random number. `view_number` distinguishes between multiple views acquired on the same subject. `sequence_type` is either Focused_Uncoded_TX or Harmonic_Focused_Uncoded_TX.
 
 ## Dataset Contributor(s)
 
@@ -45,8 +44,7 @@ Each dataset follows the naming convention of `subject_id`_`view_number`_`sequen
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -89,27 +87,18 @@ All acquisitions are submitted in the *zea* file format as raw RF channel data, 
 
 ### zea 0.1.6 Migration
 
-Files migrated with zea 0.1.6 store RF channel data at
-`tracks/track_0/data/raw_data`.
+Files migrated with zea 0.1.6 store RF channel data at `tracks/track_0/data/raw_data`.
 
-Two legacy scalar text fields are relocated because they are not standard
-zea 0.1.6 metadata fields:
+Two legacy scalar text fields are relocated because they are not standard zea 0.1.6 metadata fields:
 
 | Original path | Migrated path |
 |---|---|
 | `metadata/imaging_view_name` | `custom/legacy_metadata/imaging_view_name` |
 | `metadata/notes` | `custom/legacy_metadata/notes` |
 
-The scalar text values, string dtypes, and original attributes are preserved.
-Each relocated field also has a `source_hdf5_path` attribute recording its
-original path. No text is reinterpreted or cleaned by this relocation.
-The RF data are re-saved, without intentional filtering, normalization, or
-other numerical preprocessing. This schema migration is not an additional
-de-identification pass.
+The scalar text values, string dtypes, and original attributes are preserved. Each relocated field also has a `source_hdf5_path` attribute recording its original path. No text is reinterpreted or cleaned by this relocation. The RF data are re-saved, without intentional filtering, normalization, or other numerical preprocessing. This schema migration is not an additional de-identification pass.
 
-The current release uses the migrated schema; inspect each file's root
-`zea_version` attribute and field paths when loading it. The descriptions in
-Subject Metadata below apply to both the original and migrated text fields.
+The current release uses the migrated schema; inspect each file's root `zea_version` attribute and field paths when loading it. The descriptions in Subject Metadata below apply to both the original and migrated text fields.
 
 ## Dataset Quantification
 
@@ -117,8 +106,7 @@ Subject Metadata below apply to both the original and migrated text fields.
 
 - **Samples:** 82 cineloops (32 frames each) from 30 patients — 2,624 fundamental frames
 - Plus a matching set of 2,624 harmonic frames (same cineloops, harmonic sequence)
-- Plus one CIRS phantom validation acquisition (`CIRS_validation/CIRS_fundamental.hdf5`,
-  32 frames), giving the 165 files and 5,280 frames of the current release
+- Plus one CIRS phantom validation acquisition (`CIRS_validation/CIRS_fundamental.hdf5`, 32 frames), giving the 165 files and 5,280 frames of the current release
 - **Train / validation / test split:** N/A
 
 ## Subject Metadata

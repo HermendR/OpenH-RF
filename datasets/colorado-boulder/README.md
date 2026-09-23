@@ -22,10 +22,7 @@ size_categories:
 | ![Tracked SSA sweep through the 2D ATS 539 phantom](assets/ssa-sweep-phantom2d.gif) | ![Tracked SSA sweep through the 3D phantom](assets/ssa-sweep-phantom3d.gif) | ![Tracked SSA sweep along in-vivo quadriceps muscle](assets/ssa-sweep-invivo.gif) |
 | [`Sub-dataset-1`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/colorado-boulder/Sub-dataset-1) | [`Sub-dataset-2`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/colorado-boulder/Sub-dataset-2) | [`Sub-dataset-3`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/colorado-boulder/Sub-dataset-3) |
 
-*Motion-compensated tracked SSA reconstructions, one per sub-dataset. Each frame
-beamforms the raw RF channel data with its own tracked probe pose; a 40 mm window of
-frames is then coherently summed to synthesise a larger effective aperture, and the
-window slides along the freehand sweep.*
+*Motion-compensated tracked SSA reconstructions, one per sub-dataset. Each frame beamforms the raw RF channel data with its own tracked probe pose; a 40 mm window of frames is then coherently summed to synthesise a larger effective aperture, and the window slides along the freehand sweep.*
 
 ## Dataset Description
 
@@ -48,8 +45,7 @@ Data were collected between 08/23/2024 and 06/30/2026.
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -75,10 +71,7 @@ These targets may be used to assess spatial resolution, contrast, lesion visibil
 
 ### Data Collection Method
 
-Each acquisition consisted of a freehand sweep in the lateral direciton of the transducer.
-All 64 array elements were used during receive. Diverging waves were generated using a negative virtual source while activating the 20 central array elements during transmit.
-For in-vivo targets the transducer was manually swept along the longitudinal direction of the quadriceps while transmitting diverging waves at 400 Hz.
-The transducer was optically tracked using an NDI Polaris Vega® XT optical tracking system manufactured by Northern Digital Inc., Ontario, Canada.
+Each acquisition consisted of a freehand sweep in the lateral direciton of the transducer. All 64 array elements were used during receive. Diverging waves were generated using a negative virtual source while activating the 20 central array elements during transmit. For in-vivo targets the transducer was manually swept along the longitudinal direction of the quadriceps while transmitting diverging waves at 400 Hz. The transducer was optically tracked using an NDI Polaris Vega® XT optical tracking system manufactured by Northern Digital Inc., Ontario, Canada.
 
 ### Labeling Method
 
@@ -97,15 +90,9 @@ None (N/A).
 
 The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/colorado-boulder/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
 
-The script selects tracked frames at roughly 1 mm lateral spacing and writes the
-reconstruction to `ssa_bmode.png`. Point `ZEA_FILE` at any acquisition in the corpus
-to reconstruct it. [`assets/main_bmode.png`](./assets/main_bmode.png) was produced
-this way, compounding the full sweep into one image; the loops at the top of this card
-slide a shorter aperture window along the sweep instead.
+The script selects tracked frames at roughly 1 mm lateral spacing and writes the reconstruction to `ssa_bmode.png`. Point `ZEA_FILE` at any acquisition in the corpus to reconstruct it. [`assets/main_bmode.png`](./assets/main_bmode.png) was produced this way, compounding the full sweep into one image; the loops at the top of this card slide a shorter aperture window along the sweep instead.
 
-`reconstruct.py` defines the custom `apply_probe_pose` operation that `pipeline.yaml`
-refers to, which applies the frame-wise `metadata/probe_pose` to the probe geometry
-and transmit origins before beamforming.
+`reconstruct.py` defines the custom `apply_probe_pose` operation that `pipeline.yaml` refers to, which applies the frame-wise `metadata/probe_pose` to the probe geometry and transmit origins before beamforming.
 
 ## Dataset Format
 

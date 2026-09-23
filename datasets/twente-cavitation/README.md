@@ -31,23 +31,21 @@ Data recorded on 01/19/2026. Dataset created on 07/09/2026.
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 The dataset contains data over a large pressure range, from very low pressures up to the very high pressures used in therapeutic ultrasound. With this data one can quantify the treatment threshold and treatment effects over this wide range. The dataset also includes data for different levels of perfusion by varying the flowrate, from which the effect of perfusion on treatment efficacy can be studied. The data is intended to be processed with passive cavitation detection algorithms.
 
 ## Dataset Characterization
 - **Data Collection Method:** phantom
-- **Labeling Method:** N/A 
+- **Labeling Method:** N/A
 - **Acquisition system:** Verasonics Vantage 256, L11-4v transducer. 128 elements, 7.24MHz center frequency, 27.778 MHz sampling rate
 
 ## Processing the Dataset
 
 The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/twente-cavitation/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
 
-Set `ZEA_FILE` at the top of the script to pick an acquisition and `N_FRAMES` to set how
-many frames are averaged; the map is written to `assets/<file>.png`.
+Set `ZEA_FILE` at the top of the script to pick an acquisition and `N_FRAMES` to set how many frames are averaged; the map is written to `assets/<file>.png`.
 
 ## Dataset Format
 
@@ -64,8 +62,7 @@ many frames are averaged; the map is written to `assets/<file>.png`.
 - **Stored HDF5 size:** 10.85 GB (10,850,533,376 bytes).
 - All recordings were taken under identical conditions, except for the driving pressure and flowrate of the microbubble solution through the channel.
 
-Each acquisition is one zea HDF5 file with a single track (`tracks/track_0`). The
-per-frame channel data plus the scan/probe fields needed to reconstruct it are:
+Each acquisition is one zea HDF5 file with a single track (`tracks/track_0`). The per-frame channel data plus the scan/probe fields needed to reconstruct it are:
 
 | Field | Shape | dtype | Units | Description |
 |---|---|---|---|---|
@@ -84,11 +81,9 @@ per-frame channel data plus the scan/probe fields needed to reconstruct it are:
 | `scan/tgc_gain_curve` | (16384,) | float32 | a.u. | Time-gain-compensation curve applied along the axial dimension. |
 | `tracks/track_0/transmit_only` | scalar | bool | — | False (the array receives). |
 
-> **Note.** The table below is the **acquisition matrix** — it lists which files exist
-> and under what driving pressure / flowrate, not the internal layout of a sample.
+> **Note.** The table below is the **acquisition matrix** — it lists which files exist and under what driving pressure / flowrate, not the internal layout of a sample.
 
-Files are named `cavitation_bubbles_<pressure>kPa_<flowrate>mL.hdf5`, where
-`<flowrate>` is the microbubble flowrate in mL/min (`01` = 0.1, `05` = 0.5, `2` = 2).
+Files are named `cavitation_bubbles_<pressure>kPa_<flowrate>mL.hdf5`, where `<flowrate>` is the microbubble flowrate in mL/min (`01` = 0.1, `05` = 0.5, `2` = 2).
 
 | Name | Acoustic driving pressure [kPa]| Microbubble flowrate [mL/min] |
 |---                                    |---   |---  |
@@ -117,11 +112,7 @@ Only one phantom was used. This is a phantom made of PVCp with a single flow cha
 
 ## Data Validation
 
-`reconstruct.py` reconstructs a passive acoustic map (PAM) with the `zea.Pipeline` in
-`pipeline.yaml`: the array only receives, so the transmit model is overridden and the
-chain aligns purely on receive curvature (one-way passive beamforming), averaging the
-envelope energy over sampling instants and frames. An example output is
-[`assets/cavitation_bubbles_10kPa_01mL_per_min.png`](assets/cavitation_bubbles_10kPa_01mL_per_min.png).
+`reconstruct.py` reconstructs a passive acoustic map (PAM) with the `zea.Pipeline` in `pipeline.yaml`: the array only receives, so the transmit model is overridden and the chain aligns purely on receive curvature (one-way passive beamforming), averaging the envelope energy over sampling instants and frames. An example output is [`assets/cavitation_bubbles_10kPa_01mL_per_min.png`](assets/cavitation_bubbles_10kPa_01mL_per_min.png).
 
 ## Known Issues
 No known issues.

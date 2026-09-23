@@ -20,8 +20,7 @@ language:
 
 ![Reconstructed cineloop from AAA_subject11.hdf5](assets/AAA_subject11.gif)
 
-*Cine loop of [`data/AAA_subject11.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-aaa/data/AAA_subject11.hdf5),
-reconstructed from the raw channel data.*
+*Cine loop of [`data/AAA_subject11.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-aaa/data/AAA_subject11.hdf5), reconstructed from the raw channel data.*
 
 ## Dataset Description
 
@@ -38,8 +37,7 @@ July 2026
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 

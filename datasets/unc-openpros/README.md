@@ -23,9 +23,7 @@ size_categories:
 
 ![Speed-of-sound map of a prostate slice, predicted by InversionNet](assets/main.png)
 
-*Speed of sound predicted from the limited-view waveform data of the first acquisition in
-[`data/3_04_P_prostate_51.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5)
-with the pretrained OpenPros InversionNet.*
+*Speed of sound predicted from the limited-view waveform data of the first acquisition in [`data/3_04_P_prostate_51.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5) with the pretrained OpenPros InversionNet.*
 
 ## Dataset Description
 
@@ -50,8 +48,7 @@ OpenPros was created by:
 - Emad Boctor
 - Youzuo Lin <yzlin@unc.edu> (corresponding author)
 
-The affiliations include the University of North Carolina at Chapel Hill, Johns Hopkins University, the National Institutes of Health, the Pennsylvania State University, QT Imaging, Iowa State University, and Google DeepMind.
-Source repository: <https://github.com/hanchenwang/OpenPros>; dataset website: <https://open-pros.github.io/>.
+The affiliations include the University of North Carolina at Chapel Hill, Johns Hopkins University, the National Institutes of Health, the Pennsylvania State University, QT Imaging, Iowa State University, and Google DeepMind. Source repository: <https://github.com/hanchenwang/OpenPros>; dataset website: <https://open-pros.github.io/>.
 
 ## Dataset Creation Date
 
@@ -59,8 +56,7 @@ Source repository: <https://github.com/hanchenwang/OpenPros>; dataset website: <
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 

@@ -23,17 +23,11 @@ size_categories:
 
 ![Reconstructed cineloop from Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5](assets/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.gif)
 
-*Cine loop of the relaxed left calf (lateral, longitudinal),
-[`data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5),
-reconstructed from the raw channel data with the `pipeline.yaml` in this folder.*
+*Cine loop of the relaxed left calf (lateral, longitudinal), [`data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5), reconstructed from the raw channel data with the `pipeline.yaml` in this folder.*
 
 ## Dataset Description
 
-18,720 raw RF frames (plane wave; 580,320 frame-transmits) with associated speed-of-sound
-(SoS) measurements, acquired in vivo by LITMUS at the University of Waterloo with a
-programmable research scanner configured for high-frame-rate imaging. Images were collected
-with a rigorous protocol based on landmarking according to bone markers to ensure image
-consistency. This data was collected as part of the following study:
+18,720 raw RF frames (plane wave; 580,320 frame-transmits) with associated speed-of-sound (SoS) measurements, acquired in vivo by LITMUS at the University of Waterloo with a programmable research scanner configured for high-frame-rate imaging. Images were collected with a rigorous protocol based on landmarking according to bone markers to ensure image consistency. This data was collected as part of the following study:
 
 D. Xiao, P. De La Torre, M. Saif El Nasr, A. J. Y. Chee, M. Mourtzakis, and A. C. H. Yu, “LivePulse-Echo Speed-of-Sound Estimation for Quality Assessment of Large Muscles in Humans,”Ultrasound in Medicine & Biology, vol. 51, no. 11, pp. 1925–1935, Nov. 2025.
 
@@ -53,8 +47,7 @@ D. Xiao, P. De La Torre, M. Saif El Nasr, A. J. Y. Chee, M. Mourtzakis, and A. C
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -70,8 +63,7 @@ The algorithm for global speed of sound estimation can be found here:
 D. Xiao, P. D. l. Torre and A. C. H. Yu, "Real-Time Speed-of-Sound Estimation In Vivo via Steered Plane Wave Ultrasound," in IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 71, no. 6, pp. 673-686, June 2024, doi: 10.1109/TUFFC.2024.3395490.
 
 
-- **Acquisition system:**
-Raw RF data was acquired from the US4R-Lite research scanner (US4US, Warsaw, Poland), equipped with an L14-5 linear array. For a subset of acquisitions, a through-transmission SoS estimation was made using a custom setup consisting of two single-element Olympus transducers (C567; Olympus; Tokyo, Japan).
+- **Acquisition system:** Raw RF data was acquired from the US4R-Lite research scanner (US4US, Warsaw, Poland), equipped with an L14-5 linear array. For a subset of acquisitions, a through-transmission SoS estimation was made using a custom setup consisting of two single-element Olympus transducers (C567; Olympus; Tokyo, Japan).
 
 ## Processing the Dataset
 
@@ -95,8 +87,7 @@ Swap `--n-frames 1 --save-as png` for `--save-as gif` to get the cine loop. In t
 
 [zea v0.1.6](https://github.com/tue-bmd/zea)
 
-Submitted in the [`zea` file format](https://zea.readthedocs.io/en/latest/)
-(one HDF5 file per acquisition).
+Submitted in the [`zea` file format](https://zea.readthedocs.io/en/latest/) (one HDF5 file per acquisition).
 
 Per-sample contents of the converted HDF5:
 
@@ -116,8 +107,8 @@ Per-sample contents of the converted HDF5:
 | `custom/baecke_sport_index` | `[1]` | float32 |  /5  | Baecke sport activity score |
 | `custom/baecke_leisure_index` | `[1]` | float32 |  /5  | Baecke leisure activity score |
 | `custom/baecke_score` | `[1]` | float32 |  /15  | Total baecke score |
-All `coordinates` arrays are per-pixel Cartesian positions in metres, last axis
-`[x, y, z]` (y = 0 for these 2-D maps).
+
+All `coordinates` arrays are per-pixel Cartesian positions in metres, last axis `[x, y, z]` (y = 0 for these 2-D maps).
 
 ## Dataset Quantification
 
@@ -143,13 +134,7 @@ All 1,248 HDF5 files are uploaded; current stored size and format version are re
 
 ## Data Validation
 
-`reconstruct.py` builds a `zea.Pipeline` of DAS beamforming →
-envelope detection → normalization → log-compression **in code** and reconstructs
-a B-mode directly from `raw_data` — showing the raw-to-image flow without any
-config file. It also saves the pipeline to `pipeline.yaml` as a
-shareable recipe. Comparing the reconstruction against the stored B-mode is a
-sanity check that the acquisition parameters and probe geometry are recorded
-correctly, and serves as a reproducible reference reconstruction.
+`reconstruct.py` builds a `zea.Pipeline` of DAS beamforming → envelope detection → normalization → log-compression **in code** and reconstructs a B-mode directly from `raw_data` — showing the raw-to-image flow without any config file. It also saves the pipeline to `pipeline.yaml` as a shareable recipe. Comparing the reconstruction against the stored B-mode is a sanity check that the acquisition parameters and probe geometry are recorded correctly, and serves as a reproducible reference reconstruction.
 
 ## Known Issues
 - Scan.sound_speed uses default 1540 m/s used for computing tx delays as was done during acquisition. This is different from the estimated global speed of sound which is currently stored as a custom element.

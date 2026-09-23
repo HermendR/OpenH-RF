@@ -20,15 +20,12 @@ language:
 
 ![Longitudinal view of a carotid bifurcation](assets/5_long_bifur_R_0000.gif)
 
-*One cardiac cycle of a longitudinal bifurcation scan,
-[`data/5_long_bifur_R_0000.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-carotid/data/5_long_bifur_R_0000.hdf5).*
+*One cardiac cycle of a longitudinal bifurcation scan, [`data/5_long_bifur_R_0000.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-carotid/data/5_long_bifur_R_0000.hdf5).*
 
 
 ## Dataset Description
 
-The dataset includes carotid artery scans from 10 subjects.
-Each file includes 150 frames, at least one cardiac cycle.
-The acquisition scheme it consists of 128 line scanning interleaved with 21 plane waves.
+The dataset includes carotid artery scans from 10 subjects. Each file includes 150 frames, at least one cardiac cycle. The acquisition scheme it consists of 128 line scanning interleaved with 21 plane waves.
 
 Included views:
 
@@ -40,9 +37,7 @@ Included views:
 - Longitudinal section 1cm from bifurcation
 - Longitudinal section
 
-The acquisitions were performed with a Verasonics 256.
-The acquisitions were performed with a linear probe (Verasonics L11-5v).
-The same operator performed all acquisitions.
+The acquisitions were performed with a Verasonics 256. The acquisitions were performed with a linear probe (Verasonics L11-5v). The same operator performed all acquisitions.
 
 ## Dataset Contributor(s)
 
@@ -61,8 +56,7 @@ Nov 2023
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -96,16 +90,14 @@ Alternatively, you can use the `reconstruct.py` [script](https://github.com/open
 
 **OpenH-RF release:** 80 HDF5 files; 435.40 GB (435,403,030,528 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-- **Samples / frames / acquisitions:** 80 acquisitions (one HDF5 file each) from
-  10 subjects, 150 frames per acquisition — 12,000 frames total.
+- **Samples / frames / acquisitions:** 80 acquisitions (one HDF5 file each) from 10 subjects, 150 frames per acquisition — 12,000 frames total.
 - **Transmit events per frame:** 149 — 128 focused lines interleaved with 21 plane waves.
 - **Train / validation / test split:** none; each file is a single acquisition.
 - **Total size on disk:** 435.40 GB (435,403,030,528 bytes).
 
 ### Per-File Feature Summary
 
-Every file has one track (`tracks/track_0`) with the same field structure;
-`n_frames = 150`, `n_tx = 149`, `n_ax = 2176`, `n_el = 128`.
+Every file has one track (`tracks/track_0`) with the same field structure; `n_frames = 150`, `n_tx = 149`, `n_ax = 2176`, `n_el = 128`.
 
 | Field | Shape | Dtype | Units | Description |
 |---|---|---|---|---|
@@ -120,11 +112,7 @@ Every file has one track (`tracks/track_0`) with the same field structure;
 | `tracks/track_0/scan/time_to_next_transmit` | `(150, 149)` | float32 | s | Per-frame, per-transmit inter-transmit interval |
 | `probe/probe_geometry` | `(128, 3)` | float32 | m | Element positions (x, y, z) |
 
-Scalars: `probe/name` = `verasonics_l11_5v` (linear, 128 elements),
-`probe/probe_center_frequency` = 6.25 MHz, `scan/center_frequency` =
-`scan/demodulation_frequency` = 7.8125 MHz, `scan/sampling_frequency` =
-31.25 MHz, `scan/sound_speed` = 1540 m/s. `us_machine` = Verasonics Vantage 256.
-No derived data products are stored; `raw_data` is the only `data/` field.
+Scalars: `probe/name` = `verasonics_l11_5v` (linear, 128 elements), `probe/probe_center_frequency` = 6.25 MHz, `scan/center_frequency` = `scan/demodulation_frequency` = 7.8125 MHz, `scan/sampling_frequency` = 31.25 MHz, `scan/sound_speed` = 1540 m/s. `us_machine` = Verasonics Vantage 256. No derived data products are stored; `raw_data` is the only `data/` field.
 
 ## Subject Metadata
 

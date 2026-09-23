@@ -26,30 +26,13 @@ size_categories:
 
 <a href="assets/main_image.png"><img src="assets/main_image_small.png" alt="Transcranial contrast-enhanced power Doppler of a human subject (SP03-Left, bolus +10 s), x-z maximum-intensity projection" width="360"></a>
 
-*3D power Doppler of the transcranial CEUS acquisition
-[`clinical/SP03-Left/SP03-Left.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/resolvestroke/clinical/SP03-Left/SP03-Left.hdf5)
-at bolus +10 s, x-z maximum-intensity projection, reconstructed from the released channel data.*
+*3D power Doppler of the transcranial CEUS acquisition [`clinical/SP03-Left/SP03-Left.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/resolvestroke/clinical/SP03-Left/SP03-Left.hdf5) at bolus +10 s, x-z maximum-intensity projection, reconstructed from the released channel data.*
 
 ## Dataset Description
 
-[Resolve Stroke](https://www.resolvestroke.com/) develops SYLVER, a
-software-driven ultrasound platform that supports clinical assessment in
-patients suspected of, or at risk for, cerebral perfusion abnormalities by
-improving visualization of cerebral vasculature and providing complementary
-information on cerebral perfusion.
-SYLVER images with a 32×32 matrix array probe at 2 MHz
-using diverging-wave transmits. CE and FDA clearances are expected in 2026.
-This directory holds the data Resolve Stroke contributes to OpenH-RF: pre-beamformed
-RF/IQ channel data from an imaging phantom, a flow phantom, and in-vivo transcranial
-acquisitions, all de-identified and released under CC BY 4.0. The in-vivo data comes
-from the CPP-approved SCULPT clinical study. Two transmit sequences are included: a
-saddle sequence that images a 2D plane for real-time B-mode, and a 4 kHz
-single-aperture volume sequence for CEUS and blood-flow measurement.
+[Resolve Stroke](https://www.resolvestroke.com/) develops SYLVER, a software-driven ultrasound platform that supports clinical assessment in patients suspected of, or at risk for, cerebral perfusion abnormalities by improving visualization of cerebral vasculature and providing complementary information on cerebral perfusion. SYLVER images with a 32×32 matrix array probe at 2 MHz using diverging-wave transmits. CE and FDA clearances are expected in 2026. This directory holds the data Resolve Stroke contributes to OpenH-RF: pre-beamformed RF/IQ channel data from an imaging phantom, a flow phantom, and in-vivo transcranial acquisitions, all de-identified and released under CC BY 4.0. The in-vivo data comes from the CPP-approved SCULPT clinical study. Two transmit sequences are included: a saddle sequence that images a 2D plane for real-time B-mode, and a 4 kHz single-aperture volume sequence for CEUS and blood-flow measurement.
 
-Each dataset directory holds its data card (`README.md`), a `reconstruct.py` +
-`pipeline.yaml` beamforming recipe and, for the CEUS datasets, a power-Doppler
-reconstruction; the HDF5 files are on the Hub and the preview images in
-[`assets/`](assets/).
+Each dataset directory holds its data card (`README.md`), a `reconstruct.py` + `pipeline.yaml` beamforming recipe and, for the CEUS datasets, a power-Doppler reconstruction; the HDF5 files are on the Hub and the preview images in [`assets/`](assets/).
 
 ## Dataset Contributor(s)
 
@@ -66,15 +49,11 @@ reconstruction; the HDF5 files are on the Hub and the preview images in
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Processing the Dataset
 
-Each sub-dataset has its own `reconstruct.py` and `pipeline.yaml`, as provided in the
-[OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF/tree/main/datasets/resolvestroke), built on the
-[zea library](https://github.com/tue-bmd/zea); the CEUS datasets add a power-Doppler
-reconstruction. See the data card of each sub-dataset for how to run them.
+Each sub-dataset has its own `reconstruct.py` and `pipeline.yaml`, as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF/tree/main/datasets/resolvestroke), built on the [zea library](https://github.com/tue-bmd/zea); the CEUS datasets add a power-Doppler reconstruction. See the data card of each sub-dataset for how to run them.
 
 The Python scripts carry their own `SPDX-License-Identifier: Apache-2.0` header; the dataset itself is CC BY 4.0.
 
@@ -97,16 +76,9 @@ The Python scripts carry their own `SPDX-License-Identifier: Apache-2.0` header;
 
 ## `clinical/` — transcranial CEUS, 20 acquisitions
 
-Ten human subjects of the SCULPT study, two acquisitions each (other side and/or
-second session), imaged through the temporal acoustic window during a microbubble
-bolus. Each file holds 20 000 frames of diverging-wave IQ channel data at 4 kHz:
-five 1 s clips taken before the bolus and at +5, +10, +15 and +20 s. Every file also
-carries reference maps computed by SYLVER from the complete bolus passage
-(`custom/computed_references/`: microvascular image and radial velocities on a 0.6 mm
-Cartesian grid), provided as targets, not as a clinical ground truth.
+Ten human subjects of the SCULPT study, two acquisitions each (other side and/or second session), imaged through the temporal acoustic window during a microbubble bolus. Each file holds 20 000 frames of diverging-wave IQ channel data at 4 kHz: five 1 s clips taken before the bolus and at +5, +10, +15 and +20 s. Every file also carries reference maps computed by SYLVER from the complete bolus passage (`custom/computed_references/`: microvascular image and radial velocities on a 0.6 mm Cartesian grid), provided as targets, not as a clinical ground truth.
 
-Power Doppler reconstructed from the released channel data, one x-z projection per
-acquisition at bolus +10 s:
+Power Doppler reconstructed from the released channel data, one x-z projection per acquisition at bolus +10 s:
 
 <a href="assets/clinical_pd_montage.png"><img src="assets/clinical_pd_montage.png" alt="Power Doppler x-z MIP at bolus +10 s for the 20 clinical acquisitions" width="100%"></a>
 
@@ -114,16 +86,11 @@ The reference microvascular image of the same 20 acquisitions, x-z projection:
 
 <a href="assets/clinical_mvi_montage.png"><img src="assets/clinical_mvi_montage.png" alt="Reference microvascular image (mvi), x-z MIP, for the 20 clinical acquisitions" width="100%"></a>
 
-The [data card](clinical/README.md) has the inventory of the 20 acquisitions with the
-five-clip power Doppler and the reference maps of each, the field table, and the
-reconstruction scripts.
+The [data card](clinical/README.md) has the inventory of the 20 acquisitions with the five-clip power Doppler and the reference maps of each, the field table, and the reconstruction scripts.
 
 ## `phantom_flow/` — flow phantom CEUS
 
-A CIRS 769 flow phantom with an ATS523A pump, microbubbles flowing through two tubes
-(4 mm and 2 mm), same sequence and clip structure as the clinical files. The file also
-carries the tube mask (known geometry, an actual ground truth) and the same computed
-reference maps as the clinical data.
+A CIRS 769 flow phantom with an ATS523A pump, microbubbles flowing through two tubes (4 mm and 2 mm), same sequence and clip structure as the clinical files. The file also carries the tube mask (known geometry, an actual ground truth) and the same computed reference maps as the clinical data.
 
 <a href="assets/phantom_flow_bmode.png"><img src="assets/phantom_flow_bmode.png" alt="phantom_flow B-mode, two perpendicular sectors" width="100%"></a>
 
@@ -141,9 +108,7 @@ See the [data card](phantom_flow/README.md).
 
 ## `phantom_mp/` — multi-tissue imaging phantom
 
-A CIRS 040GSE phantom, 1000 volumetric frames of the same static scene with the
-4 kHz diverging-wave sequence: wire targets, cysts and tissue-mimicking background,
-for beamforming and resolution studies.
+A CIRS 040GSE phantom, 1000 volumetric frames of the same static scene with the 4 kHz diverging-wave sequence: wire targets, cysts and tissue-mimicking background, for beamforming and resolution studies.
 
 <a href="assets/phantom_mp_bmode.png"><img src="assets/phantom_mp_bmode.png" alt="phantom_mp B-mode, two perpendicular sectors" width="100%"></a>
 
@@ -153,11 +118,7 @@ See the [data card](phantom_mp/README.md).
 
 ## `saddle/` — anatomical reference B-modes
 
-One wide-angle diverging-wave frame per acquisition from the "saddle" sequence
-(9 transmits steered −24° to +24°; each transmit is repeated for four consecutive
-256-element receive sub-apertures, so the frame carries the full 1024-element
-aperture), for the 20 clinical acquisitions and the imaging phantom: the anatomical
-view at the same probe placement as the CEUS clips.
+One wide-angle diverging-wave frame per acquisition from the "saddle" sequence (9 transmits steered −24° to +24°; each transmit is repeated for four consecutive 256-element receive sub-apertures, so the frame carries the full 1024-element aperture), for the 20 clinical acquisitions and the imaging phantom: the anatomical view at the same probe placement as the CEUS clips.
 
 <a href="assets/saddle_bmode_montage.png"><img src="assets/saddle_bmode_montage.png" alt="Saddle-array B-modes for the 21 files" width="100%"></a>
 

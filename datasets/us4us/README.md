@@ -24,9 +24,7 @@ size_categories:
 
 ![Ring-array USCT reconstruction of a forearm cross-section](assets/s1_l_reconstruct.png)
 
-*A left-forearm cross-section, slice 8 of
-[`data/s1_l.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/us4us/data/s1_l.hdf5),
-reconstructed beside the sinogram and reference image stored in the file.*
+*A left-forearm cross-section, slice 8 of [`data/s1_l.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/us4us/data/s1_l.hdf5), reconstructed beside the sinogram and reference image stored in the file.*
 
 ## Dataset Description
 Raw RF data acquired with the us4us Ltd. us4R system and a Draminski ring probe.
@@ -56,8 +54,7 @@ Each slice was recorded using 1024 subsequent single-element transmissions, and 
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 Ultrasound computed tomography image reconstruction.
@@ -65,11 +62,11 @@ Ultrasound computed tomography image reconstruction.
 ## Dataset Characterization
   * Data Collection Method: phantom, healthy adult human volunteers.
   * Labeling Method: N/A.
-  * Acquisition system: 
+  * Acquisition system:
       - ring probe:
           - probe radius: 130mm,
-          - number of elements: 1024, 
-          - center frequency: 2MHz, 
+          - number of elements: 1024,
+          - center frequency: 2MHz,
           - sampling rate: 8125000.0,
       - us4R research system + host PC,
       - custom positioning system for subject spatial control.
@@ -90,8 +87,7 @@ The script rebuilds the attenuation sinogram and filtered-backprojection image f
 
 [zea v0.1.6](https://github.com/tue-bmd/zea)
 
-All sub-datasets are provided in the ZEA file format.
-No preprocessing was performed on the raw channel data.
+All sub-datasets are provided in the ZEA file format. No preprocessing was performed on the raw channel data.
 
 ## Dataset Quantification
 

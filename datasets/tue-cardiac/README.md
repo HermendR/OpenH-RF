@@ -33,24 +33,13 @@ size_categories:
   </tr>
 </table>
 
-*Parasternal long-axis cine loops of four volunteers, pulse-inversion harmonic tracks:
-focused ([`subject-002`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-002.hdf5)), wide ([`subject-004`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-004.hdf5)), focused ([`subject-006`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-006.hdf5)) and wide ([`subject-009`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-009.hdf5)).*
+*Parasternal long-axis cine loops of four volunteers, pulse-inversion harmonic tracks: focused ([`subject-002`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-002.hdf5)), wide ([`subject-004`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-004.hdf5)), focused ([`subject-006`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-006.hdf5)) and wide ([`subject-009`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-009.hdf5)).*
 
 ## Dataset Description
 
-This dataset contains pre-beamformed radio-frequency (RF) channel data from
-in-vivo human cardiac ultrasound acquisitions of 12 distinct adult healthy
-volunteers, aged 26–33 years. The operator attempted a parasternal long-axis (PLAX)
-view for every participant. Each participant file contains eight separately acquired 100-frame
-tracks (3s,33Hz) that vary the transmit encoding: focused fundamental, focused
-pulse-inversion harmonic, wide fundamental, wide pulse-inversion harmonic,
-plane wave, diverging wave, Hadamard-coded aperture, and random binary-coded
-aperture.
+This dataset contains pre-beamformed radio-frequency (RF) channel data from in-vivo human cardiac ultrasound acquisitions of 12 distinct adult healthy volunteers, aged 26–33 years. The operator attempted a parasternal long-axis (PLAX) view for every participant. Each participant file contains eight separately acquired 100-frame tracks (3s,33Hz) that vary the transmit encoding: focused fundamental, focused pulse-inversion harmonic, wide fundamental, wide pulse-inversion harmonic, plane wave, diverging wave, Hadamard-coded aperture, and random binary-coded aperture.
 
-The data were acquired on a Verasonics Vantage 256 research platform with a
-Philips S5-1 phased-array probe. The contribution is intended to support generalized
-reconstruction, transmit-encoding research, REFoCUS recovery, compressed
-sensing, and comparisons of fundamental and second-harmonic imaging.
+The data were acquired on a Verasonics Vantage 256 research platform with a Philips S5-1 phased-array probe. The contribution is intended to support generalized reconstruction, transmit-encoding research, REFoCUS recovery, compressed sensing, and comparisons of fundamental and second-harmonic imaging.
 
 ## Dataset Contributor(s)
 
@@ -64,8 +53,7 @@ The recordings were acquired in 2026.
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -82,21 +70,14 @@ The dataset must not be used as a clinically validated diagnostic product.
 
 ## Dataset Characterization
 
-- **Data collection method:** in-vivo human cardiac ultrasound on a research
-  platform.
+- **Data collection method:** in-vivo human cardiac ultrasound on a research platform.
 - **Anatomy and view:** heart; attempted parasternal long-axis (PLAX) view.
-- **Cohort:** 12 adult healthy volunteers, aged 26–33 years, recruited from
-  among researcher colleagues. No known pathologies were reported.
-- **Acquisition protocol:** the eight modes were acquired sequentially in the
-  fixed order shown below. The probe was kept as steady as possible.
-  Before each recording, the volunteer was instructed to breathe out.
+- **Cohort:** 12 adult healthy volunteers, aged 26–33 years, recruited from among researcher colleagues. No known pathologies were reported.
+- **Acquisition protocol:** the eight modes were acquired sequentially in the fixed order shown below. The probe was kept as steady as possible. Before each recording, the volunteer was instructed to breathe out.
 - **Operator:** No ultrasound training or prior experience.
-- **Acquisition system:** Verasonics Vantage 256 with a Philips S5-1 phased-array
-  probe.
-- **Probe:** phased-array, 80 active elements, nominal probe center frequency 3.125 MHz, and 128% fractional
-  bandwidth.
-- **Receive sampling:** 15.625 MHz; 2,304 axial samples; raw `int16` RF with
-  one real channel. For pulse inversion imaging, the two acquisitions are summed in buffer.
+- **Acquisition system:** Verasonics Vantage 256 with a Philips S5-1 phased-array probe.
+- **Probe:** phased-array, 80 active elements, nominal probe center frequency 3.125 MHz, and 128% fractional bandwidth.
+- **Receive sampling:** 15.625 MHz; 2,304 axial samples; raw `int16` RF with one real channel. For pulse inversion imaging, the two acquisitions are summed in buffer.
 - **Nominal sound speed:** 1,540 m/s.
 - **Frame rate:** approximately 33 frames/s for each track.
 - **Coordinate convention:** x = lateral, y = elevation, z = axial/depth.
@@ -116,17 +97,13 @@ The dataset must not be used as a clinically validated diagnostic product.
 
 The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/tue-cardiac/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipelines/*.yaml` definitions in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
 
-Each file holds the eight transmit-encoding tracks. Set `ZEA_FILE`, `TRACK` and `FRAME`
-at the top of the script, together with the matching pipeline under `pipelines/`
-as `CONFIG` (`PIPELINE_FOR_TRACK` lists which track uses which; see also
-[Data Validation](#data-validation)). The image is written to `assets/`.
+Each file holds the eight transmit-encoding tracks. Set `ZEA_FILE`, `TRACK` and `FRAME` at the top of the script, together with the matching pipeline under `pipelines/` as `CONFIG` (`PIPELINE_FOR_TRACK` lists which track uses which; see also [Data Validation](#data-validation)). The image is written to `assets/`.
 
 ## Dataset Format
 
 [zea v0.1.4](https://github.com/tue-bmd/zea)
 
-The final dataset contains 12 zea HDF5 files under `data/`, one per
-pseudonymized participant:
+The final dataset contains 12 zea HDF5 files under `data/`, one per pseudonymized participant:
 
 ```text
 data/
@@ -135,13 +112,9 @@ data/
   subject-012.hdf5
 ```
 
-Each file has one shared `/probe` group, one de-identified `/metadata` group,
-and eight entries under `/tracks`. Track labels identify the transmit encoding.
-Raw channel data for each track are stored at:
+Each file has one shared `/probe` group, one de-identified `/metadata` group, and eight entries under `/tracks`. Track labels identify the transmit encoding. Raw channel data for each track are stored at:
 
-The source tensor order is preserved as
-`(n_frames, n_tx, n_ax, n_el, n_ch) = (100, 80, 2304, 80, 1)` with dtype
-`int16`. Values are uncalibrated Verasonics receive samples.
+The source tensor order is preserved as `(n_frames, n_tx, n_ax, n_el, n_ch) = (100, 80, 2304, 80, 1)` with dtype `int16`. Values are uncalibrated Verasonics receive samples.
 
 ### Core per-file feature table
 
@@ -205,8 +178,7 @@ The source tensor order is preserved as
 
 Suggested citation for the dataset:
 
-> Penninga, S., & van Sloun, R. (2026). *TU/e Cardiac RF Multi-Transmit* [Data set].
-> Eindhoven University of Technology, OpenH-RF.
+> Penninga, S., & van Sloun, R. (2026). *TU/e Cardiac RF Multi-Transmit* [Data set]. Eindhoven University of Technology, OpenH-RF.
 
 ```bibtex
 @misc{penninga_tue_cardiac_plax_2026,
@@ -237,27 +209,17 @@ Four saved zea pipeline configurations are provided under `pipelines/`:
 | `pipeline_hadamard.yaml` | `hadamard` | Adjoint REFoCUS decoding before beamforming |
 | `pipeline_random.yaml` | `random` | Tikhonov-regularized REFoCUS decoding before beamforming |
 
-All configurations perform RF filtering, demodulation, delay-and-sum
-beamforming, envelope detection, normalization, log compression, and scan
-conversion.
+All configurations perform RF filtering, demodulation, delay-and-sum beamforming, envelope detection, normalization, log compression, and scan conversion.
 
 ## Known Issues
 
 - A good PLAX view is not always available for all recordings.
-- Some transmit types, like random apodization recordings, do not give a
-  good quality B-mode. They are not intended to have the best quality, but
-  for comparison.
-- The two harmonic tracks are pulse-inversion-accumulated nonlinear
-  measurements and should not be treated as linear equivalents of the
-  fundamental tracks.
-- Accumulated harmonic data may lack per-transmit timing arrays; the measured
-  frame rate is documented instead.
-- Hadamard and random tracks require REFoCUS decoding before conventional
-  beamforming.
-- A Verasonics scalar lens-delay correction is retained under `/custom` for
-  provenance, but it is not equivalent to zea's refractive lens model.
+- Some transmit types, like random apodization recordings, do not give a good quality B-mode. They are not intended to have the best quality, but for comparison.
+- The two harmonic tracks are pulse-inversion-accumulated nonlinear measurements and should not be treated as linear equivalents of the fundamental tracks.
+- Accumulated harmonic data may lack per-transmit timing arrays; the measured frame rate is documented instead.
+- Hadamard and random tracks require REFoCUS decoding before conventional beamforming.
+- A Verasonics scalar lens-delay correction is retained under `/custom` for provenance, but it is not equivalent to zea's refractive lens model.
 
 ## Ethical Considerations
 
-Approval was obtained from the Ethical Review Board TU/e (Eindhoven University of Technology).
-Reference: ERB2023EE7 Contact details for the Ethical Review Board TU/e: T +31 (0)40 247 6259 <ethics@tue.nl> <intranet.tue.nl/ethics>
+Approval was obtained from the Ethical Review Board TU/e (Eindhoven University of Technology). Reference: ERB2023EE7 Contact details for the Ethical Review Board TU/e: T +31 (0)40 247 6259 <ethics@tue.nl> <intranet.tue.nl/ethics>

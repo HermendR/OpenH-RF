@@ -22,22 +22,14 @@ size_categories:
 
 ![Optical camera view beside the B-mode reconstruction of a von Karman vortex street](assets/vortex_street.gif)
 
-*The Photron high-speed camera view (left) and the B-mode reconstruction (right) of
-[`data/AcqData_PVoltage80_TVoltage3.4.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5).
-Both come from `track_0`, frame for frame, so the optical and acoustic views show the
-same instant of the vortex street.*
+*The Photron high-speed camera view (left) and the B-mode reconstruction (right) of [`data/AcqData_PVoltage80_TVoltage3.4.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5). Both come from `track_0`, frame for frame, so the optical and acoustic views show the same instant of the vortex street.*
 
 ## Dataset Description
 
-Pre-beamformed ultrasound channel-capture data acquired with a curved-array transducer
-(GEC1-6D, 192 elements, 3.4 MHz center frequency) from a **flow phantom**, accompanied with simultaneously recorded camera images. The phantom contains a flow chamber through which a water with optical and acoustical scatterers is pumped at controlled flow rates. Six acquisitions are provided,
-spanning three pump voltage levels (80 V, 120 V, 160 V) and two transmit voltage levels
-(3.4 V, 7.1 V), each capturing two transmit types: a **short imaging pulse** and a
-**chirp** waveform. Each acquisition contains 750 frames of single plane-wave RF channel
-data. The intended task is **blood-flow imaging and Doppler processing** (RFP task group 6.2).
+Pre-beamformed ultrasound channel-capture data acquired with a curved-array transducer (GEC1-6D, 192 elements, 3.4 MHz center frequency) from a **flow phantom**, accompanied with simultaneously recorded camera images. The phantom contains a flow chamber through which a water with optical and acoustical scatterers is pumped at controlled flow rates. Six acquisitions are provided, spanning three pump voltage levels (80 V, 120 V, 160 V) and two transmit voltage levels (3.4 V, 7.1 V), each capturing two transmit types: a **short imaging pulse** and a **chirp** waveform. Each acquisition contains 750 frames of single plane-wave RF channel data. The intended task is **blood-flow imaging and Doppler processing** (RFP task group 6.2).
 
 ### Phantom
-The front and the back of the flow chamber are made from medical-grade gelatin to facilitate ultrasound transmission. A cylinder with a diameter of 6 mm is placed inside the flow chamber which generates a von Kármán vortex street. The distance between the walls of the flow chamber is about 3 cm. A schematic of the setup is shown in Figure 1. 
+The front and the back of the flow chamber are made from medical-grade gelatin to facilitate ultrasound transmission. A cylinder with a diameter of 6 mm is placed inside the flow chamber which generates a von Kármán vortex street. The distance between the walls of the flow chamber is about 3 cm. A schematic of the setup is shown in Figure 1.
 ![Figure 1: Ultrasound - optical flow phantom setup](assets/setup.png)
 
 The elevation focus of the transducer is aligned with the optical light sheet, see Figure 2.
@@ -74,8 +66,7 @@ The acquisition settings for all six datasets are summarized in Table 1.
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -91,8 +82,7 @@ Suitable for research in:
 - **Data Collection Method:** Phantom / table-top (flow phantom, no human subjects)
 - **Labeling Method:** No manual labels; ground-truth flow rate is implicit in camera images. Note that the measured velocity may differ from the pump output in Table 1 due to changes in geometry and flow profiles in the flow chamber.
 - **Acquisition system:**
-  - Transducer: GEC1-6D curved array, 192 elements, 3.4 MHz center frequency, 95% bandwidth,
-    35 µm element width, 66 mm elevation focus, 0.0568 m radius
+  - Transducer: GEC1-6D curved array, 192 elements, 3.4 MHz center frequency, 95% bandwidth, 35 µm element width, 66 mm elevation focus, 0.0568 m radius
   - Transmit: single plane-wave (focus distance = 0, polar angle = 0°)
   - Sampling rate: ~19.2 MHz
   - Sound speed used: 1509.6 m/s (water-based phantom)
@@ -109,16 +99,14 @@ The acquisitions can be processed with the `reconstruct.py` [script](https://git
 
 [zea v0.1.6](https://github.com/tue-bmd/zea)
 
-All files are in the **zea** format (HDF5 + zea schema, current release `zea_version` 0.1.6).
-Each `.hdf5` file contains two tracks:
+All files are in the **zea** format (HDF5 + zea schema, current release `zea_version` 0.1.6). Each `.hdf5` file contains two tracks:
 
 | Track label             | Description                                         |
 |-------------------------|-----------------------------------------------------|
 | `short imaging pulse`   | Standard narrow-band pulse transmit                 |
 | `chirp`                 | Frequency-swept (chirp) coded excitation transmit   |
 
-Both tracks use the same probe and geometry. The raw channel data arrays are stored as
-`float32` and are pre-beamformed (not yet envelope-detected or log-compressed).
+Both tracks use the same probe and geometry. The raw channel data arrays are stored as `float32` and are pre-beamformed (not yet envelope-detected or log-compressed).
 
 No pre-processing (demodulation, decimation, filtering) has been applied before packaging.
 
@@ -136,8 +124,7 @@ No pre-processing (demodulation, decimation, filtering) has been applied before 
 | AcqData_PVoltage160_TVoltage7.1.hdf5   | 160 V  | 7.1 V | 750  | 2      | 1.55 GB |
 
 **Total frames:** 9,000 (6 files × 750 frames), each covering 2 transmit types.  
-- **Stored HDF5 size:** 9.09 GB (9,088,991,232 bytes).
-**No train/validation/test split** is defined; all acquisitions are provided as-is.
+- **Stored HDF5 size:** 9.09 GB (9,088,991,232 bytes). **No train/validation/test split** is defined; all acquisitions are provided as-is.
 
 ### Per-sample feature table
 
@@ -154,8 +141,7 @@ No pre-processing (demodulation, decimation, filtering) has been applied before 
 
 ## Subject Metadata
 
-This is a **phantom dataset** (no human or animal subjects). Flow rates are controlled
-by pump voltage (80 V, 120 V, 160 V), see Table 1.
+This is a **phantom dataset** (no human or animal subjects). Flow rates are controlled by pump voltage (80 V, 120 V, 160 V), see Table 1.
 
 ## Data Validation
 
@@ -169,9 +155,7 @@ Reference B-mode image (AcqData_PVoltage80_TVoltage3.4.hdf5, frame 10):
 
 ![Reference B-mode reconstruction](assets/reference_bmode.png)
 
-*Top: short imaging pulse track. Bottom: chirp track. Two horizontal phantom wall
-reflections are visible, with a speckle-filled flow chamber between them. Near-field
-reverberation and grating-lobe artifacts at the walls and the cylinder are acquisition-induced.*
+*Top: short imaging pulse track. Bottom: chirp track. Two horizontal phantom wall reflections are visible, with a speckle-filled flow chamber between them. Near-field reverberation and grating-lobe artifacts at the walls and the cylinder are acquisition-induced.*
 
 Reference mapping between camera and ultrasound image (AcqData_PVoltage80_TVoltage3.4.hdf5, frame 10):
 
@@ -187,7 +171,6 @@ Reference mapping between camera and ultrasound image (AcqData_PVoltage80_TVolta
 
 ## Ethical Considerations
 
-This is a **phantom dataset** with no human or animal subjects. No IRB approval or
-informed consent is required. No personally identifiable information is present.
+This is a **phantom dataset** with no human or animal subjects. No IRB approval or informed consent is required. No personally identifiable information is present.
 
 The phantom and flow phantom components do not carry proprietary IP constraints.

@@ -21,17 +21,11 @@ size_categories:
 
 ![Reference B-mode (two perpendicular sectors)](../assets/phantom_mp_bmode.png)
 
-*B-mode of one frame, x-z and y-z sectors, reconstructed from
-[`phantom_mp.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/resolvestroke/phantom_mp/phantom_mp.hdf5).*
+*B-mode of one frame, x-z and y-z sectors, reconstructed from [`phantom_mp.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/resolvestroke/phantom_mp/phantom_mp.hdf5).*
 
 ## Dataset Description
 
-Pre-beamformed channel-data acquisition of a multi-purpose, multi-tissue imaging
-phantom (CIRS 040GSE). Acquired with SYLVER, Resolve Stroke's ultrasound device,
-using a 32×32 matrix probe with diverging-wave transmits at 4 kHz frame rate. A
-single transmit insonifies a 3D volume, so each frame is a full volumetric capture
-of the static phantom (wire targets, cysts, and tissue-mimicking background). The
-file holds 1000 consecutive frames of the same scene.
+Pre-beamformed channel-data acquisition of a multi-purpose, multi-tissue imaging phantom (CIRS 040GSE). Acquired with SYLVER, Resolve Stroke's ultrasound device, using a 32×32 matrix probe with diverging-wave transmits at 4 kHz frame rate. A single transmit insonifies a 3D volume, so each frame is a full volumetric capture of the static phantom (wire targets, cysts, and tissue-mimicking background). The file holds 1000 consecutive frames of the same scene.
 
 ## Dataset Contributor(s)
 
@@ -48,25 +42,17 @@ file holds 1000 consecutive frames of the same scene.
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
-Beamforming and reconstruction research (RFP task group 6.1, Generalized
-Reconstruction): resolution and contrast assessment, compressed sensing,
-super-resolution, and matrix-probe diverging-wave 3D beamforming on a phantom with
-known target structures.
+Beamforming and reconstruction research (RFP task group 6.1, Generalized Reconstruction): resolution and contrast assessment, compressed sensing, super-resolution, and matrix-probe diverging-wave 3D beamforming on a phantom with known target structures.
 
 ## Dataset Characterization
 
 - Data collection method: Phantom (CIRS 040GSE multi-purpose, multi-tissue imaging phantom)
 - Labeling method: None (single static acquisition; no per-frame labels)
-- Acquisition system: SYLVER (Resolve Stroke's ultrasound device). 32×32 matrix
-  probe, 0.50 mm pitch, 0.30 mm kerf; transmit center frequency ≈ 2.031 MHz, sound
-  speed 1540 m/s. Diverging-wave transmits; receive sub-apertures flattened into 256
-  virtual elements. Channel data is DDC (baseband) IQ, so `sampling_frequency`
-  (≈ 2.031 MHz) is the post-decimation IQ rate and equals `demodulation_frequency`.
+- Acquisition system: SYLVER (Resolve Stroke's ultrasound device). 32×32 matrix probe, 0.50 mm pitch, 0.30 mm kerf; transmit center frequency ≈ 2.031 MHz, sound speed 1540 m/s. Diverging-wave transmits; receive sub-apertures flattened into 256 virtual elements. Channel data is DDC (baseband) IQ, so `sampling_frequency` (≈ 2.031 MHz) is the post-decimation IQ rate and equals `demodulation_frequency`.
 
 ## Processing the Dataset
 
@@ -82,13 +68,7 @@ The Python scripts carry their own `SPDX-License-Identifier: Apache-2.0` header;
 
 [zea v0.1.6](https://github.com/tue-bmd/zea)
 
-Single zea HDF5 file (`phantom_mp.hdf5`), one track holding the raw channel data
-and scan parameters, in the zea HDF5 format, root `zea_version` 0.1.6, validated `compliant: true` against `validate_zea_spec.py`.
-`data/raw_data` is DDC IQ (last axis [I, Q]). The hardware time-gain compensation is baked into `raw_data`;
-`scan/tgc_gain_curve` is the applied (non-linear) gain per axial sample; divide by
-it to recover true channel amplitudes. `reconstruct.py` divides `raw_data` by this
-curve before beamforming (the `zea.Pipeline` itself stays standard; the reversal is
-a plain array step).
+Single zea HDF5 file (`phantom_mp.hdf5`), one track holding the raw channel data and scan parameters, in the zea HDF5 format, root `zea_version` 0.1.6, validated `compliant: true` against `validate_zea_spec.py`. `data/raw_data` is DDC IQ (last axis [I, Q]). The hardware time-gain compensation is baked into `raw_data`; `scan/tgc_gain_curve` is the applied (non-linear) gain per axial sample; divide by it to recover true channel amplitudes. `reconstruct.py` divides `raw_data` by this curve before beamforming (the `zea.Pipeline` itself stays standard; the reversal is a plain array step).
 
 ## Dataset Quantification
 
@@ -123,23 +103,13 @@ a plain array step).
 
 ## Data Validation
 
-`reconstruct.py` first divides `raw_data` by `scan/tgc_gain_curve` (reverse TGC),
-then runs a standard `zea.Pipeline` (cast → DAS beamform → envelope → normalize →
-log-compress) defined in `pipeline.yaml` to reconstruct a B-mode from the IQ channel
-data. Because the probe is a 2D matrix array insonified by a single diverging-wave
-transmit, `reconstruct.py` beamforms on polar (sector) grids and renders two
-perpendicular sector B-modes, the x-z plane (y = 0) and the y-z plane (x = 0), side
-by side, as shown at the top of this card.
+`reconstruct.py` first divides `raw_data` by `scan/tgc_gain_curve` (reverse TGC), then runs a standard `zea.Pipeline` (cast → DAS beamform → envelope → normalize → log-compress) defined in `pipeline.yaml` to reconstruct a B-mode from the IQ channel data. Because the probe is a 2D matrix array insonified by a single diverging-wave transmit, `reconstruct.py` beamforms on polar (sector) grids and renders two perpendicular sector B-modes, the x-z plane (y = 0) and the y-z plane (x = 0), side by side, as shown at the top of this card.
 
 ## Known Issues
 
-- `raw_data` has the hardware TGC baked in; `scan/tgc_gain_curve` is that (non-linear)
-  applied curve. The reconstruction script divides by the curve before beamforming;
-  a downstream user reconstructing directly must divide by the curve too.
-- `sampling_frequency ≈ center_frequency` because the data is DDC baseband IQ (see
-  Dataset Characterization), not an RF acquisition.
-- The proposed 3D phantom-geometry reference (known target positions for the CIRS
-  040GSE) is not yet included.
+- `raw_data` has the hardware TGC baked in; `scan/tgc_gain_curve` is that (non-linear) applied curve. The reconstruction script divides by the curve before beamforming; a downstream user reconstructing directly must divide by the curve too.
+- `sampling_frequency ≈ center_frequency` because the data is DDC baseband IQ (see Dataset Characterization), not an RF acquisition.
+- The proposed 3D phantom-geometry reference (known target positions for the CIRS 040GSE) is not yet included.
 
 ## Ethical Considerations
 

@@ -21,17 +21,11 @@ size_categories:
 
 ![Tissue-mimicking phantom with point targets and an anechoic cyst](assets/bmode.png)
 
-*Frame 6 of [`data/ph.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/phantom/data/ph.hdf5), reconstructed by
-`reconstruct.py`.*
+*Frame 6 of [`data/ph.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/phantom/data/ph.hdf5), reconstructed by `reconstruct.py`.*
 
 ## Dataset Description
 
-Pre-beamformed ultrasound **channel data** from a tissue-mimicking phantom,
-acquired on the same 64-element phased-array sector scheme as the in-vivo
-collection (180 transmit beams steered over ±45.13°, one image line per
-transmit), for **calibration and verification**. Contains
-resolvable point targets and an anechoic cyst — a clean reference for validating
-beamforming and reconstruction. 12 frames, one acquisition.
+Pre-beamformed ultrasound **channel data** from a tissue-mimicking phantom, acquired on the same 64-element phased-array sector scheme as the in-vivo collection (180 transmit beams steered over ±45.13°, one image line per transmit), for **calibration and verification**. Contains resolvable point targets and an anechoic cyst — a clean reference for validating beamforming and reconstruction. 12 frames, one acquisition.
 
 ## Dataset Contributor(s)
 
@@ -47,23 +41,17 @@ Source data 2018; converted to the OpenH-RF (zea) format 07/16/2026.
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
-Calibration and end-to-end verification of the beamforming/reconstruction
-pipeline (point-target resolution, cyst contrast). Phantom tier (×1).
+Calibration and end-to-end verification of the beamforming/reconstruction pipeline (point-target resolution, cyst contrast). Phantom tier (×1).
 
 ## Dataset Characterization
 
-- **Data Collection Method:** phantom — tissue-mimicking phantom (Gammex 403GS LE,
-  Gammex Inc., Middleton, WI, USA), acquired on the same scanner/probe as the
-  in-vivo collection for calibration.
+- **Data Collection Method:** phantom — tissue-mimicking phantom (Gammex 403GS LE, Gammex Inc., Middleton, WI, USA), acquired on the same scanner/probe as the in-vivo collection for calibration.
 - **Labeling Method:** N/A (calibration target; known phantom geometry).
-- **Acquisition system:** GE Vivid S70 scanner; GE 3Sc-RS 64-element phased-array
-  probe, 0.30 mm pitch; sector scan, 180 transmit beams steered over ±45.13°
-  (≈90.25° FOV), one image line per transmit; IQ demodulated at 3.44 MHz.
+- **Acquisition system:** GE Vivid S70 scanner; GE 3Sc-RS 64-element phased-array probe, 0.30 mm pitch; sector scan, 180 transmit beams steered over ±45.13° (≈90.25° FOV), one image line per transmit; IQ demodulated at 3.44 MHz.
 
 ## Processing the Dataset
 
@@ -84,11 +72,7 @@ Alternatively, you can use the `reconstruct.py` [script](https://github.com/open
 
 [zea v0.1.4](https://github.com/tue-bmd/zea)
 
-zea file format, a single HDF5 file `data/ph.hdf5`. Source complex samples
-repackaged to `float32` I/Q (`n_ch = 2`), values verbatim. Carries
-`metadata/subject/{id=ph, type=phantom}`, `metadata/credit`, probe model
-(`probe.name = GE 3Sc-RS`) and scanner (`us_machine = GE Vivid S70`). ("phantom"
-is recorded only as `subject.type`, not as an anatomy or label.)
+zea file format, a single HDF5 file `data/ph.hdf5`. Source complex samples repackaged to `float32` I/Q (`n_ch = 2`), values verbatim. Carries `metadata/subject/{id=ph, type=phantom}`, `metadata/credit`, probe model (`probe.name = GE 3Sc-RS`) and scanner (`us_machine = GE Vivid S70`). ("phantom" is recorded only as `subject.type`, not as an anatomy or label.)
 
 ## Dataset Quantification
 
@@ -112,17 +96,13 @@ N/A — inanimate phantom (GAMMEX 403GS LE); `subject.type = phantom`.
 
 ## Data Validation
 
-`reconstruct.py` reconstructs a B-mode from `raw_data` using the `zea.Pipeline`
-in `pipeline.yaml` (delay-and-sum on a polar scanline grid → envelope →
-normalization → log compression → sector scan conversion).
+`reconstruct.py` reconstructs a B-mode from `raw_data` using the `zea.Pipeline` in `pipeline.yaml` (delay-and-sum on a polar scanline grid → envelope → normalization → log compression → sector scan conversion).
 
-Reference output: `bmode.png` — frame 6 of `data/ph.hdf5`, shown above:
-resolvable point targets and a well-defined anechoic cyst at ~65 mm.
+Reference output: `bmode.png` — frame 6 of `data/ph.hdf5`, shown above: resolvable point targets and a well-defined anechoic cyst at ~65 mm.
 
 ## Known Issues
 
-- Same scan scheme and probe as the in-vivo bladder collection (GE
-  tissue-harmonic); acquired as its calibration reference. GAMMEX 403GS LE.
+- Same scan scheme and probe as the in-vivo bladder collection (GE tissue-harmonic); acquired as its calibration reference. GAMMEX 403GS LE.
 
 ## Ethical Considerations
 

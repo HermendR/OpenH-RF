@@ -23,8 +23,7 @@ size_categories:
 
 ![DAS B-mode reconstruction of a biopsy-proven invasive ductal carcinoma (S01_D1)](assets/main.png)
 
-*Delay-and-sum reconstruction of a biopsy-proven invasive ductal carcinoma,
-[`data/S01_D1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/kaist-snubh-barreleye/data/S01_D1.hdf5).*
+*Delay-and-sum reconstruction of a biopsy-proven invasive ductal carcinoma, [`data/S01_D1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/kaist-snubh-barreleye/data/S01_D1.hdf5).*
 
 ## Dataset Description
 
@@ -45,8 +44,7 @@ This dataset contains pre-beamformed RF channel-capture data from in-vivo breast
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-Retain attribution and identify modifications when reusing the data.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -80,9 +78,7 @@ zea process \
 
 Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/kaist-snubh-barreleye/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
 
-This is a single-frame acquisition, so `zea process` outputs a `.png` rather
-than a `.gif` — this requires a `zea` build newer than the currently pinned
-0.1.6 (single-frame PNG output landed after that release).
+This is a single-frame acquisition, so `zea process` outputs a `.png` rather than a `.gif` — this requires a `zea` build newer than the currently pinned 0.1.6 (single-frame PNG output landed after that release).
 
 ## Dataset Format
 
@@ -139,7 +135,7 @@ Per-acquisition feature table (one row per HDF5):
 
 ## Subject Metadata
 
-Per-file metadata follows the **HIPAA Safe-Harbor** approach: only **de-identified subject ID, sex, anatomy, binary label, BI-RADS, pathology subtype** are stored. Free-text identifiers, exact age, exact lesion size, and exam dates are deliberately **omitted from the HDF5 files**. 
+Per-file metadata follows the **HIPAA Safe-Harbor** approach: only **de-identified subject ID, sex, anatomy, binary label, BI-RADS, pathology subtype** are stored. Free-text identifiers, exact age, exact lesion size, and exam dates are deliberately **omitted from the HDF5 files**.
 
 - **Number of subjects:** 35
 - **Sex distribution:** 100% female (35/35)
@@ -210,5 +206,5 @@ Reference output: `main.png` — `data/S01_D1.hdf5` (biopsy-proven invasive duct
 
 - **Consent status:** All subjects gave informed consent under SNUBH IRB protocol **B-2401-876-301**.
 - **De-identification:** No direct identifiers (name, full exam date, free-text clinical notes) are stored. Age is decade-binned at the dataset level (not stored per file); exact lesion size and exam dates are not stored per file; only the acquisition year (2024) is reported. Subject IDs are coded (`S01`…`S35`).
-- **IRB approval:** SNUBH IRB **B-2401-876-301** 
+- **IRB approval:** SNUBH IRB **B-2401-876-301**
 - **Animal welfare (ARRIVE 2.0):** Not applicable — human-only dataset.
