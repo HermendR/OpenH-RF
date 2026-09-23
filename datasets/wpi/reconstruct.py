@@ -37,9 +37,12 @@ CONFIG = HERE / "pipeline.yaml"
 
 # --- Inputs -----------------------------------------------------------------
 # Defaults stream straight from the published corpus. Swap any of these for a
-# local path to run against your own copy.
-ZEA_FILE = "hf://nvidia/OpenH-RF/wpi/data/narrow_lateral_32el__point_z045_r0.hdf5"
-OUT = HERE / "assets" / "reconstruct_example.png"
+# local path to run against your own copy. The default below is one of the 5
+# measured-phantom scans, which show real reflector/reverberation texture --
+# a more representative first look than the mostly-empty simulated point
+# targets (see the probe x target grid in this dataset's README for those).
+ZEA_FILE = "hf://nvidia/OpenH-RF/wpi/data/experiment__acq_exp_30mm.hdf5"
+OUT = HERE / "assets" / "bmode.png"
 HF_CONFIG = "hf://nvidia/OpenH-RF/wpi/pipeline.yaml"
 FRAME = None  # rotation frame to beamform (default: closest to +-90 deg rotation)
 
