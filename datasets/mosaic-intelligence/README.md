@@ -1,5 +1,6 @@
 ---
-name: "OpenH-RF — Mosaic Intelligence / NuevoSono IVUS"
+name: mosaic-intelligence
+pretty_name: "Mosaic Intelligence / NuevoSono IVUS"
 license: cc-by-4.0
 task_categories:
   - image-segmentation
@@ -9,38 +10,27 @@ tags:
   - openh-rf
   - IVUS
   - tracked-ultrasound
+language:
+  - en
 ---
 
-# Data Card — Mosaic Intelligence / NuevoSono in-vivo IVUS
-
-*In-vivo intravascular ultrasound raw-channel acquisitions from a porcine study, with lumen, intima-media and guidewire segmentation.*
+# Mosaic Intelligence / NuevoSono In-vivo IVUS
 
 ![IVUS pullback: B-mode, segmentation overlay and pullback trajectory](assets/pullback.gif)
 
-![Five frames across the pullback with lumen, intima-media and guidewire overlays](assets/22_12_10_52/overview_5_frames.png)
-
-Pullback through
-[`22_12_10_52.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/mosaic-intelligence/data/22_12_10_52.hdf5),
-reconstructed from the raw channel data. Left to right: B-mode, the same frame with the
-lumen and intima-media segmentation, and the linear-encoder pullback position with the
-current frame marked. Below, five frames from the same acquisition. Both produced by
-`reconstruct.py`.
-
-Nine in-vivo intravascular ultrasound (IVUS) acquisitions from a porcine study, each
-in the *zea* file format with per-frame lumen, intima-media and guidewire segmentation.
-Per-acquisition dimensions are in [Acquisitions](#acquisitions).
+*Pullback through [`data/22_12_10_52.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/mosaic-intelligence/data/22_12_10_52.hdf5), reconstructed from the raw channel data. Left to right: B-mode, the same frame with the lumen and intima-media segmentation, and the linear-encoder pullback position with the current frame marked.*
 
 ## Dataset Description
 
+Nine in-vivo intravascular ultrasound (IVUS) acquisitions from a porcine study, each in the *zea* file format with per-frame lumen, intima-media and guidewire segmentation. Per-acquisition dimensions are in [Acquisitions](#acquisitions).
+
 Each dataset is an IVUS acquisition collected in a porcine animal study. The source data consists of raw IVUS RF frames and a pre-computed (scan-converted) B-mode image. Six of the acquisitions have time-sampled linear encoder pullback positions of the IVUS probe at each frame. For each acquisition and for every frame, per-class segmentation masks are provided for the vessel lumen, intima-media, and guidewire.
 
-## Dataset Contributors
+## Dataset Contributor(s)
 
-Mosaic Intelligence Labs in collaboration with NuevoSono
-
-Primary points of contact:
-Brian Boitnott (1): brian@mosaicintelligence.xyz
-Ali Mackanic (1): ali@mosaicintelligence.xyz
+- Brian Boitnott <brian@mosaicintelligence.xyz> (Mosaic Intelligence Labs; primary point of contact)
+- Ali Mackanic <ali@mosaicintelligence.xyz> (Mosaic Intelligence Labs; primary point of contact)
+- Mosaic Intelligence Labs, in collaboration with NuevoSono
 
 ## Dataset Creation Date
 
@@ -48,31 +38,31 @@ Ali Mackanic (1): ali@mosaicintelligence.xyz
 
 ## License / Terms of Use
 
-All contributed data, labels, and metadata is released by Mosaic Intelligence Labs
-and NuevoSono under CC BY 4.0.
-Pre-existing hardware, software, simulation, and platform intellectual property
-remain the property of their respective owners. The team agrees to comply with
-OpenH-RF governance, publication, and data-sharing policies. The license is also
-recorded in each file's `metadata/credit` field.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
-Intended for IVUS tracking and segmentation applications, including lesion
-detection and image-guided intervention.
+Intended for IVUS tracking and segmentation applications, including lesion detection and image-guided intervention.
 
 ## Dataset Characterization
 
 - **Data Collection Method:** Porcine (in-vivo animal study)
 - **Labeling Method:** derived tracking metadata, semi-automated labeling
-- **Acquisition System:** Single-element IVUS, center frequency 30 MHz,
-  sampling rate 1 GHz
+- **Acquisition System:** Single-element IVUS, center frequency 30 MHz, sampling rate 1 GHz
+
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/mosaic-intelligence/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+The script overlays the segmentation masks on frames spread evenly across the pullback:
+
+![Five frames across the pullback with lumen, intima-media and guidewire overlays](assets/22_12_10_52/overview_5_frames.png)
 
 ## Dataset Format
 
-All acquisitions are submitted in the *zea* file format. The RF data is stored as
-a rotational sequence of A-lines (`n_tx` transmits per frame, one element/channel);
-the accompanying B-mode `image` and `segmentation` masks are pre-computed,
-scan-converted Cartesian frames sharing a per-pixel coordinate grid.
+[zea v0.1.6](https://github.com/tue-bmd/zea)
+
+All acquisitions are submitted in the *zea* file format. The RF data is stored as a rotational sequence of A-lines (`n_tx` transmits per frame, one element/channel); the accompanying B-mode `image` and `segmentation` masks are pre-computed, scan-converted Cartesian frames sharing a per-pixel coordinate grid.
 
 ### Shared per-sample schema
 
@@ -99,10 +89,7 @@ Fields that are in every acquisition:
 
 ## Acquisitions
 
-Nine acquisitions sharing the schema above: `n_ax = 8192`, `n_el = 1`, and four
-segmentation labels (`background`, `lumen`, `intima_media`, `guidewire`). The `15_*`
-acquisitions are untracked, rotate counterclockwise and use a non-square image grid;
-the `22_*` are tracked with a linear-encoder pullback and rotate clockwise.
+Nine acquisitions sharing the schema above: `n_ax = 8192`, `n_el = 1`, and four segmentation labels (`background`, `lumen`, `intima_media`, `guidewire`). The `15_*` acquisitions are untracked, rotate counterclockwise and use a non-square image grid; the `22_*` are tracked with a linear-encoder pullback and rotate clockwise.
 
 | Acquisition | Tracked | Frames | Transmits | Image grid | Frame rate | Size |
 |---|---|---:|---:|---|---:|---:|
@@ -144,17 +131,14 @@ Animal study data — no human subjects.
 
 ## Data Validation
 
-A `zea.Pipeline` reconstructs the IVUS B-mode from the raw channel data
-(RF → envelope → normalization → log compression → scan conversion). See
-[reconstruct.py](reconstruct.py) and [pipeline.yaml](pipeline.yaml). Linear encoder position (when applicable) and segmentation masks are overlayed on the B-modes.
+A `zea.Pipeline` reconstructs the IVUS B-mode from the raw channel data (RF → envelope → normalization → log compression → scan conversion), as defined in `pipeline.yaml` and run by `reconstruct.py`. Linear encoder position (when applicable) and segmentation masks are overlayed on the B-modes.
 
 ## Known Issues
 
-- Untracked (`15_*`) acquisitions have no `pullback_position`, so the pullback
-  trajectory panel is omitted during reconstruction.
+- Untracked (`15_*`) acquisitions have no `pullback_position`, so the pullback trajectory panel is omitted during reconstruction.
 
 ## Ethical Considerations
 
-Porcine animal study data only; contains no human subjects or PHI. Collected and
-released in compliance with applicable institutional animal care approvals and
-OpenH-RF governance and data-sharing policies.
+Porcine animal study data only; contains no human subjects or PHI. Collected and released in compliance with applicable institutional animal care approvals and OpenH-RF governance and data-sharing policies.
+
+All contributed data, labels and metadata are released by Mosaic Intelligence Labs and NuevoSono; pre-existing hardware, software, simulation and platform intellectual property remains the property of the respective owners. The license is also recorded in each file's `metadata/credit` field.

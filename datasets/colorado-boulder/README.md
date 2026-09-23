@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Tracked Swept Synthetic Aperture Ultrasound Datasets"
+name: colorado-boulder
+pretty_name: "Tracked Swept Synthetic Aperture Ultrasound Datasets"
 license: cc-by-4.0
 task_categories:
   - generalized-reconstruction
@@ -16,17 +17,12 @@ size_categories:
 
 # Tracked Swept Synthetic Aperture Ultrasound Datasets
 
-*Freehand, optically tracked swept synthetic aperture (SSA) raw-channel ultrasound from phantoms and in-vivo quadriceps, for the OpenH-RF initiative.*
-
 | 2D ATS 539 phantom | 3D phantom | In-vivo quadriceps |
 |:---:|:---:|:---:|
 | ![Tracked SSA sweep through the 2D ATS 539 phantom](assets/ssa-sweep-phantom2d.gif) | ![Tracked SSA sweep through the 3D phantom](assets/ssa-sweep-phantom3d.gif) | ![Tracked SSA sweep along in-vivo quadriceps muscle](assets/ssa-sweep-invivo.gif) |
-| `Sub-dataset-1` | `Sub-dataset-2` | `Sub-dataset-3` |
+| [`Sub-dataset-1`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/colorado-boulder/Sub-dataset-1) | [`Sub-dataset-2`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/colorado-boulder/Sub-dataset-2) | [`Sub-dataset-3`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/colorado-boulder/Sub-dataset-3) |
 
-Motion-compensated tracked SSA reconstructions, one per sub-dataset. Each frame
-beamforms the raw RF channel data with its own tracked probe pose; a 40 mm window of
-frames is then coherently summed to synthesise a larger effective aperture, and the
-window slides along the freehand sweep. Produced by `reconstruct.py`.
+*Motion-compensated tracked SSA reconstructions, one per sub-dataset. Each frame beamforms the raw RF channel data with its own tracked probe pose; a 40 mm window of frames is then coherently summed to synthesise a larger effective aperture, and the window slides along the freehand sweep.*
 
 ## Dataset Description
 
@@ -40,12 +36,8 @@ The phantom acquisitions do not contain human subject data, animal data, or prot
 
 ## Dataset Contributor(s)
 
-**Contributing organization:** University of Colorado Boulder, Bottenus Lab
-
-**Contributors:**
-
-- Anet Sanchez
-- Nick Bottenus
+- Anet Sanchez (University of Colorado Boulder, Bottenus Lab)
+- Nick Bottenus (University of Colorado Boulder, Bottenus Lab)
 
 ## Dataset Creation Date
 
@@ -53,16 +45,13 @@ Data were collected between 08/23/2024 and 06/30/2026.
 
 ## License / Terms of Use
 
-This dataset is released under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
-
-The phantom data consist exclusively of phantom ultrasound acquisitions and are cleared for release under CC BY 4.0. The in-vivo data were collected under institutional approval and have been de-identified prior to release. No protected health information (PHI) is included in the released files.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
 This dataset is intended for research on generalized ultrasound reconstruction, with a specific focus on tracked swept synthetic aperture imaging, motion-compensated beamforming, coherent compounding, and ultrasound image-quality evaluation.
 
 For SSA reconstruction, each raw RF frame is beamformed using its corresponding tracked transducer pose. The resulting beamformed frames are placed on a common reconstruction grid and coherently summed to synthesize a larger effective aperture. Because the reconstruction relies on coherent compounding, summation is performed before envelope detection, normalization, and log compression.
-
 
 ## Dataset Characterization
 
@@ -82,10 +71,7 @@ These targets may be used to assess spatial resolution, contrast, lesion visibil
 
 ### Data Collection Method
 
-Each acquisition consisted of a freehand sweep in the lateral direciton of the transducer.
-All 64 array elements were used during receive. Diverging waves were generated using a negative virtual source while activating the 20 central array elements during transmit.
-For in-vivo targets the transducer was manually swept along the longitudinal direction of the quadriceps while transmitting diverging waves at 400 Hz.
-The transducer was optically tracked using an NDI Polaris Vega® XT optical tracking system manufactured by Northern Digital Inc., Ontario, Canada.
+Each acquisition consisted of a freehand sweep in the lateral direciton of the transducer. All 64 array elements were used during receive. Diverging waves were generated using a negative virtual source while activating the 20 central array elements during transmit. For in-vivo targets the transducer was manually swept along the longitudinal direction of the quadriceps while transmitting diverging waves at 400 Hz. The transducer was optically tracked using an NDI Polaris Vega® XT optical tracking system manufactured by Northern Digital Inc., Ontario, Canada.
 
 ### Labeling Method
 
@@ -100,10 +86,17 @@ None (N/A).
 - Sampling frequency: 10 MHz
 - Optical tracking: NDI Polaris Vega XT
 
----
+## Processing the Dataset
 
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/colorado-boulder/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+The script selects tracked frames at roughly 1 mm lateral spacing and writes the reconstruction to `ssa_bmode.png`. Point `ZEA_FILE` at any acquisition in the corpus to reconstruct it. [`assets/main_bmode.png`](./assets/main_bmode.png) was produced this way, compounding the full sweep into one image; the loops at the top of this card slide a shorter aperture window along the sweep instead.
+
+`reconstruct.py` defines the custom `apply_probe_pose` operation that `pipeline.yaml` refers to, which applies the frame-wise `metadata/probe_pose` to the probe geometry and transmit origins before beamforming.
 
 ## Dataset Format
+
+[zea v0.1.7](https://github.com/tue-bmd/zea)
 
 The dataset is distributed in the zea/OpenH-RF HDF5 format.
 
@@ -170,23 +163,6 @@ The pipeline performs:
 6. Normalization
 7. Log compression
 
-The reconstruction is defined in `pipeline.yaml` and executed using `reconstruct.py`:
-
-```bash
-python reconstruct.py
-```
-
-The script streams an acquisition straight from the Hub, selects tracked frames at
-roughly 1 mm lateral spacing, and writes the reconstruction to `ssa_bmode.png`. Point
-`DATA_FILE` at any acquisition in the corpus to reconstruct it.
-[`assets/main_bmode.png`](./assets/main_bmode.png) was produced this way, compounding
-the full sweep into one image; the loops at the top of this card slide a shorter
-aperture window along the sweep instead.
-
-`reconstruct.py` defines the custom `apply_probe_pose` operation that `pipeline.yaml`
-refers to, which applies the frame-wise `metadata/probe_pose` to the probe geometry
-and transmit origins before beamforming.
-
 ## Known Issues
 
 - Optical tracking measurements may contain small position and orientation uncertainties.
@@ -195,11 +171,6 @@ and transmit origins before beamforming.
 
 ## Ethical Considerations
 
-The phantom acquisitions contain phantom ultrasound data only. They do not contain human participants, animal subjects, personal identifiers, clinical records, or protected health information.
-
-Human-subject consent and institutional review board approval are not applicable to the phantom acquisitions.
-
-The in-vivo data were acquired from volunteer participants with informed consent under IRB-approved protocol #24-0176.
-
-All released in-vivo data have been de-identified. No protected health information or participant-identifying metadata are included.
-
+- **Phantom data:** phantom ultrasound acquisitions only — no human participants, animal subjects, personal identifiers or clinical records; consent and IRB approval are not applicable.
+- **In-vivo data:** acquired from healthy volunteer participants with informed consent under IRB-approved protocol #24-0176, and de-identified prior to release.
+- No protected health information (PHI) or participant-identifying metadata is included in the released files.
