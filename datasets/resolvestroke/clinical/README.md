@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF - Resolve Stroke Clinical Transcranial CEUS (SCULPT, 20 acquisitions)"
+name: resolvestroke-clinical
+pretty_name: "Resolve Stroke Clinical Transcranial CEUS (SCULPT, 20 acquisitions)"
 license: cc-by-4.0
 task_categories:
   - other
@@ -19,10 +20,12 @@ size_categories:
   - 100K<n<1M
 ---
 
-# OpenH-RF - Resolve Stroke Clinical Transcranial CEUS (SCULPT, 20 acquisitions)
+# Resolve Stroke Clinical Transcranial CEUS (SCULPT, 20 acquisitions)
 
 <img src="../assets/clinical_mvi_montage.png" alt="Microvascular image (x-z MIP of the computed reference) for the 20 clinical acquisitions" width="100%">
 
+*Reference microvascular image (`mvi`, x-z maximum-intensity projection of the computed
+reference) for the 20 acquisitions in [`clinical/`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/resolvestroke/clinical).*
 
 ## Dataset Description
 
@@ -50,11 +53,12 @@ the same name.
 
 ## Dataset Contributor(s)
 
-Aitana Waelbroeck\*, Carl Ferlay\*, Arthur Chavignon\*, Maxence Reberol\*, Vincent Hingot\*
-
-\* Resolve Stroke (29 Rue du Faubourg Saint-Jacques, 75014 Paris)
-
-Contact email: maxence.reberol@resolvestroke.com
+- Aitana Waelbroeck
+- Carl Ferlay
+- Arthur Chavignon
+- Maxence Reberol <maxence.reberol@resolvestroke.com> (contact)
+- Vincent Hingot
+- Resolve Stroke, 29 Rue du Faubourg Saint-Jacques, 75014 Paris
 
 ## Dataset Creation Date
 
@@ -62,10 +66,8 @@ Contact email: maxence.reberol@resolvestroke.com
 
 ## License / Terms of Use
 
-CC BY 4.0. Data is released under Creative Commons Attribution 4.0 International,
-which permits commercial use with attribution. (The Python scripts in this directory
-carry their own `SPDX-License-Identifier: Apache-2.0` header; the dataset itself is
-CC BY 4.0.)
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -89,7 +91,31 @@ diverging-wave beamforming research (RFP task group 6.2, Blood Flow).
   virtual elements. Channel data is DDC (baseband) IQ, so `sampling_frequency`
   (≈ 2.031 MHz) is the post-decimation IQ rate and equals `demodulation_frequency`.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/resolvestroke/clinical/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+The reconstruction recipe is identical for all 20 acquisitions, so the scripts and
+pipeline YAMLs live once in this directory. Each script has a `SUBJECT` constant at
+the top (default `"SP02-Left-2"`); set it to any acquisition name from the inventory,
+e.g. `SUBJECT = "SP07-Right"`, and the `hf://` input path
+`hf://nvidia/OpenH-RF/resolvestroke/clinical/<SUBJECT>/<SUBJECT>.hdf5` and the output
+filenames follow from it. Swap `ZEA_FILE` (`INPUT` in `reconstruct_PD_3d.py`) for a
+local path to run against your own copy.
+
+```bash
+uv run --project /path/to/OpenH-RF python reconstruct.py
+```
+
+`reconstruct_PD_3d.py` (with `pipeline_PD_3d.yaml`) renders the power-Doppler
+reconstruction and `display_references.py` the computed reference maps; both are
+described below.
+
+The Python scripts carry their own `SPDX-License-Identifier: Apache-2.0` header; the dataset itself is CC BY 4.0.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 One zea HDF5 file per acquisition, `<name>/<name>.hdf5`, containing all 5 clips
 concatenated. Files are named `<subject>-<side>[-<session>]` (anonymized subject
@@ -181,13 +207,6 @@ from the 90th and 99.95th percentiles of its dB values. Reference maps: `mvi`
 
 ## Data Validation
 
-The reconstruction recipe is identical for all 20 acquisitions, so the scripts and
-pipeline YAMLs live once in this directory. Each script has a `SUBJECT` constant at
-the top (default `"SP02-Left-2"`); set it to any acquisition name from the inventory,
-e.g. `SUBJECT = "SP07-Right"`, and the `hf://` input path
-`hf://nvidia/OpenH-RF/resolvestroke/clinical/<SUBJECT>/<SUBJECT>.hdf5` and the output
-filenames follow from it. Swap `INPUT` for a local path to run against your own copy.
-
 `reconstruct.py` first divides `raw_data` by `scan/tgc_gain_curve` (reverse TGC),
 then runs a standard `zea.Pipeline` (cast → DAS beamform → envelope → normalize →
 log-compress) defined in `pipeline.yaml` to reconstruct a B-mode from the IQ channel
@@ -207,10 +226,6 @@ content of the data appears in the power-Doppler reconstruction below.
 A display-only linear TGC (1.5 dB/cm) adds a depth-dependent dB gain to the rendered
 image, compensating the attenuation that `reverse_tgc` leaves uncompensated so deeper
 structure stays visible. It does not modify the stored data.
-
-```bash
-uv run --project /path/to/OpenH-RF python reconstruct.py
-```
 
 ### Power-Doppler reconstruction (derived product)
 

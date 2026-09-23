@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — ULMShare (in vivo mouse transcranial ULM)"
+name: ulmshare
+pretty_name: "ULMShare (in vivo mouse transcranial ULM)"
 license: cc-by-4.0
 task_categories:
   - image-to-image
@@ -38,14 +39,28 @@ Ultrasound Lab (Polytechnique Montréal) and partner sites.
 
 ## Dataset Contributor(s)
 
-**Original dataset (ULMShare).** Brice Rauby, Nin Ghigo, Gerardo
-Ramos-Palacios, Alexis Leconte, Stephen A. Lee, Alice Wu, Paul Xing, Oleksandra
-Gulenko, Louis Caron, Antoine Malescot, Eric Martineau, Jonathan Porée, Maxime
-Gasse, Ravi L. Rungta, Abbas F. Sadikot, and Jean Provost — Provost Ultrasound
-Lab, Polytechnique Montréal.
+**Original dataset (ULMShare)** — Provost Ultrasound Lab, Polytechnique Montréal:
 
-**zea conversion and reconstruction (this submission).** Oisín Nolan
-<o.i.nolan@tue.nl>, Eindhoven University of Technology.
+- Brice Rauby
+- Nin Ghigo
+- Gerardo Ramos-Palacios
+- Alexis Leconte
+- Stephen A. Lee
+- Alice Wu
+- Paul Xing
+- Oleksandra Gulenko
+- Louis Caron
+- Antoine Malescot
+- Eric Martineau
+- Jonathan Porée
+- Maxime Gasse
+- Ravi L. Rungta
+- Abbas F. Sadikot
+- Jean Provost
+
+**zea conversion and reconstruction (this submission):**
+
+- Oisín Nolan <o.i.nolan@tue.nl> (Eindhoven University of Technology)
 
 ## Dataset Creation Date
 
@@ -54,7 +69,8 @@ March 2022 and March 2025.
 
 ## License / Terms of Use
 
-CC BY 4.0. See [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/).
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -70,7 +86,17 @@ and clutter filtering / tissue suppression.
   `density_map` custom element — a visualization, not a ground-truth label.
 - **Acquisition system:** Verasonics Vantage 256. See files for further acquisition details.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/ulmshare/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the
+`pipeline_bmode.yaml` and `pipeline_tissue_suppression.yaml` definitions in this folder and the
+[zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face
+Hub and writes a B-mode, a power-Doppler image and movie, and a ULM density map (the ULM steps
+live in [`ulm.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/ulmshare/ulm.py)).
+
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 zea (HDF5), current release `zea_version` 0.1.4.
 

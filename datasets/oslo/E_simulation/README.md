@@ -1,4 +1,5 @@
 ---
+name: oslo-e-simulation
 pretty_name: "USTB - Simulation (Field II)"
 license: cc-by-4.0
 task_categories:
@@ -18,18 +19,19 @@ size_categories:
 
 # USTB - Simulation (Field II)
 
-Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** contributed to the
-[OpenH-RF](https://github.com/open-h/OpenH-RF) initiative. All acquisitions are stored in the
-*zea* HDF5 file format (zea_version 0.1.6) and contain raw pre-beamformed
-channel data (`/data/raw_data`).
-
 ## Dataset Description
+
+Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** (see the [collection card](../README.md)).
 
 Physics-based synthetic channel-capture data generated with the Field II ultrasound simulation framework. The collection covers point scatterers, cysts, speckle, dynamic-range targets and blocked-array (aperture-apodized) configurations, using linear (L7-4-like) and phased (P4-like) virtual probes with CPWC, FI and STA sequences. Because the scattering medium is fully defined, exact ground-truth scatterer positions and medium parameters are known. One numerical calibration acquisition (PICMUS_numerical_calib_v2) was created in collaboration with our group as part of the PICMUS effort; it is included here while the other PICMUS datasets are excluded (see Known Issues).
 
-## Dataset Contributors
+## Dataset Contributor(s)
 
-University of Oslo (UiO), Department of Informatics. Primary contact: Ole Marius Hoel Rindal (omrindal@ifi.uio.no). Team: Ole Marius Hoel Rindal, Yucel Karabiyik, Sven Peter Nasholm, Andreas Austeng.
+- Ole Marius Hoel Rindal <omrindal@ifi.uio.no> (primary contact)
+- Yucel Karabiyik
+- Sven Peter Nasholm
+- Andreas Austeng
+- University of Oslo (UiO), Department of Informatics
 
 ## Dataset Creation Date
 
@@ -37,9 +39,8 @@ University of Oslo (UiO), Department of Informatics. Primary contact: Ole Marius
 
 ## License / Terms of Use
 
-Released under **Creative Commons Attribution 4.0 International (CC BY 4.0)** — see the `LICENCE`
-file at the submission root (this license is also declared in the YAML frontmatter above). The
-contributed data is cleared for this license. The UltraSound ToolBox (USTB) Channel Capture Collection, University of Oslo. Contributed to OpenH-RF. Zenodo record 20261898.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -53,7 +54,17 @@ Generalized reconstruction, beamformer development and validation with known gro
   element positions stored in `/probe/probe_geometry` (meters); center frequency, sampling
   frequency and sound speed stored per acquisition in `/scan` (see per-sample feature table).
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/oslo/reconstruct.py) at the root of this
+collection, as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the
+`pipeline*.yaml` definitions at the collection root and the [zea library](https://github.com/tue-bmd/zea).
+The script streams the data from the Hugging Face Hub; `parameters.yaml` picks the pipeline,
+display window and dynamic range per acquisition (see the [collection card](../README.md#processing-the-dataset)).
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 All acquisitions are stored in the **zea** HDF5 file format. Each `.hdf5` file is a single
 acquisition with raw channel data `/data/raw_data` of shape
@@ -110,14 +121,10 @@ No human or animal subjects. Synthetic media simulated with Field II. Virtual pr
 
 ## Data Validation
 
-A Delay-And-Sum `zea.Pipeline` is provided in the **`pipeline.yaml` at the submission root** and
-run by the single **`reconstruct.py` at the submission root**:
-`cast -> demodulate -> delay-and-sum beamform -> envelope detect -> normalize -> log compress`
-(RF is demodulated in-pipeline; IQ uses a baseband pipeline). The script is geometry-driven and
-recurses into every sub-dataset folder; running `python reconstruct.py` from the root reconstructs
-every `.hdf5` in the collection (or pass a folder-qualified path for a single acquisition) and writes
-`<name>_zea_bmode.png` next to each file as a portable check that the recorded geometry and timing
-are correct.
+A Delay-And-Sum `zea.Pipeline`
+(`cast -> demodulate -> delay-and-sum beamform -> envelope detect -> normalize -> log compress`;
+RF is demodulated in-pipeline, IQ uses a baseband pipeline) reconstructs every acquisition as a
+portable check that the recorded geometry and timing are correct (see *Processing the Dataset*).
 
 The reference B-mode images committed alongside the data (`<name>_bmode.png`) are produced with the
 UltraSound ToolBox (USTB) MATLAB Delay-And-Sum beamformer — the exact per-dataset reconstruction
@@ -132,3 +139,7 @@ PICMUS calibration: 'PICMUS_numerical_calib_v2' was created in collaboration wit
 ## Ethical Considerations
 
 Fully synthetic data generated with the Field II simulation framework; no human or animal subjects. No personal data is present. The included numerical calibration file was produced in collaboration with our group as part of the PICMUS effort (IEEE IUS 2016) and is released here under CC BY 4.0.
+
+## Citation
+
+Please cite the UltraSound ToolBox (USTB) Channel Capture Collection, University of Oslo (Zenodo record 20261898).

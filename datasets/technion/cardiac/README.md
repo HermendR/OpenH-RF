@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Technion Cardiac Pre-Beamformed Channel Data"
+name: technion-cardiac
+pretty_name: "Technion Cardiac Pre-Beamformed Channel Data"
 license: cc-by-4.0
 task_categories:
   - image-to-image
@@ -16,21 +17,11 @@ size_categories:
   - n<1K
 ---
 
-# OpenH-RF — Cardiac pre-beamformed RF channel data (paired with DAS targets)
+# Technion Cardiac Pre-beamformed RF Channel Data (paired with DAS targets)
 
 ![Apical four-chamber view, one 32-frame cardiac cine loop](assets/cine.gif)
 
-Apical four-chamber view: one cine loop (32 frames) from [`data/c1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/cardiac/data/c1.hdf5).
-
-`zea` renders it straight from the Hub with the
-`pipeline.yaml` in this folder. Try it out with the following command:
-
-```bash
-zea process \
-  --dataset hf://nvidia/OpenH-RF/technion/cardiac/data/c1.hdf5 \
-  --config hf://nvidia/OpenH-RF/technion/cardiac/pipeline.yaml \
-  --n-frames 32
-```
+*Apical four-chamber view: one cine loop (32 frames) from [`data/c1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/cardiac/data/c1.hdf5).*
 
 ## Dataset Description
 
@@ -44,8 +35,11 @@ beamforming. 777 frames across 25 cine loops from six subjects (a–f).
 
 ## Dataset Contributor(s)
 
-Sanketh Vedula, Ortal Senouf, Dean Zadok, Alex M. Bronstein (PI) —
-Technion – Israel Institute of Technology. Primary contact: sanketh@campus.technion.ac.il.
+- Sanketh Vedula <sanketh@campus.technion.ac.il> (primary contact)
+- Ortal Senouf
+- Dean Zadok
+- Alex M. Bronstein (PI)
+- Technion – Israel Institute of Technology
 
 ## Dataset Creation Date
 
@@ -53,8 +47,8 @@ Acquired 2018; converted to the OpenH-RF (zea) format 07/16/2026.
 
 ## License / Terms of Use
 
-CC BY 4.0. The data is the contributors' own research acquisition, cleared for
-CC BY 4.0 with no third-party IP encumbrances.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -74,7 +68,24 @@ delay-and-sum target. Secondary: motion estimation across the cardiac cine loops
   probe, 0.30 mm pitch; sector scan, 140 acquisition lines over a ~75° sector
   (±37.5°); 2.5 MHz transmit; apical four-chamber view (A4C).
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/technion/cardiac/data/c1.hdf5 \
+  --config hf://nvidia/OpenH-RF/technion/cardiac/pipeline.yaml \
+  --n-frames 32
+```
+
+Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/technion/cardiac/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
+
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 zea file format, one HDF5 file per cine loop (`data/<subject><clip>.hdf5`, e.g.
 `a1.hdf5` = subject a, clip 1; `f2.hdf5` = patient-set subject f). The source
@@ -117,11 +128,7 @@ acquisitions.
 `reconstruct.py` reconstructs a B-mode from `raw_data` using the `zea.Pipeline`
 defined in `pipeline.yaml`: delay-and-sum on a polar scanline grid (one image line
 per acquisition line, receive dynamic focusing) → envelope detection →
-normalization → log compression → sector scan conversion. Run:
-
-```
-python reconstruct.py
-```
+normalization → log compression → sector scan conversion.
 
 Reference output: `bmode.png` — frame 8 of `data/c1.hdf5` (in `assets/`). Each
 frame is also paired with its conventional delay-and-sum reconstruction in
@@ -151,3 +158,5 @@ only the channel signals and acquisition metadata.
 
 **Ethics.** The data were collected under ethical best practices on healthy
 volunteers.
+
+The data is the contributors' own research acquisition, cleared for CC BY 4.0 with no third-party IP encumbrances.

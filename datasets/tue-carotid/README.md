@@ -1,4 +1,5 @@
 ---
+name: tue-carotid
 pretty_name: "TU/e carotid 2023"
 license: cc-by-4.0
 zea_repo_id: zeahub/zea-carotid-2023
@@ -19,17 +20,9 @@ language:
 
 ![Longitudinal view of a carotid bifurcation](assets/5_long_bifur_R_0000.gif)
 
-One cardiac cycle of a longitudinal bifurcation scan,
-[`data/5_long_bifur_R_0000.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-carotid/data/5_long_bifur_R_0000.hdf5).
+*One cardiac cycle of a longitudinal bifurcation scan,
+[`data/5_long_bifur_R_0000.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-carotid/data/5_long_bifur_R_0000.hdf5).*
 
-`zea` renders it straight from the Hub with the
-`pipeline.yaml` in this folder. Try it out with the following command:
-
-```bash
-zea process \
-  --dataset hf://nvidia/OpenH-RF/tue-carotid/data/5_long_bifur_R_0000.hdf5 \
-  --config hf://nvidia/OpenH-RF/tue-carotid/pipeline.yaml
-```
 
 ## Dataset Description
 
@@ -51,16 +44,16 @@ The acquisitions were performed with a Verasonics 256.
 The acquisitions were performed with a linear probe (Verasonics L11-5v).
 The same operator performed all acquisitions.
 
-## Dataset Contributors(s)
+## Dataset Contributor(s)
 
-Wessel van Nierop <w.l.v.nierop@tue.nl>
-Tristan Stevens
-Oisín Nolan
-Simon Penninga
-Beatrice Federici
-Vincent van der Schaft
-Ben Luijten
-Ruud van Sloun
+- Wessel van Nierop <w.l.v.nierop@tue.nl>
+- Tristan Stevens
+- Oisín Nolan
+- Simon Penninga
+- Beatrice Federici
+- Vincent van der Schaft
+- Ben Luijten
+- Ruud van Sloun
 
 ## Dataset Creation Date
 
@@ -68,7 +61,8 @@ Nov 2023
 
 ## License / Terms of Use
 
-CC BY 4.0
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -80,13 +74,27 @@ Image-quality / beamforming has both plane-wave (21) and focused acquisitions (1
 - Labeling Method: acquisitions per view
 - Acquisition system: see file
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/tue-carotid/data/5_long_bifur_R_0000.hdf5 \
+  --config hf://nvidia/OpenH-RF/tue-carotid/pipeline.yaml
+```
+
+Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/tue-carotid/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
+
 ## Dataset Format
 
-zea v1.3.0
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 ## Dataset Quantification
 
-**Current OpenH-RF release:** 80 HDF5 files; 435.40 GB (435,403,030,528 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
+**OpenH-RF release:** 80 HDF5 files; 435.40 GB (435,403,030,528 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
 - **Samples / frames / acquisitions:** 80 acquisitions (one HDF5 file each) from
   10 subjects, 150 frames per acquisition — 12,000 frames total.
@@ -121,11 +129,6 @@ No derived data products are stored; `raw_data` is the only `data/` field.
 ## Subject Metadata
 
 None
-
-## Data Validation
-
-[reconstruct.py](https://github.com/open-h/OpenH-RF/blob/main/datasets/tue-carotid/reconstruct.py)
-[pipeline.yaml](./pipeline.yaml)
 
 ## Known Issues
 

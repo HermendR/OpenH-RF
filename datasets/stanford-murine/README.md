@@ -1,4 +1,5 @@
 ---
+name: stanford-murine
 license: cc-by-4.0
 pretty_name: Stanford Murine Liver and Sound-Speed Phantom Ultrasound
 task_categories:
@@ -36,16 +37,27 @@ The source data are available from Figshare:
 - [Murine liver acquisitions](https://doi.org/10.25452/figshare.plus.28291985)
 - [Sound-speed phantom and meat-layer acquisitions](https://doi.org/10.25452/figshare.plus.28291988)
 
+The original Figshare releases were published under Apache 2.0; this converted release is CC BY 4.0.
+
 The converted dataset is hosted at
 [nvidia/OpenH-RF/stanford-murine](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/stanford-murine).
 
-## Dataset Contributors
+## Dataset Contributor(s)
 
-The source datasets were created at Stanford University by Arsenii V.
-Telichko, Rehman Ali, Andrew Andrzejek, Thurston Brevett, Benjamin N. Frey,
-Brian Boitnott, Jihye Baek, Louise Zhuang, Hoda Hashemi, Jun Hong Park, Caelia
-Thomas, and Jeremy Dahl. The contributing organization is the Dahl Lab,
-Stanford University. Contact: `jjdahl@stanford.edu`.
+The source datasets were created at Stanford University (Dahl Lab):
+
+- Arsenii V. Telichko
+- Rehman Ali
+- Andrew Andrzejek
+- Thurston Brevett
+- Benjamin N. Frey
+- Brian Boitnott
+- Jihye Baek
+- Louise Zhuang
+- Hoda Hashemi
+- Jun Hong Park
+- Caelia Thomas
+- Jeremy Dahl <jjdahl@stanford.edu> (contact)
 
 ## Dataset Creation Date
 
@@ -53,7 +65,8 @@ Stanford University. Contact: `jjdahl@stanford.edu`.
 
 ## License / Terms of Use
 
-This dataset is provided in OpenH-RF under the Creative Commons Attribution 4.0 International License (CC BY 4.0) (https://creativecommons.org/licenses/by/4.0/). The original Figshare releases were published under Apache 2.0.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -106,7 +119,18 @@ For the rat acquisitions, the Verasonics sound-speed setting is 1540 m/s; this
 is retained in `scan/sound_speed` for reconstruction. It is distinct from the
 post-acquisition liver sound-speed measurements described below.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/stanford-murine/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF),
+together with the `pipeline_multifocal.yaml`, `pipeline_hadamard.yaml` and
+`pipeline_synthetic_aperture.yaml` definitions in this folder and the
+[zea library](https://github.com/tue-bmd/zea). The script streams the data from the
+Hugging Face Hub; each file bundles the three tracks, and the script reconstructs every
+track with its own pipeline and writes one image per track to `assets/`.
+
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 Converted data use the zea HDF5 representation. Channel samples have dimension
 order:

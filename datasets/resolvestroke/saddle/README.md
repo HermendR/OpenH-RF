@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF - Resolve Stroke Saddle-Array Reference B-modes (Transcranial CEUS + Phantom)"
+name: resolvestroke-saddle
+pretty_name: "Resolve Stroke Saddle-Array Reference B-modes (Transcranial CEUS + Phantom)"
 license: cc-by-4.0
 task_categories:
   - other
@@ -19,7 +20,13 @@ size_categories:
   - n<1K
 ---
 
-# OpenH-RF - Resolve Stroke Saddle-Array Reference B-modes
+# Resolve Stroke Saddle-Array Reference B-modes
+
+![Saddle-array B-modes for all 21 datasets](../assets/saddle_bmode_montage.png)
+
+*Saddle-array B-modes of all 21 files in
+[`saddle/data/`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/resolvestroke/saddle/data), one panel per dataset;
+the phantom (`PMP01`) shows a regular column of point targets.*
 
 ## Dataset Description
 
@@ -41,11 +48,12 @@ clinical CEUS clip submission, and the two use the same anonymized subject codes
 
 ## Dataset Contributor(s)
 
-Aitana Waelbroeck\*, Carl Ferlay\*, Arthur Chavignon\*, Maxence Reberol\*, Vincent Hingot\*
-
-\* Resolve Stroke (29 Rue du Faubourg Saint-Jacques, 75014 Paris)
-
-Contact email: maxence.reberol@resolvestroke.com
+- Aitana Waelbroeck
+- Carl Ferlay
+- Arthur Chavignon
+- Maxence Reberol <maxence.reberol@resolvestroke.com> (contact)
+- Vincent Hingot
+- Resolve Stroke, 29 Rue du Faubourg Saint-Jacques, 75014 Paris
 
 ## Dataset Creation Date
 
@@ -53,10 +61,8 @@ Contact email: maxence.reberol@resolvestroke.com
 
 ## License / Terms of Use
 
-CC BY 4.0 (see `LICENCE`). Data is released under Creative Commons Attribution
-4.0 International, which permits commercial use with attribution. (The Python
-scripts in this directory carry their own `SPDX-License-Identifier: Apache-2.0`
-header; the dataset itself is CC BY 4.0.)
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -81,7 +87,23 @@ flow/perfusion datasets (OpenH-RF request-for-proposals task group 6.2, Blood Fl
   ordering), giving the full probe on receive. Channel data is digital down-converted (DDC) baseband IQ, so `sampling_frequency`
   (≈ 2.031 MHz) is the post-decimation IQ rate and equals `demodulation_frequency`.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/resolvestroke/saddle/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+```bash
+uv run --project /path/to/OpenH-RF python reconstruct.py
+```
+
+`reconstruct.py` streams `PMP01.hdf5` from the Hub by default; set `ZEA_FILE` at the top
+of the script to another of the 21 files (or a local path). The B-mode PNG is written
+to `assets/<file>_bmode.png`.
+
+The Python scripts carry their own `SPDX-License-Identifier: Apache-2.0` header; the dataset itself is CC BY 4.0.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 One zea HDF5 file per dataset under `data/`, each holding a single frame of DDC IQ
 channel data (`data/raw_data`, last axis `[I, Q]`), in the zea HDF5 format, root `zea_version` 0.1.6, validated `compliant: true` against `validate_zea_spec.py`.
@@ -137,22 +159,9 @@ diverging-wave transmits, so it beamforms on a polar (sector) grid (a fan spanni
 the divergence angle in the x-z plane at y = 0, apex at the virtual source) and
 scan-converts the result.
 
-The montage below shows the reconstruction of all 21 files, one panel per dataset.
+The montage at the top of this card shows the reconstruction of all 21 files, one panel per dataset.
 The phantom (PMP01) shows a regular column of point targets, which checks the depth
 scaling and geometry.
-
-![Saddle-array B-modes for all 21 datasets](../assets/saddle_bmode_montage.png)
-
-Set up the OpenH-RF environment once (clone <https://github.com/open-h/OpenH-RF>
-and run `uv sync` in it), then reconstruct any file:
-
-```
-uv run --project /path/to/OpenH-RF python reconstruct.py
-```
-
-`reconstruct.py` streams `PMP01.hdf5` from the Hub by default; set `INPUT` at the top
-of the script to another of the 21 files (or a local path). The B-mode PNG is written
-next to the script as `<file>_bmode.png`.
 
 ## Ethical Considerations
 

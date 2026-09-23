@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Vanderbilt / Multi-Frame Focused Transmit Echocardiography Channel Dataset"
+name: vanderbilt
+pretty_name: "Vanderbilt / Multi-Frame Focused Transmit Echocardiography Channel Dataset"
 license: cc-by-4.0
 task_categories:
   - image-reconstruction
@@ -17,22 +18,12 @@ size_categories:
   - n<1K
 ---
 
-# Multi-Frame Focused Transmit Echocardiography Channel Dataset
+# Vanderbilt Multi-Frame Focused Transmit Echocardiography Channel Dataset
 
 ![Cineloop of the left atrial appendage](assets/118420_1_Focused_Uncoded_TX.gif)
 
-One cineloop of a fundamental focused-transmit acquisition,
-[`data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5).
-
-`zea` renders it straight from the Hub with the
-`pipeline.yaml` in this folder. Try it out with the following command:
-
-```bash
-zea process \
-  --dataset hf://nvidia/OpenH-RF/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5 \
-  --config hf://nvidia/OpenH-RF/vanderbilt/pipeline.yaml \
-  --n-frames 10
-```
+*One cineloop of a fundamental focused-transmit acquisition,
+[`data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5).*
 
 ## Dataset Description
 
@@ -42,8 +33,11 @@ Each dataset follows the naming convention of `subject_id`_`view_number`_`sequen
 
 ## Dataset Contributor(s)
 
-Brett Byram (PI), Christopher Khan, Ying-Chun (Preston) Pan, Zoe Marshall
-Vanderbilt University
+- Brett Byram (PI)
+- Christopher Khan
+- Ying-Chun (Preston) Pan
+- Zoe Marshall
+- Vanderbilt University
 
 ## Dataset Creation Date
 
@@ -51,7 +45,8 @@ Vanderbilt University
 
 ## License / Terms of Use
 
-CC BY 4.0.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -65,7 +60,26 @@ This dataset could be useful for training a domain-adaptive network, as it captu
 - **Frame rate:** Fundamental: 25 Hz (32 frames). Harmonic: 10 Hz (32 frames).
 - Note that the fundamental and harmonic sequences are not matched or interleaved: the harmonic sequence was executed immediately after the fundamental sequence within the same Verasonics setup file.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/vanderbilt/data/Fundamental/118420_1_Focused_Uncoded_TX.hdf5 \
+  --config hf://nvidia/OpenH-RF/vanderbilt/pipeline.yaml \
+  --n-frames 10
+```
+
+Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/vanderbilt/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
+
+Set `ZEA_FILE` and `N_FRAMES` at the top of the script to pick a file and how many frames to beamform.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 All acquisitions are submitted in the *zea* file format as raw RF channel data, with no preprocessing applied.
 
@@ -114,7 +128,7 @@ Subject Metadata below apply to both the original and migrated text fields.
 
 ## Data Validation
 
-A `zea.Pipeline` (cast → demodulate → DAS beamforming → envelope detection → normalization → log compression → scan conversion) reconstructs the B-mode image from the raw channel data and is defined in [pipeline.yaml](pipeline.yaml). Run [reconstruct.py](https://github.com/open-h/OpenH-RF/blob/main/datasets/vanderbilt/reconstruct.py) to reproduce it; set `INPUT` and `N_FRAMES` at the top of the script to pick a file and how many frames to beamform.
+A `zea.Pipeline` (cast → demodulate → DAS beamforming → envelope detection → normalization → log compression → scan conversion) reconstructs the B-mode image from the raw channel data and is defined in `pipeline.yaml`.
 
 ## Known Issues
 

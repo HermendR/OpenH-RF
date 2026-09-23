@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Siemens In-Vivo Raw Ultrasound Channel Data"
+name: siemens-healthineers
+pretty_name: "Siemens In-Vivo Raw Ultrasound Channel Data"
 license: cc-by-4.0
 task_categories:
   - other
@@ -16,22 +17,15 @@ size_categories:
   - 1K<n<10K
 ---
 
-# Data Card — Siemens In-vivo Raw Ultrasound Channel Data
+# Siemens In-vivo Raw Ultrasound Channel Data
 
 ![DAS B-mode reconstructions of four anatomies from the Siemens FSA channel data](assets/anatomies.png)
 
-Four of the anatomies in this dataset, each beamformed from `data/raw_data`:
-`Subject_03_acq_018`, `Subject_02_acq_004`, `Subject_03_acq_008`,
-`Subject_05_acq_031`.
-
-`zea` renders any acquisition straight from the Hub with the
-`pipeline.yaml` in this folder. Try it out with the following command:
-
-```bash
-zea process \
-  --dataset hf://nvidia/OpenH-RF/siemens-healthineers/data/Subject_03_acq_008.hdf5 \
-  --config hf://nvidia/OpenH-RF/siemens-healthineers/pipeline.yaml
-```
+*Four of the anatomies in this dataset, each beamformed from `data/raw_data`:
+[`Subject_03_acq_018`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/siemens-healthineers/data/Subject_03_acq_018.hdf5),
+[`Subject_02_acq_004`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/siemens-healthineers/data/Subject_02_acq_004.hdf5),
+[`Subject_03_acq_008`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/siemens-healthineers/data/Subject_03_acq_008.hdf5),
+[`Subject_05_acq_031`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/siemens-healthineers/data/Subject_05_acq_031.hdf5).*
 
 ## Dataset Description
 
@@ -45,18 +39,11 @@ ACUSON Sequoia development scanner. **Data type: in-vivo human.**
 
 ## Dataset Contributor(s)
 
-Siemens Healthineers, Ultrasound. Contributors:
-
-- Rickard Loftman, PhD
-- Ismayil Guracar, MSEE
-- Jane Bucholz, BHS (Medical Imaging); PgDip HS (Ultrasound); DMU (General); PgDip Public Health (Dist)
-- Craig Williams, PG Dip Medical Ultrasound, BSc (Hons) Diagnostic Radiography
-
-Additional contributor:
-
-- Walter Simson, PhD
-
-Contact: Ismayil Guracar ([ismayil.guracar@siemens-healthineers.com](mailto:ismayil.guracar@siemens-healthineers.com)).
+- Rickard Loftman, PhD (Siemens Healthineers, Ultrasound)
+- Ismayil Guracar, MSEE <ismayil.guracar@siemens-healthineers.com> (Siemens Healthineers, Ultrasound; contact)
+- Jane Bucholz, BHS (Medical Imaging); PgDip HS (Ultrasound); DMU (General); PgDip Public Health (Dist) (Siemens Healthineers, Ultrasound)
+- Craig Williams, PG Dip Medical Ultrasound, BSc (Hons) Diagnostic Radiography (Siemens Healthineers, Ultrasound)
+- Walter Simson, PhD (additional contributor)
 
 ## Dataset Creation Date
 
@@ -64,7 +51,8 @@ Contact: Ismayil Guracar ([ismayil.guracar@siemens-healthineers.com](mailto:isma
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). 
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -85,7 +73,23 @@ per-frame quality tags (`contact`, `challenging`).
 13.33 MHz. Full synthetic aperture multi-static acquisition: 180
 single-element transmit events per frame, all 180 elements received.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/siemens-healthineers/data/Subject_03_acq_008.hdf5 \
+  --config hf://nvidia/OpenH-RF/siemens-healthineers/pipeline.yaml
+```
+
+Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/siemens-healthineers/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 Packaged in the `zea` [file format](https://zea.readthedocs.io/en/openh-rf-latest/data-acquisition.html)
 (current release `zea_version` 0.1.6), **one HDF5
@@ -166,7 +170,6 @@ correctly. Reference B-modes rendered by this pipeline are in
 Ten frames of `data/Subject_03_acq_008.hdf5`. `custom/contact` marks the first
 frame as off-subject — use those per-frame flags when picking frames, rather
 than assuming frame 0 is usable.
-
 
 ## Known Issues
 

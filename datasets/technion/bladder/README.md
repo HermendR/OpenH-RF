@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Technion Bladder Pre-Beamformed Channel Data"
+name: technion-bladder
+pretty_name: "Technion Bladder Pre-Beamformed Channel Data"
 license: cc-by-4.0
 task_categories:
   - image-to-image
@@ -16,21 +17,11 @@ size_categories:
   - 1K<n<10K
 ---
 
-# OpenH-RF — Bladder pre-beamformed RF channel data
+# Technion In-vivo Bladder Pre-beamformed RF Channel Data
 
 ![Transverse suprapubic view of the bladder, one 10-frame cine loop](assets/cine.gif)
 
-Transverse suprapubic view: one cine loop (10 frames) from [`data/a1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/bladder/data/a1.hdf5).
-
-`zea` renders it straight from the Hub with the
-`pipeline.yaml` in this folder. Try it out with the following command:
-
-```bash
-zea process \
-  --dataset hf://nvidia/OpenH-RF/technion/bladder/data/a1.hdf5 \
-  --config hf://nvidia/OpenH-RF/technion/bladder/pipeline.yaml \
-  --n-frames 10
-```
+*Transverse suprapubic view: one cine loop (10 frames) from [`data/a1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/bladder/data/a1.hdf5).*
 
 ## Dataset Description
 
@@ -45,8 +36,11 @@ the channel data by the released beamformer.
 
 ## Dataset Contributor(s)
 
-Sanketh Vedula, Ortal Senouf, Dean Zadok, Alex M. Bronstein (PI) —
-Technion – Israel Institute of Technology. Primary contact: sanketh@campus.technion.ac.il.
+- Sanketh Vedula <sanketh@campus.technion.ac.il> (primary contact)
+- Ortal Senouf
+- Dean Zadok
+- Alex M. Bronstein (PI)
+- Technion – Israel Institute of Technology
 
 ## Dataset Creation Date
 
@@ -54,8 +48,8 @@ Source data 2018; converted to the OpenH-RF (zea) format 07/16/2026.
 
 ## License / Terms of Use
 
-CC BY 4.0. The contributors confirm intent to release under CC BY 4.0 with no
-third-party IP encumbrances (proposal §8).
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -78,7 +72,24 @@ and to anatomy/cohort interpretation (§6.5).
   ~18 fps; transversal plane with slow longitudinal probe sweep to decorrelate
   frames.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/technion/bladder/data/a1.hdf5 \
+  --config hf://nvidia/OpenH-RF/technion/bladder/pipeline.yaml \
+  --n-frames 10
+```
+
+Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/technion/bladder/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
+
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 zea file format, one HDF5 file per sweep (`data/<subject>.hdf5`, e.g. `a1.hdf5`,
 `ak.hdf5`, `s2.hdf5`). The source complex `double` samples were repackaged to
@@ -130,12 +141,7 @@ Age and sex were not recorded for these acquisitions.
 `reconstruct.py` reconstructs a B-mode from `raw_data` using the `zea.Pipeline`
 defined in `pipeline.yaml`: delay-and-sum beamforming on a polar scanline grid
 (one image line per transmit, receive dynamic focusing) → envelope
-detection → normalization → log compression → sector scan conversion. Run it on
-any file to reproduce a reference frame:
-
-```
-python reconstruct.py
-```
+detection → normalization → log compression → sector scan conversion.
 
 Reference output: `bmode.png` — frame 30 of `data/a1.hdf5` (in `assets/`). The
 pipeline matches the acquisition's own receive-beamforming geometry
@@ -162,3 +168,5 @@ only the channel signals and acquisition metadata.
 
 **Ethics.** The data were collected under ethical best practices on healthy
 volunteers.
+
+The contributors confirm intent to release under CC BY 4.0 with no third-party IP encumbrances (proposal §8).

@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — OpenPros Limited-View Prostate USCT"
+name: unc-openpros
+pretty_name: "OpenPros Limited-View Prostate USCT"
 license: cc-by-4.0
 task_categories:
   - image-to-image
@@ -22,10 +23,9 @@ size_categories:
 
 ![Speed-of-sound map of a prostate slice, predicted by InversionNet](assets/main.png)
 
-Speed of sound predicted from the limited-view waveform data of the first acquisition in
-[`data/3_04_P_prostate_51.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5),
-rendered by [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/unc-openpros/reconstruct.py)
-with the pretrained OpenPros InversionNet. See **Data Validation** below.
+*Speed of sound predicted from the limited-view waveform data of the first acquisition in
+[`data/3_04_P_prostate_51.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5)
+with the pretrained OpenPros InversionNet.*
 
 ## Dataset Description
 
@@ -33,10 +33,25 @@ with the pretrained OpenPros InversionNet. See **Data Validation** below.
 
 ## Dataset Contributor(s)
 
-OpenPros was created by Hanchen Wang, Yixuan Wu, Yinan Feng, Peng Jin, Luoyuan Zhang, Shihang Feng, James Wiskin, Baris Turkbey, Peter A. Pinto, Bradford J. Wood, Songting Luo, Yinpeng Chen, Emad Boctor, and Youzuo Lin. The affiliations include the University of North Carolina at Chapel Hill, Johns Hopkins University, the National Institutes of Health, the Pennsylvania State University, QT Imaging, Iowa State University, and Google DeepMind. 
-- **Corresponding author:** Youzuo Lin (`yzlin@unc.edu`)
-- **Source repository:** <https://github.com/hanchenwang/OpenPros>
-- **Dataset website:** <https://open-pros.github.io/>
+OpenPros was created by:
+
+- Hanchen Wang
+- Yixuan Wu
+- Yinan Feng
+- Peng Jin
+- Luoyuan Zhang
+- Shihang Feng
+- James Wiskin
+- Baris Turkbey
+- Peter A. Pinto
+- Bradford J. Wood
+- Songting Luo
+- Yinpeng Chen
+- Emad Boctor
+- Youzuo Lin <yzlin@unc.edu> (corresponding author)
+
+The affiliations include the University of North Carolina at Chapel Hill, Johns Hopkins University, the National Institutes of Health, the Pennsylvania State University, QT Imaging, Iowa State University, and Google DeepMind.
+Source repository: <https://github.com/hanchenwang/OpenPros>; dataset website: <https://open-pros.github.io/>.
 
 ## Dataset Creation Date
 
@@ -44,7 +59,8 @@ OpenPros was created by Hanchen Wang, Yixuan Wu, Yinan Feng, Peng Jin, Luoyuan Z
 
 ## License / Terms of Use
 
-[Creative Commons Attribution 4.0 International license (CC-BY 4.0)](https://creativecommons.org/licenses/by/4.0/)
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -64,7 +80,17 @@ OpenPros was created by Hanchen Wang, Yixuan Wu, Yinan Feng, Peng Jin, Luoyuan Z
 - **Sampling:** 10 MHz (`dt = 1e-7 s`), 1,000 samples, or 100 microseconds per waveform.
 - **Image grid:** 401 axial by 161 lateral samples at 0.375 mm spacing, covering approximately 150 mm by 60 mm.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/unc-openpros/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+The reconstruction script checks the input shapes and writes two files: `pred_sos.png`, a side-by-side comparison of the predicted and ground-truth SOS maps, and [`assets/main.png`](assets/main.png), a clean, unlabeled hero image of just the prediction.
+
+The custom pipeline operations live in `custom_ops.py` (layout and preprocessing) and `network_ops.py` (runs the pretrained InversionNet from `zea.models.inversionnet`, weights downloaded from the Hugging Face Hub) next to the script.
+
 ## Dataset Format
+
+[zea v0.1.5](https://github.com/tue-bmd/zea)
 
 The package uses the `zea` HDF5 format. The RF values are carried over from the original OpenPros NumPy arrays without demodulation, decimation, filtering, or normalization. The conversion adds a singleton channel dimension and changes the original four 10-transmit blocks into a physical `20 transmits × 322 receivers` representation:
 
@@ -95,7 +121,7 @@ The converted release identifies its content as a simulation and stores composit
 
 ## Data Validation
 
-[`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/unc-openpros/reconstruct.py) loads [`pipeline.yaml`](pipeline.yaml) (also published on the Hub at [`hf://nvidia/OpenH-RF/unc-openpros/pipeline.yaml`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/pipeline.yaml)), a `zea.Pipeline` that reproduces the OpenPros InversionNet preprocessing and postprocessing:
+`reconstruct.py` loads [`pipeline.yaml`](pipeline.yaml) (also published on the Hub at [`hf://nvidia/OpenH-RF/unc-openpros/pipeline.yaml`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/pipeline.yaml)), a `zea.Pipeline` that reproduces the OpenPros InversionNet preprocessing and postprocessing:
 
 1. Restore the original acquisition-block order: body/body, body/rectum, rectum/rectum, and rectum/body.
 2. Apply the sign-preserving logarithmic transform `sign(x) * log1p(abs(1e5 * x))`.
@@ -103,18 +129,9 @@ The converted release identifies its content as a simulation and stores composit
 4. Run the pretrained InversionNet model.
 5. Denormalize its output from `[-1, 1]` to the physical SOS range `1300–3600 m/s`.
 
-Run the example with:
-
-```bash
-python reconstruct.py
-```
-
-The reconstruction script checks the input shapes and writes two files: `pred_sos.png`, a side-by-side comparison of the predicted and ground-truth SOS maps, and [`assets/main.png`](assets/main.png), a clean, unlabeled hero image of just the prediction.
-
 ## Known Issues
 
 - `focus_distances`, `t0_delays`, `tx_apodizations`, and related transmit fields are compatibility placeholders because the simulation uses external point sources rather than a conventional focused array transmission.
-
 
 ## Ethical Considerations
 

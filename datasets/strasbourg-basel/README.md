@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — BoneSRF Robot-Tracked Fractured-Femur Phantom Dataset"
+name: strasbourg-basel
+pretty_name: "BoneSRF Robot-Tracked Fractured-Femur Phantom Dataset"
 license: cc-by-4.0
 task_categories:
   - other
@@ -22,11 +23,21 @@ size_categories:
   - n<1K
 ---
 
+# BoneSRF
+
+<p align="center">
+  <img src="assets/reference_bmode.png" alt="BoneSRF B-mode of phantom 2, whole-bone sweep" width="200">
+</p>
+
+*B-mode of a fractured-femur phantom, frame 45 of
+[`data/phantom2_wholebone.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/strasbourg-basel/BoneSRF/data/phantom2_wholebone.hdf5),
+beamformed from the recovered channel data.*
+
+## Dataset Description
+
 <p align="center">
   <img src="assets/bonesrf_logo.png" alt="BoneSRF" width="200">
 </p>
-
-# BoneSRF
 
 **BoneSRF** (Bone Surface Reflection) is an ultrasound channel-data dataset for
 bone-surface and fracture-reflection research. It contains three 3D-printed,
@@ -37,8 +48,6 @@ Each phantom was swept three times (`distal`, `proximal`, `wholebone`), giving n
 `zea` HDF5 files. Every scan is robot-tracked: the probe was
 mounted on a robotic arm and its pose recorded separately. Each file also carries
 that phantom's CT scan and multi-label segmentation.
-
-## Dataset Description
 
 The channel data here is not a direct per-element sensor recording. A Clarius
 handheld probe does not expose its raw per-element channel data, only its own
@@ -92,78 +101,11 @@ at three positions along the bone:
 - **`proximal`**: a sweep over the proximal region of the femur
 - **`wholebone`**: a sweep covering the full length of the femur
 
-## Folder structure
-
-```
-BoneSRF/
-├── README.md              ← this file (dataset overview + data card for all nine scans)
-├── LICENCE                (CC BY 4.0)
-├── pipeline.yaml          (saved zea.Pipeline, shared by all nine scans)
-├── reconstruct.py         (runs pipeline.yaml on any scan, and plots its CT)
-├── assets/
-│   ├── reference_bmode.png       (the B-mode shown below)
-│   └── ct_<scan>.png             (CT slices of the scan's phantom)
-├── data/
-│   ├── phantom1_distal.hdf5      (zea channel data + per-frame probe pose + CT)
-│   ├── phantom1_proximal.hdf5
-│   ├── phantom1_wholebone.hdf5
-│   ├── phantom2_*.hdf5           (same three sweeps)
-│   └── phantom3_*.hdf5           (same three sweeps)
-└── reference_bmodes/
-    └── <scan>.png                (one reference reconstruction per scan)
-```
-
-Every file in `data/` is self-contained: it holds the CGLS-recovered pre-beamformed
-channel data, the transmit-sequence and probe metadata needed to beamform it, the
-per-frame probe pose, and the CT and segmentation of the phantom it shows.
-
-## Reconstructing a B-mode
-
-`reconstruct.py` loads the saved `zea.Pipeline` from `pipeline.yaml`, runs it on one
-frame of one scan, and writes `reference_bmodes/<scan>.png`:
-
-```bash
-python reconstruct.py
-```
-
-The constants at the top of the script select what is reconstructed:
-
-- `SCAN`: the scan to reconstruct, as a local path or an `hf://` URI.
-- `FRAME`: the frame to beamform. `None` uses that scan's reference frame, the one
-  its `reference_bmodes/<scan>.png` was rendered from.
-- `DEVICE`: where to run, e.g. `"cpu"`, `"cuda:0"` or `"auto:1"`.
-- `CT`: also plot the CT carried in the file, to `assets/ct_<scan>.png`.
-
-These values reconstruct `phantom2_wholebone` at its reference frame (45) on the CPU:
-
-```python
-SCAN = "hf://nvidia/OpenH-RF/strasbourg-basel/BoneSRF/data/phantom2_wholebone.hdf5"
-FRAME = None
-DEVICE = "cpu"
-```
-
-and produce the following B-mode image:
-
-<p align="center">
-  <img src="assets/reference_bmode.png" alt="BoneSRF" width="200">
-</p>
-
-The pipeline is `cast` → `apply_window` → `beamform` (delay-and-sum with a
-per-transmit `pfield` weighting, since this is a per-scanline focused
-walking-sub-aperture acquisition rather than full synthetic aperture) →
-`keras.ops.abs` → axial-only Gaussian blur → `normalize` → `log_compress`. Display
-parameters (dynamic range, p-field settings) also come from `pipeline.yaml`;
-acquisition geometry comes from each file's own `scan` and `probe` groups.
-
-The reconstruction does not use `zea.inverse`. That module is for the CGLS inversion
-that produced these files, not for reading them back. Runtime is about 30 s per
-frame on CPU. Each file is a full sweep of 20 to 25 GB, but only the requested frame
-is read.
-
 ## Dataset Contributor(s)
 
-Sidaty El Hadramy, Philippe C. Cattin, Juan Verde. IHU Strasbourg and the
-Department of Biomedical Engineering, University of Basel.
+- Sidaty El Hadramy (IHU Strasbourg; Department of Biomedical Engineering, University of Basel)
+- Philippe C. Cattin (IHU Strasbourg; Department of Biomedical Engineering, University of Basel)
+- Juan Verde (IHU Strasbourg; Department of Biomedical Engineering, University of Basel)
 
 ## Dataset Creation Date
 
@@ -173,9 +115,8 @@ see [Known Issues](#known-issues). Converted to the `zea` format in 2026.
 
 ## License / Terms of Use
 
-CC BY 4.0, see [the licence deed](https://creativecommons.org/licenses/by/4.0/). The CT and segmentation data inside the files
-is released under the same terms. The femur geometry behind the 3D-printed phantoms
-comes from a CC BY 4.0–licensed bone model dataset.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -207,61 +148,50 @@ beamformed-only scanners.
   47 to 97 of 192 elements active per transmit (mean 84, narrowest at the array
   edges).
 
-## CT reference imaging
+The CT and segmentation data inside the files are released under the same CC BY 4.0
+terms as the channel data. The femur geometry behind the 3D-printed phantoms comes from
+a CC BY 4.0–licensed bone model dataset.
 
-Each phantom's CT scan and its multi-label 3D Slicer segmentation are stored inside
-all three of that phantom's `zea` files, under `custom/ct/` and
-`custom/ct_segmentation/`. They are not shipped as separate `.nrrd` sidecars, so no
-file depends on another.
+## Processing the Dataset
 
-<p align="center">
-  <img src="assets/ct_phantom2_wholebone.png" alt="CT slices of phantom2" width="800">
-</p>
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/strasbourg-basel/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
 
-Three slices of phantom2's CT, written by `reconstruct.py` with `CT = True`, with
-the `BoneSRF-2_Complete` segment outlined in red. The printed femur is hollow, so it
-reads dark against the bright coupling gel, and the coronal view shows the fracture:
-the bone is in separate, displaced pieces.
+The script loads the saved `zea.Pipeline` from `pipeline.yaml`, runs it on one
+frame of one scan, and writes `assets/<scan>.png`.
 
-| Dataset | Contents |
-|---|---|
-| `custom/ct/volume` | CT volume, `int16`, stored `(k, j, i)` (slice, row, column) |
-| `custom/ct/spacing`, `origin`, `direction`, `affine` | Grid geometry in SI metres; `affine` maps voxel index `(i, j, k, 1)` to an LPS position |
-| `custom/ct/nrrd_header` | Verbatim header of the source NRRD (distances in millimetres) |
-| `custom/ct_segmentation/labelmap` | Layered binary labelmap on the same grid, `uint8` |
-| `custom/ct_segmentation/segment_*` | Per-segment name, label value, layer, colour, bounding box and 3D Slicer ID |
+The constants at the top of the script select what is reconstructed:
 
-Grid geometry differs per phantom:
+- `SCAN`: the scan to reconstruct, as a local path or an `hf://` URI.
+- `FRAME`: the frame to beamform. `None` uses that scan's reference frame, the one
+  its reference image was rendered from.
+- `DEVICE`: where to run, e.g. `"cpu"`, `"cuda:0"` or `"auto:1"`.
+- `CT`: also plot the CT carried in the file, to `assets/ct_<scan>.png`.
 
-| Phantom | CT grid | Stored array | Source spacing (mm) |
-|---|---|---|---|
-| phantom1 | `512 × 512 × 594` | `(594, 512, 512)` | `0.546875 × 0.546875 × 0.6` |
-| phantom2 | `512 × 512 × 574` | `(574, 512, 512)` | `0.50390625 × 0.50390625 × 0.6` |
-| phantom3 | `512 × 512 × 594` | `(594, 512, 512)` | `0.5625 × 0.5625 × 0.6` |
+These values reconstruct `phantom2_wholebone` at its reference frame (45) on the CPU:
 
-Each segmentation has three segments, one per RF sweep of that phantom. Label values
-repeat across layers, because 3D Slicer keeps segments on separate internal labelmap
-layers, so read a segment's mask as
-`labelmap[..., segment_layers[s]] == segment_label_values[s]` rather than treating
-the array as one flat labelmap:
+```python
+SCAN = "hf://nvidia/OpenH-RF/strasbourg-basel/BoneSRF/data/phantom2_wholebone.hdf5"
+FRAME = None
+DEVICE = "cpu"
+```
 
-| Segment | `segment_label_values` | `segment_layers` | Corresponds to |
-|---|---|---|---|
-| `BoneSRF-1_Proximal` | 1 | 0 | `phantom1_proximal` |
-| `BoneSRF-1_Distal` | 2 | 0 | `phantom1_distal` |
-| `BoneSRF-1_Complete` | 1 | 1 | `phantom1_wholebone` |
-| `BoneSRF-2_Complete` | 1 | 0 | `phantom2_wholebone` |
-| `BoneSRF-2_Distal` | 1 | 1 | `phantom2_distal` |
-| `BoneSRF-2_Proximal` | 2 | 1 | `phantom2_proximal` |
-| `BoneSRF-3_Proximal` | 2 | 0 | `phantom3_proximal` |
-| `BoneSRF-3_Distal` | 3 | 0 | `phantom3_distal` |
-| `BoneSRF-3_Complete` | 1 | 1 | `phantom3_wholebone` |
+and produce the B-mode image shown at the top of this card.
 
-The CT is reference imaging of the physical phantom in scanner (LPS) space. It is
-not spatially registered to the RF frames or to the tracked probe poses; no
-CT-to-ultrasound registration is provided.
+The pipeline is `cast` → `apply_window` → `beamform` (delay-and-sum with a
+per-transmit `pfield` weighting, since this is a per-scanline focused
+walking-sub-aperture acquisition rather than full synthetic aperture) →
+`keras.ops.abs` → axial-only Gaussian blur → `normalize` → `log_compress`. Display
+parameters (dynamic range, p-field settings) also come from `pipeline.yaml`;
+acquisition geometry comes from each file's own `scan` and `probe` groups.
+
+The reconstruction does not use `zea.inverse`. That module is for the CGLS inversion
+that produced these files, not for reading them back. Runtime is about 30 s per
+frame on CPU. Each file is a full sweep of 20 to 25 GB, but only the requested frame
+is read.
 
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 Submitted in the [`zea` file format](https://zea.readthedocs.io/en/openh-rf-latest/)
 as nine HDF5 files.
@@ -316,6 +246,85 @@ Every file has the same field structure; `n_frames` and `n_ax` vary per scan (se
 | `custom.ct_segmentation.segment_names` | `(3,)` | str | — | Segment names |
 | `custom.ct_segmentation.segment_label_values` | `(3,)` | uint8 | — | Label value of each segment within its own layer |
 | `custom.ct_segmentation.segment_layers` | `(3,)` | uint8 | — | Index into the last axis of `labelmap` holding each segment |
+
+## Folder structure
+
+```
+BoneSRF/
+├── README.md              ← this file (dataset overview + data card for all nine scans)
+├── LICENCE                (CC BY 4.0)
+├── pipeline.yaml          (saved zea.Pipeline, shared by all nine scans)
+├── reconstruct.py         (runs pipeline.yaml on any scan, and plots its CT)
+├── assets/
+│   ├── reference_bmode.png       (the B-mode shown below)
+│   └── ct_<scan>.png             (CT slices of the scan's phantom)
+├── data/
+│   ├── phantom1_distal.hdf5      (zea channel data + per-frame probe pose + CT)
+│   ├── phantom1_proximal.hdf5
+│   ├── phantom1_wholebone.hdf5
+│   ├── phantom2_*.hdf5           (same three sweeps)
+│   └── phantom3_*.hdf5           (same three sweeps)
+└── reference_bmodes/
+    └── <scan>.png                (one reference reconstruction per scan)
+```
+
+Every file in `data/` is self-contained: it holds the CGLS-recovered pre-beamformed
+channel data, the transmit-sequence and probe metadata needed to beamform it, the
+per-frame probe pose, and the CT and segmentation of the phantom it shows.
+
+## CT reference imaging
+
+Each phantom's CT scan and its multi-label 3D Slicer segmentation are stored inside
+all three of that phantom's `zea` files, under `custom/ct/` and
+`custom/ct_segmentation/`. They are not shipped as separate `.nrrd` sidecars, so no
+file depends on another.
+
+<p align="center">
+  <img src="assets/ct_phantom2_wholebone.png" alt="CT slices of phantom2" width="800">
+</p>
+
+Three slices of phantom2's CT, written by `reconstruct.py` with `CT = True`, with
+the `BoneSRF-2_Complete` segment outlined in red. The printed femur is hollow, so it
+reads dark against the bright coupling gel, and the coronal view shows the fracture:
+the bone is in separate, displaced pieces.
+
+| Dataset | Contents |
+|---|---|
+| `custom/ct/volume` | CT volume, `int16`, stored `(k, j, i)` (slice, row, column) |
+| `custom/ct/spacing`, `origin`, `direction`, `affine` | Grid geometry in SI metres; `affine` maps voxel index `(i, j, k, 1)` to an LPS position |
+| `custom/ct/nrrd_header` | Verbatim header of the source NRRD (distances in millimetres) |
+| `custom/ct_segmentation/labelmap` | Layered binary labelmap on the same grid, `uint8` |
+| `custom/ct_segmentation/segment_*` | Per-segment name, label value, layer, colour, bounding box and 3D Slicer ID |
+
+Grid geometry differs per phantom:
+
+| Phantom | CT grid | Stored array | Source spacing (mm) |
+|---|---|---|---|
+| phantom1 | `512 × 512 × 594` | `(594, 512, 512)` | `0.546875 × 0.546875 × 0.6` |
+| phantom2 | `512 × 512 × 574` | `(574, 512, 512)` | `0.50390625 × 0.50390625 × 0.6` |
+| phantom3 | `512 × 512 × 594` | `(594, 512, 512)` | `0.5625 × 0.5625 × 0.6` |
+
+Each segmentation has three segments, one per RF sweep of that phantom. Label values
+repeat across layers, because 3D Slicer keeps segments on separate internal labelmap
+layers, so read a segment's mask as
+`labelmap[..., segment_layers[s]] == segment_label_values[s]` rather than treating
+the array as one flat labelmap:
+
+| Segment | `segment_label_values` | `segment_layers` | Corresponds to |
+|---|---|---|---|
+| `BoneSRF-1_Proximal` | 1 | 0 | `phantom1_proximal` |
+| `BoneSRF-1_Distal` | 2 | 0 | `phantom1_distal` |
+| `BoneSRF-1_Complete` | 1 | 1 | `phantom1_wholebone` |
+| `BoneSRF-2_Complete` | 1 | 0 | `phantom2_wholebone` |
+| `BoneSRF-2_Distal` | 1 | 1 | `phantom2_distal` |
+| `BoneSRF-2_Proximal` | 2 | 1 | `phantom2_proximal` |
+| `BoneSRF-3_Proximal` | 2 | 0 | `phantom3_proximal` |
+| `BoneSRF-3_Distal` | 3 | 0 | `phantom3_distal` |
+| `BoneSRF-3_Complete` | 1 | 1 | `phantom3_wholebone` |
+
+The CT is reference imaging of the physical phantom in scanner (LPS) space. It is
+not spatially registered to the RF frames or to the tracked probe poses; no
+CT-to-ultrasound registration is provided.
 
 ## Dataset Quantification
 

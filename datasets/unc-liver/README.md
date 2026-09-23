@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF fullwave-abdominal-wall: Fullwave Abdominal Wall Simulation (UNC / NC State / Stanford)"
+name: unc-liver
+pretty_name: "fullwave-abdominal-wall: Fullwave Abdominal Wall Simulation (UNC / NC State / Stanford)"
 license: cc-by-4.0
 task_categories:
   - image-segmentation
@@ -18,7 +19,13 @@ size_categories:
   - 1K<n<10K
 ---
 
-# fullwave-abdominal-wall: Fullwave abdominal wall simulation dataset
+# fullwave-abdominal-wall: Fullwave Abdominal Wall Simulation Dataset
+
+![Scan-converted B-mode through a simulated abdominal wall](assets/main.png)
+
+*Scan-converted B-mode reconstructed from the full-synthetic-aperture channel data of one
+simulated acquisition in [`data/`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/unc-liver/data):
+the abdominal wall layers in the near field above the liver.*
 
 ## Dataset Description
 
@@ -38,12 +45,12 @@ exact rather than estimated: the sound-speed and attenuation maps are the simula
 inputs, not a reconstruction, which makes it directly usable for training and
 quantitative evaluation of sound-speed estimation and aberration-correction methods.
 
-## Dataset Contributors
+## Dataset Contributor(s)
 
-University of North Carolina at Chapel Hill, NC State University, and Stanford University.
-
-Primary point of contact: **Gianmarco Pinton** (gia@email.unc.edu), Lampe Joint
-Department of Biomedical Engineering, UNC Chapel Hill and NC State University.
+- Gianmarco Pinton <gia@email.unc.edu> (primary point of contact; Lampe Joint Department of Biomedical Engineering, UNC Chapel Hill and NC State University)
+- University of North Carolina at Chapel Hill
+- NC State University
+- Stanford University
 
 The underlying phantoms and simulations are described in Zhuang et al. (2026).
 
@@ -53,7 +60,31 @@ The underlying phantoms and simulations are described in Zhuang et al. (2026).
 
 ## License / Terms of Use
 
-**CC BY 4.0** (see `LICENSE`).
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
+
+## Intended Usage
+
+- **Speed-of-sound estimation:** exact per-pixel ground-truth sound speed, randomised
+  per tissue per simulation so the mapping is not memorisable from anatomy alone.
+- **Aberration correction:** measured RMS arrival-time aberration is
+  138.9 ± 78.4 ns across the dataset.
+- **Reverberation / clutter suppression:** the abdominal wall produces realistic
+  diffuse reverberation (decay in the expected −12 to −10 dB/cm range).
+- **Advanced beamforming:** the multistatic full synthetic aperture matrix supports
+  retrospective synthesis of any transmit sequence (focused, plane wave, diverging).
+- **Tissue segmentation** from channel data.
+
+## Dataset Characterization
+
+- **Data Collection Method:** synthetic (Fullwave 2 numerical simulation)
+- **Labeling Method:** synthetic ground truth (simulation inputs)
+- **Acquisition system:** simulated Verasonics **C5-2v curvilinear array**: 128
+  elements, 49.57 mm radius of curvature, 0.508 mm arc pitch, 3.7 MHz transmit centre
+  frequency, 70% fractional bandwidth, 14.436 MHz sampling. Transmit pulse is a
+  two-cycle Gaussian-enveloped sine at 0.1 MPa. No lens or matching layer is modelled.
+
+## Source Attribution
 
 The material distributed here (the RF channel data, the acoustic material maps, and the
 segmentations) is original scholarly output of the contributing institutions
@@ -79,28 +110,15 @@ endorsement.
 *This is a good-faith reading of the public terms, not legal advice; the contributor is
 the responsible party for the license declaration.*
 
-## Intended Usage
+## Processing the Dataset
 
-- **Speed-of-sound estimation:** exact per-pixel ground-truth sound speed, randomised
-  per tissue per simulation so the mapping is not memorisable from anatomy alone.
-- **Aberration correction:** measured RMS arrival-time aberration is
-  138.9 ± 78.4 ns across the dataset.
-- **Reverberation / clutter suppression:** the abdominal wall produces realistic
-  diffuse reverberation (decay in the expected −12 to −10 dB/cm range).
-- **Advanced beamforming:** the multistatic full synthetic aperture matrix supports
-  retrospective synthesis of any transmit sequence (focused, plane wave, diverging).
-- **Tissue segmentation** from channel data.
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/unc-liver/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
 
-## Dataset Characterization
-
-- **Data Collection Method:** synthetic (Fullwave 2 numerical simulation)
-- **Labeling Method:** synthetic ground truth (simulation inputs)
-- **Acquisition system:** simulated Verasonics **C5-2v curvilinear array**: 128
-  elements, 49.57 mm radius of curvature, 0.508 mm arc pitch, 3.7 MHz transmit centre
-  frequency, 70% fractional bandwidth, 14.436 MHz sampling. Transmit pulse is a
-  two-cycle Gaussian-enveloped sine at 0.1 MPa. No lens or matching layer is modelled.
+Set `ZEA_FILE` and `FRAME` at the top of the script to pick an acquisition. For current release files, use `zea==0.1.6` and any Keras backend (`reconstruct.py` falls back to torch if `KERAS_BACKEND` is unset, but respects whatever you have configured).
 
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 All files are in the *zea* file format (current release `zea_version` 0.1.4), one HDF5 file per
 acquisition, single track.
@@ -210,13 +228,6 @@ source publication, subcutaneous fat and muscle predominate (fat 56.5 ± 8.3%, m
 reconstructs from the raw channel data on the polar grid, scan-converts to a physical
 sector and writes a PNG. The pipeline plus its grid parameters are saved in
 `pipeline.yaml`.
-
-For current release files, use `zea==0.1.6` and any Keras backend (`reconstruct.py` falls back to torch if
-`KERAS_BACKEND` is unset, but respects whatever you have configured).
-
-```bash
-python reconstruct.py <file>.hdf5 --out bmode.png --save-yaml pipeline.yaml
-```
 
 Reference outputs: `bmode_reference.png`.
 

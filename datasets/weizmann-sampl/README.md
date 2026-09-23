@@ -1,6 +1,7 @@
 ---
+name: weizmann-sampl
 license: cc-by-4.0
-pretty_name: OpenH-RF Thyroid In-Vivo L11-5v Scan (D1)
+pretty_name: "Weizmann SAMPL Thyroid Clinical Scans"
 task_categories:
   - other
 tags:
@@ -10,15 +11,16 @@ tags:
   - thyroid
   - clinical
   - zea
+language:
+  - en
 ---
 
-# OpenH-RF Thyroid Clinical Scans
+# Weizmann SAMPL Thyroid Clinical Scans
 
 ![Reconstructed cineloop from 30_1.hdf5](assets/30_1.gif)
 
-Cine loop of [`30_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/weizmann-sampl/data/30_1.hdf5), reconstructed from the raw
-channel data with the `pipeline.yaml` in this folder.
-
+*Cine loop of a thyroid scan, [`data/30_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/weizmann-sampl/data/30_1.hdf5), reconstructed from the raw
+channel data with the `pipeline.yaml` in this folder.*
 
 ## Dataset Description
 
@@ -29,8 +31,7 @@ who specializes in ultrasound thyroid imaging. The purpose of the scans is to pr
 
 ## Dataset Contributor(s)
 
-Prof. Yonina Eldar's SAMPLLAB Group, Faculty of Mathematics and Computer Science, Weizmann Institute of Science, Rehovot, Israel.
-
+- Prof. Yonina Eldar's SAMPL Lab Group, Faculty of Mathematics and Computer Science, Weizmann Institute of Science, Rehovot, Israel
 
 ## Dataset Creation Date
 
@@ -38,8 +39,8 @@ Prof. Yonina Eldar's SAMPLLAB Group, Faculty of Mathematics and Computer Science
 
 ## License / Terms of Use
 
-CC-BY-4.0. Acquired under a Weizmann Institute IRB-approved research protocol, with informed
-consent obtained from each subject prior to scanning.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -58,7 +59,15 @@ segmentation, nodule detection) if paired with additional annotations from the B
   frequency 31.25 MHz, demodulation frequency 7.8125 MHz, assumed sound
   speed 1540 m/s.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/weizmann-sampl/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+Set `ZEA_FILE` and `FRAME` at the top of the script to pick a scan and frame; setting `ZEA_FILE = None` switches to the grid modes that sample several scans (see the script docstring).
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 zea file format, one acquisition HDF5 file per subject. Before packaging,
 the frames prior to workspace parameter freezing were removed from the raw channel data frames.
@@ -98,7 +107,6 @@ the frames prior to workspace parameter freezing were removed from the raw chann
 | `custom/lens_correction` | scalar                       | float64 | wavelengths | Raw Verasonics one-way lens correction delay (2.961 wl), kept for provenance |
 | `metadata/subject/id` | scalar                       | str | - | De-identified subject code |
 | `metadata/subject/type` | scalar                       | str | - | `human` |
-
 
 ## Subject Metadata
 - number of subjects: 30,
@@ -145,11 +153,10 @@ acquisition.
 
 ## Ethical Considerations
 
-This acquisition was performed under an IRB-approved research protocol,
+This acquisition was performed under a Weizmann Institute IRB-approved research protocol,
 with informed consent obtained from the subject prior to scanning. The
 subjects are identified only by a de-identified code  with no directly
 identifying information (name, exact date of birth, medical record number)
 stored in the released file. No `acquisition_time` timestamp is embedded in
 the zea file, consistent with HIPAA Safe Harbor de-identification guidance
 for human-subject data.
-

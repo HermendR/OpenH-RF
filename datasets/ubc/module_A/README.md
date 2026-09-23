@@ -1,5 +1,6 @@
 ---
-Name: "OpenH-RF UBC Module A Corrected Synthetic-Channel S-WAVE Phantom Dataset"
+name: ubc-module-a
+pretty_name: "UBC Module A Corrected Synthetic-Channel S-WAVE Phantom Dataset"
 license: cc-by-4.0
 task_categories:
   - image-to-image
@@ -18,7 +19,12 @@ size_categories:
   - 1K<n<10K
 ---
 
-# Module A
+# UBC Module A — Synthetic-Channel S-WAVE Liver Fibrosis Phantom
+
+![Example reconstruction](./assets/module_A.png)
+
+*Scan-converted scanline B-mode of a CIRS 039 liver fibrosis phantom, reconstructed from the
+synthetic channel data in [`acquisitions/`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/ubc/module_A/acquisitions).*
 
 ## Dataset Description
 
@@ -35,15 +41,22 @@ The files are physically delay-consistent and reconstruct with zea-native
 scanline delay-and-sum. They are not recovered or measured scanner channel
 data, and they must not be represented as such.
 
-![Example reconstruction](./assets/module_A.png)
+## Dataset Contributor(s)
 
-## Dataset Contributors
-
-- **Organization:** The University of British Columbia (UBC), Department of
-  Electrical and Computer Engineering and School of Biomedical Engineering.
-- **Dataset-preparation contact:** Zongze Li, zongze@student.ubc.ca.
-- **Contributors:** Zongze Li, Yu Chung Lee, Qi Zeng, Wanwen Chen, Zijian Wu,
-  Yuxin Chen, Patrick Boyan Chen, Michael Frew, Tajwar Abrar Aleef, Hamid Moradi, Mohammad Honarvar, Septimiu E. Salcudean, Robert Rohling.
+- Zongze Li <zongze@student.ubc.ca> (dataset-preparation contact)
+- Yu Chung Lee
+- Qi Zeng
+- Wanwen Chen
+- Zijian Wu
+- Yuxin Chen
+- Patrick Boyan Chen
+- Michael Frew
+- Tajwar Abrar Aleef
+- Hamid Moradi
+- Mohammad Honarvar
+- Septimiu E. Salcudean
+- Robert Rohling
+- The University of British Columbia (UBC), Department of Electrical and Computer Engineering and School of Biomedical Engineering
 
 ## Dataset Creation Date
 
@@ -52,7 +65,8 @@ phantom acquisitions predate this packaging.
 
 ## License / Terms of Use
 
-The dataset package is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -106,7 +120,18 @@ Acquisition and simulation details:
 - Quantization: `int16`, scaled to an absolute peak of 26,000; no sample reaches
   int16 full scale.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/ubc/module_A/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+`reconstruct.py` reconstructs one frame (default `case_1.83/ubc_swave_cirs_1.83_p10_f13.hdf5`);
+[`reconstruct_multiframe.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/ubc/module_A/reconstruct_multiframe.py)
+reconstructs the temporal sequence at one motor plane (`CASE_ID`, `PLANE`, `N_FRAMES`) into an
+animated GIF.
+
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 There are 8 × 20 × 25 = **4,000** one-frame HDF5 files. One file per source
 frame keeps full zea schema validation and reconstruction memory-bounded.

@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Waveform-Specific Synthetic Microbubble RF Dataset"
+name: twente-microbubblesim
+pretty_name: "Waveform-Specific Synthetic Microbubble RF Dataset"
 license: cc-by-4.0
 task_categories:
   - image-to-image
@@ -15,7 +16,7 @@ size_categories:
   - "n<1K"
 ---
 
-# OpenH-RF synthetic ultrasound data
+# Waveform-Specific Synthetic Microbubble RF Dataset
 
 ## Dataset Description
 
@@ -25,16 +26,12 @@ was generated to study the effect of ultrasound transmit-waveform shape on RF
 signals and deep-learning methods for microbubble super-resolution. It contains
 simulated data, not clinical, phantom, or in-vivo animal data.
 
-## Dataset Contributors
+## Dataset Contributor(s)
 
-| Contributor | Affiliation / role | Email |
-|---|---|---|
-| Rienk Zorgdrager | PhD candidate, University of Twente | `r.c.zorgdrager@utwente.nl` |
-| Anass Hameddine | PhD candidate, University of Twente | `a.hameddine@utwente.nl` |
-| Michel Versluis | Professor, physical and medical acoustics, University of Twente | `m.versluis@utwente.nl` |
-| Guillaume Lajoinie | Associate Professor, Physics of Fluids Group, University of Twente | `g.p.r.lajoinie@utwente.nl` |
-
-**Primary contacts:** Anass Hameddine and Rienk Zorgdrager.
+- Rienk Zorgdrager <r.c.zorgdrager@utwente.nl> (PhD candidate, University of Twente; primary contact)
+- Anass Hameddine <a.hameddine@utwente.nl> (PhD candidate, University of Twente; primary contact)
+- Michel Versluis <m.versluis@utwente.nl> (Professor, physical and medical acoustics, University of Twente)
+- Guillaume Lajoinie <g.p.r.lajoinie@utwente.nl> (Associate Professor, Physics of Fluids Group, University of Twente)
 
 ## Dataset Creation Date
 
@@ -42,12 +39,8 @@ simulated data, not clinical, phantom, or in-vivo animal data.
 
 ## License / Terms of Use
 
-This dataset is released under the Creative Commons Attribution 4.0
-International license (CC BY 4.0). See [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/). The contributors
-confirm that the simulated RF outputs, bubble ground truth, pulse waveforms,
-calibrated P4-1 inputs, and incorporated assets used to produce this dataset
-are cleared for public redistribution under CC BY 4.0, consistent with the
-accepted proposal and the steering-group IP policy.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -77,7 +70,26 @@ deep-learning methods for microbubble super-resolution imaging.
   **private dataset-generation release 2026-07-12**. The solver source is
   private and is not distributed with this dataset.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/twente-microbubblesim/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF),
+together with the pipeline definitions in `pipeline/` and the
+[zea library](https://github.com/tue-bmd/zea). The script streams the data from the
+Hugging Face Hub.
+
+Every pulse track has its own verified pipeline file, `pipeline/pipeline_track_<index>_<label>.yaml`,
+all defining the same chain:
+
+`demodulate → downsample (factor 1) → delay-and-sum beamform → envelope detect → normalize → log compress`
+
+Set `PATH` to one `.hdf5` acquisition, `PULSE` to the pulse label (for example `REF`, `DPT` or
+`L1.7`) and `CONFIG_PATH` to the matching track's pipeline. The script applies that track's
+beamforming peak-time reference (`custom/track_i_t_peak`) and, with `SHOW_BUBBLES`, overlays the
+ground-truth bubble positions.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 Each bubble distribution is stored in one zea HDF5 file containing 12 pulse
 tracks. The raw channel data in every `tracks/track_i/data/raw_data` dataset
@@ -179,36 +191,6 @@ accepts both; new consumers should use the migrated paths.
 This fully synthetic dataset contains no human or animal subjects, protected
 health information, age, sex, pathology, consent records, or clinical scanner
 identifiers.
-
-## Reconstruction
-
-All pulse tracks use identical verified pipeline files stored in the `pipeline/`
-folder: `pipeline_track_<index>_<label>.yaml` for each of the 12 tracks. Each
-file defines the verified processing chain:
-
-`demodulate → downsample (factor 1) → delay-and-sum beamform → envelope detect → normalize → log compress`
-
-`--pulse` selects the pulse by its stored label and applies the corresponding
-track's `t_peak`, while the same pipeline operations are applied to every
-track. These commands reconstruct REF (`track_6`) for both populations:
-
-```bash
-python reconstruct.py \
-  --path Monodispers/RFDATA00001.hdf5 \
-  --pulse REF \
-  --output REF_monodisperse.png
-
-python reconstruct.py \
-  --path SonoVue/RFDATA00001.hdf5 \
-  --pulse REF \
-  --output REF_sonovue.png
-```
-
-To override the selected track's pipeline, pass `--config-path`, for example
-`pipeline/pipeline_track_6_REF.yaml`. Each track stores its beamforming
-peak-time reference as `custom/track_i_t_peak`. Reconstruction
-applies the value belonging to the selected track. `--path` must point directly
-to one `.hdf5` acquisition file.
 
 ## Data Validation
 

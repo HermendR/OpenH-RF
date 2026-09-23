@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — TU/e Cardiac RF Multi-Transmit"
+name: tue-cardiac
+pretty_name: "TU/e Cardiac RF Multi-Transmit"
 license: cc-by-4.0
 task_categories:
   - other
@@ -32,41 +33,8 @@ size_categories:
   </tr>
 </table>
 
-<br>
-<hr>
-<br>
-
-<h3 align="center">Transmit Types</h3>
-
-<table width="100%">
-  <tr>
-    <th>Focused fundamental</th>
-    <th>Focused pulse-inversion harmonic</th>
-    <th>Wide fundamental</th>
-    <th>Wide pulse-inversion harmonic</th>
-  </tr>
-  <tr>
-    <td><img src="assets/subject-002_focused_fund_frame-000.png" alt="Focused fundamental cardiac image"></td>
-    <td><img src="assets/subject-002_focused_harm_frame-000.png" alt="Focused pulse-inversion harmonic cardiac image"></td>
-    <td><img src="assets/subject-002_wide_fund_frame-000.png" alt="Wide fundamental cardiac image"></td>
-    <td><img src="assets/subject-002_wide_harm_frame-000.png" alt="Wide pulse-inversion harmonic cardiac image"></td>
-  </tr>
-  <tr>
-    <th>Plane wave</th>
-    <th>Diverging wave</th>
-    <th>Hadamard-coded aperture</th>
-    <th>Random binary-coded aperture</th>
-  </tr>
-  <tr>
-    <td><img src="assets/subject-002_planewave_frame-000.png" alt="Plane-wave cardiac image"></td>
-    <td><img src="assets/subject-002_diverging_frame-000.png" alt="Diverging-wave cardiac image"></td>
-    <td><img src="assets/subject-002_hadamard_frame-000.png" alt="Hadamard-coded aperture cardiac image"></td>
-    <td><img src="assets/subject-002_random_frame-000.png" alt="Random binary-coded aperture cardiac image"></td>
-  </tr>
-  <tr>
-    <td colspan="4"><small>Output images for running reconstruct.py on subject 2.</small></td>
-  </tr>
-</table>
+*Parasternal long-axis cine loops of four volunteers, pulse-inversion harmonic tracks:
+focused ([`subject-002`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-002.hdf5)), wide ([`subject-004`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-004.hdf5)), focused ([`subject-006`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-006.hdf5)) and wide ([`subject-009`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tue-cardiac/data/subject-009.hdf5)).*
 
 ## Dataset Description
 
@@ -86,10 +54,9 @@ sensing, and comparisons of fundamental and second-harmonic imaging.
 
 ## Dataset Contributor(s)
 
-- **Authors:** Simon Penninga and Ruud van Sloun
-- **Contributor and contact:** Simon Penninga (`s.w.penninga@tue.nl`)
-- **Organization:** Biomedical Diagnostics Lab, Eindhoven University of
-  Technology (TU/e), the Netherlands
+- Simon Penninga <s.w.penninga@tue.nl> (author; contact)
+- Ruud van Sloun (author)
+- Biomedical Diagnostics Lab, Eindhoven University of Technology (TU/e), the Netherlands
 
 ## Dataset Creation Date
 
@@ -97,9 +64,8 @@ The recordings were acquired in 2026.
 
 ## License / Terms of Use
 
-The dataset license is [Creative Commons Attribution 4.0 International
-(CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). The full license
-text is provided at [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/).
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -113,23 +79,6 @@ Intended research uses include:
 - development and evaluation of ultrasound inverse-problem methods.
 
 The dataset must not be used as a clinically validated diagnostic product.
-
-## Citation
-
-Suggested citation for the dataset:
-
-> Penninga, S., & van Sloun, R. (2026). *TU/e Cardiac RF Multi-Transmit* [Data set].
-> Eindhoven University of Technology, OpenH-RF.
-
-```bibtex
-@misc{penninga_tue_cardiac_plax_2026,
-  title        = {TU/e Cardiac PLAX Multi-Transmit RF},
-  author       = {Penninga, Simon and van Sloun, Ruud},
-  year         = {2026},
-  publisher    = {Biomedical Diagnostics Lab, Eindhoven University of Technology},
-  howpublished = {OpenH-RF dataset},
-}
-```
 
 ## Dataset Characterization
 
@@ -163,7 +112,18 @@ Suggested citation for the dataset:
 | 07 | `hadamard` | Full-aperture Hadamard code | 80 | 3.90625 MHz | Zero transmit delays and ±1 apodization; REFoCUS decoding required |
 | 08 | `random` | Full-aperture fixed random binary code | 80 | 3.90625 MHz | Zero transmit delays and ±1 apodization; REFoCUS decoding required |
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/tue-cardiac/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipelines/*.yaml` definitions in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+Each file holds the eight transmit-encoding tracks. Set `ZEA_FILE`, `TRACK` and `FRAME`
+at the top of the script, together with the matching pipeline under `pipelines/`
+as `CONFIG` (`PIPELINE_FOR_TRACK` lists which track uses which; see also
+[Data Validation](#data-validation)). The image is written to `assets/`.
+
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 The final dataset contains 12 zea HDF5 files under `data/`, one per
 pseudonymized participant:
@@ -209,6 +169,55 @@ The source tensor order is preserved as
 | `/tracks/track_N/scan/waveforms_one_way` | track dependent | float32 | V | One-way transmit waveform model |
 | `/tracks/track_N/scan/waveforms_two_way` | track dependent | float32 | V | Two-way transmit waveform model |
 
+## Transmit Types
+
+<table width="100%">
+  <tr>
+    <th>Focused fundamental</th>
+    <th>Focused pulse-inversion harmonic</th>
+    <th>Wide fundamental</th>
+    <th>Wide pulse-inversion harmonic</th>
+  </tr>
+  <tr>
+    <td><img src="assets/subject-002_focused_fund_frame-000.png" alt="Focused fundamental cardiac image"></td>
+    <td><img src="assets/subject-002_focused_harm_frame-000.png" alt="Focused pulse-inversion harmonic cardiac image"></td>
+    <td><img src="assets/subject-002_wide_fund_frame-000.png" alt="Wide fundamental cardiac image"></td>
+    <td><img src="assets/subject-002_wide_harm_frame-000.png" alt="Wide pulse-inversion harmonic cardiac image"></td>
+  </tr>
+  <tr>
+    <th>Plane wave</th>
+    <th>Diverging wave</th>
+    <th>Hadamard-coded aperture</th>
+    <th>Random binary-coded aperture</th>
+  </tr>
+  <tr>
+    <td><img src="assets/subject-002_planewave_frame-000.png" alt="Plane-wave cardiac image"></td>
+    <td><img src="assets/subject-002_diverging_frame-000.png" alt="Diverging-wave cardiac image"></td>
+    <td><img src="assets/subject-002_hadamard_frame-000.png" alt="Hadamard-coded aperture cardiac image"></td>
+    <td><img src="assets/subject-002_random_frame-000.png" alt="Random binary-coded aperture cardiac image"></td>
+  </tr>
+  <tr>
+    <td colspan="4"><small>Output images of <code>reconstruct.py</code> for every transmit type of subject 2.</small></td>
+  </tr>
+</table>
+
+## Citation
+
+Suggested citation for the dataset:
+
+> Penninga, S., & van Sloun, R. (2026). *TU/e Cardiac RF Multi-Transmit* [Data set].
+> Eindhoven University of Technology, OpenH-RF.
+
+```bibtex
+@misc{penninga_tue_cardiac_plax_2026,
+  title        = {TU/e Cardiac PLAX Multi-Transmit RF},
+  author       = {Penninga, Simon and van Sloun, Ruud},
+  year         = {2026},
+  publisher    = {Biomedical Diagnostics Lab, Eindhoven University of Technology},
+  howpublished = {OpenH-RF dataset},
+}
+```
+
 ## Dataset Quantification
 
 **Current OpenH-RF release:** 12 HDF5 files; 199.18 GB (199,180,025,844 bytes) stored; root `zea_version` **0.1.4**.
@@ -231,14 +240,6 @@ Four saved zea pipeline configurations are provided under `pipelines/`:
 All configurations perform RF filtering, demodulation, delay-and-sum
 beamforming, envelope detection, normalization, log compression, and scan
 conversion.
-
-Example reconstruction:
-
-```bash
-python reconstruct.py data/subject-002.hdf5 \
-  --track focused_fund --frame 0
-```
-leads to generation of the respective image in `./assets`
 
 ## Known Issues
 

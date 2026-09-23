@@ -1,4 +1,5 @@
 ---
+name: waterloo-largeartery
 pretty_name: UW-FemVeinRF
 license: cc-by-4.0
 task_categories:
@@ -24,41 +25,25 @@ size_categories:
 
 ![Reconstructed cineloop from Acq5.hdf5](assets/Acq5.gif)
 
-Cine loop of [`Acq5.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-largeartery/data/Acq5.hdf5), reconstructed from the raw
-channel data with the `pipeline.yaml` in this folder.
-
-`zea` renders it straight from the Hub:
-
-```bash
-zea process \
-  --dataset hf://nvidia/OpenH-RF/waterloo-largeartery/data/Acq5.hdf5 \
-  --config hf://nvidia/OpenH-RF/waterloo-largeartery/pipeline.yaml \
-  --n-frames 1 \
-  --save-as png
-```
-
-Swap `--n-frames 1 --save-as png` for `--save-as gif` to get the cine loop.
-
-
-Dataset consisting of raw RF data and vector velocity measurements of femoral vein acquired in studies conducted by VORTEX @
-University of Waterloo.
+*Cine loop of [`data/Acq5.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-largeartery/data/Acq5.hdf5), reconstructed from the raw
+channel data with the `pipeline.yaml` in this folder.*
 
 ## Dataset Description
 
-This is a dataset consisting of raw RF frames (plane wave) and vector flow
-profiles of the femoral vein in humans, acquired using a programmable research scanner configured for
-high frame rate vector flow imaging. The data was collected as part of studies
-conducted by the VORTEX research group at the University of Waterloo, focusing on
-venous hemodynamics under muscular contraction and head up tilt.
+Raw RF frames (plane wave) and vector flow profiles of the human femoral vein, acquired by
+the VORTEX research group at the University of Waterloo with a programmable research scanner
+configured for high-frame-rate vector flow imaging. The data was collected to study venous
+hemodynamics under muscular contraction and head-up tilt.
 
 ## Dataset Contributor(s)
 
-Hassan Nahas, Jeremy N. Cohen, Eudoxia Zafiris, Skye H.T. Ling, Alfred C.H. Yu, Jason S. Au
-
-Correspondence emails:
-hassan.nahas@uwaterloo.ca
-jason.au@uwaterloo.ca
-
+- Hassan Nahas <hassan.nahas@uwaterloo.ca>
+- Jeremy N. Cohen
+- Eudoxia Zafiris
+- Skye H.T. Ling
+- Alfred C.H. Yu
+- Jason S. Au <jason.au@uwaterloo.ca>
+- VORTEX, University of Waterloo
 
 ## Dataset Creation Date
 
@@ -67,11 +52,7 @@ jason.au@uwaterloo.ca
 ## License / Terms of Use
 
 [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-
-All human studies were approved by the University of Waterloo’s Human Research
-Ethics Board (ORE #46018). All included data was acquired from participants who
-provided both written and verbal consent prior to participating in the study
-regarding public data sharing.
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -86,7 +67,27 @@ processing, and vector flow imaging (VFI) in venous imaging.
 - **Acquisition system:**
   Raw RF data was acquired from programmable research scanners (US4R, US4US, Warsaw, Poland) equipped with an AL2442 linear array transducer.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/waterloo-largeartery/data/Acq5.hdf5 \
+  --config hf://nvidia/OpenH-RF/waterloo-largeartery/pipeline.yaml \
+  --n-frames 1 \
+  --save-as png
+```
+
+Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/waterloo-largeartery/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
+
+Swap `--n-frames 1 --save-as png` for `--save-as gif` to get the cine loop. In the script, `ZEA_FILE`, `FRAME`, `POWER_THRESHOLD` (the power-Doppler mask threshold, in dB), `VMAX` (velocity colour-scale maximum) and `NO_DEALIAS` at the top select what is reconstructed and overlaid.
+
 ## Dataset Format
+
+[zea v0.1.5](https://github.com/tue-bmd/zea)
 
 Submitted in the [`zea` file format](https://zea.readthedocs.io/en/latest/) (one HDF5 file per acquisition).
 
@@ -194,11 +195,11 @@ B. Y. S. Yiu and A. C. H. Yu, "Least-Squares Multi-Angle Doppler Estimators for 
 
 ## Data Validation
 
-[`reconstruct.py`](reconstruct.py) builds a `zea.Pipeline` of DAS beamforming →
+`reconstruct.py` builds a `zea.Pipeline` of DAS beamforming →
 envelope detection → normalization → log-compression **in code** and
 reconstructs a B-mode directly from `raw_data`, showing the raw-to-image flow
 without any config file. It also saves the pipeline to
-[`pipeline.yaml`](pipeline.yaml) as a shareable recipe. Comparing the
+`pipeline.yaml` as a shareable recipe. Comparing the
 reconstruction against the stored (LITMUS) B-mode is a sanity check that the
 acquisition parameters and probe geometry are recorded correctly, and serves as
 a reproducible reference reconstruction.
@@ -213,16 +214,6 @@ LITMUS GPU stack.
 The result is written to `reconstruct_output.png`:
 
 ![reference reconstruction](assets/reconstruct_output.png)
-
-### Example Usage of reconstruct.py
-
-```bash
-# Reconstruct the default file (hdf5/Acq0.hdf5) at frame 100
-python reconstruct.py
-
-# Reconstruct a specific file and frame, and adjust the power-Doppler mask
-python reconstruct.py --input "hdf5/Acq0.hdf5" --frame 700 --power-threshold 58 --vmax 1
-```
 
 ## Ethical Considerations
 

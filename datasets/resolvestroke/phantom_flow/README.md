@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF - Resolve Stroke Flow Phantom (CIRS 769 + ATS523A) On/Off"
+name: resolvestroke-phantom-flow
+pretty_name: "Resolve Stroke Flow Phantom (CIRS 769 + ATS523A) On/Off"
 license: cc-by-4.0
 task_categories:
   - other
@@ -18,7 +19,13 @@ size_categories:
   - 10K<n<100K
 ---
 
-# OpenH-RF - Resolve Stroke Flow Phantom (CIRS 769 + ATS523A) On/Off
+# Resolve Stroke Flow Phantom (CIRS 769 + ATS523A) On/Off
+
+![Power-Doppler 3D MIP montage with reference mvi](../assets/phantom_flow_PD_montage.png)
+
+*Power Doppler of the five clips (x-z and y-z maximum-intensity projections), with the
+reference `mvi` in the last column, reconstructed from
+[`phantom_flow.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/resolvestroke/phantom_flow/phantom_flow.hdf5).*
 
 ## Dataset Description
 
@@ -41,11 +48,12 @@ relative to the end-of-baseline marker:
 
 ## Dataset Contributor(s)
 
-Aitana Waelbroeck\*, Carl Ferlay\*, Arthur Chavignon\*, Maxence Reberol\*, Vincent Hingot\*
-
-\* Resolve Stroke (29 Rue du Faubourg Saint-Jacques, 75014 Paris)
-
-Contact email: maxence.reberol@resolvestroke.com
+- Aitana Waelbroeck
+- Carl Ferlay
+- Arthur Chavignon
+- Maxence Reberol <maxence.reberol@resolvestroke.com> (contact)
+- Vincent Hingot
+- Resolve Stroke, 29 Rue du Faubourg Saint-Jacques, 75014 Paris
 
 ## Dataset Creation Date
 
@@ -53,10 +61,8 @@ Contact email: maxence.reberol@resolvestroke.com
 
 ## License / Terms of Use
 
-CC BY 4.0 (see `LICENCE`). Data is released under Creative Commons Attribution
-4.0 International, which permits commercial use with attribution. (The Python
-scripts in this directory carry their own `SPDX-License-Identifier: Apache-2.0`
-header; the dataset itself is CC BY 4.0.)
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -79,7 +85,23 @@ beamforming research (RFP task group 6.2, Blood Flow).
   virtual elements. Channel data is DDC (baseband) IQ, so `sampling_frequency`
   (≈ 2.031 MHz) is the post-decimation IQ rate and equals `demodulation_frequency`.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/resolvestroke/phantom_flow/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+```bash
+uv run --project /path/to/OpenH-RF python reconstruct.py
+```
+
+`reconstruct_PD_3d.py` (with `pipeline_PD_3d.yaml`) renders the power-Doppler
+reconstruction and `display_references.py` the computed reference maps; both are
+described below.
+
+The Python scripts carry their own `SPDX-License-Identifier: Apache-2.0` header; the dataset itself is CC BY 4.0.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 Single zea HDF5 file (`phantom_flow.hdf5`) containing all 5 clips concatenated.
 Gaps between clips are encoded in `scan/time_to_next_transmit`. Per-frame clip
@@ -146,8 +168,6 @@ by side:
 
 ![Reference B-mode (two perpendicular sectors)](../assets/phantom_flow_bmode.png)
 
-Run: `uv run --project /path/to/OpenH-RF python reconstruct.py`
-
 ### Power-Doppler reconstruction (derived product)
 
 `reconstruct_PD_3d.py` (config `pipeline_PD_3d.yaml`) demonstrates a flow/contrast
@@ -161,7 +181,7 @@ map of the same file in the last column for comparison. The wall filter and
 power-Doppler integration are custom `zea` pipeline ops registered in the script
 (`tissue_highpass`, `power_doppler`). The hardware TGC stored in `raw_data` is kept.
 
-![Power-Doppler 3D MIP montage with reference mvi](../assets/phantom_flow_PD_montage.png)
+The resulting montage is shown at the top of this card.
 
 Run (a GPU is strongly recommended: about 14 min per acquisition with `uv sync --extra gpu`,
 hours with the CPU-only JAX of the plain `uv sync`):

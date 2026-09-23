@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF - Resolve Stroke Multi-tissue Phantom (CIRS 040GSE)"
+name: resolvestroke-phantom-mp
+pretty_name: "Resolve Stroke Multi-tissue Phantom (CIRS 040GSE)"
 license: cc-by-4.0
 task_categories:
   - other
@@ -16,7 +17,12 @@ size_categories:
   - 1K<n<10K
 ---
 
-# OpenH-RF - Resolve Stroke Multi-tissue Phantom (CIRS 040GSE)
+# Resolve Stroke Multi-tissue Phantom (CIRS 040GSE)
+
+![Reference B-mode (two perpendicular sectors)](../assets/phantom_mp_bmode.png)
+
+*B-mode of one frame, x-z and y-z sectors, reconstructed from
+[`phantom_mp.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/resolvestroke/phantom_mp/phantom_mp.hdf5).*
 
 ## Dataset Description
 
@@ -29,11 +35,12 @@ file holds 1000 consecutive frames of the same scene.
 
 ## Dataset Contributor(s)
 
-Aitana Waelbroeck\*, Carl Ferlay\*, Arthur Chavignon\*, Maxence Reberol\*, Vincent Hingot\*
-
-\* Resolve Stroke (29 Rue du Faubourg Saint-Jacques, 75014 Paris)
-
-Contact email: maxence.reberol@resolvestroke.com
+- Aitana Waelbroeck
+- Carl Ferlay
+- Arthur Chavignon
+- Maxence Reberol <maxence.reberol@resolvestroke.com> (contact)
+- Vincent Hingot
+- Resolve Stroke, 29 Rue du Faubourg Saint-Jacques, 75014 Paris
 
 ## Dataset Creation Date
 
@@ -41,10 +48,8 @@ Contact email: maxence.reberol@resolvestroke.com
 
 ## License / Terms of Use
 
-CC BY 4.0 (see `LICENCE`). Data is released under Creative Commons Attribution
-4.0 International, which permits commercial use with attribution. (The Python
-scripts in this directory carry their own `SPDX-License-Identifier: Apache-2.0`
-header; the dataset itself is CC BY 4.0.)
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -63,7 +68,19 @@ known target structures.
   virtual elements. Channel data is DDC (baseband) IQ, so `sampling_frequency`
   (≈ 2.031 MHz) is the post-decimation IQ rate and equals `demodulation_frequency`.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/resolvestroke/phantom_mp/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+```bash
+uv run --project /path/to/OpenH-RF python reconstruct.py
+```
+
+The Python scripts carry their own `SPDX-License-Identifier: Apache-2.0` header; the dataset itself is CC BY 4.0.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 Single zea HDF5 file (`phantom_mp.hdf5`), one track holding the raw channel data
 and scan parameters, in the zea HDF5 format, root `zea_version` 0.1.6, validated `compliant: true` against `validate_zea_spec.py`.
@@ -112,11 +129,7 @@ log-compress) defined in `pipeline.yaml` to reconstruct a B-mode from the IQ cha
 data. Because the probe is a 2D matrix array insonified by a single diverging-wave
 transmit, `reconstruct.py` beamforms on polar (sector) grids and renders two
 perpendicular sector B-modes, the x-z plane (y = 0) and the y-z plane (x = 0), side
-by side:
-
-![Reference B-mode (two perpendicular sectors)](../assets/phantom_mp_bmode.png)
-
-Run: `uv run --project /path/to/OpenH-RF python reconstruct.py`
+by side, as shown at the top of this card.
 
 ## Known Issues
 

@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Flow Phantom Ultrasound Channel/Optical Data (Physics of Fluids, University of Twente)"
+name: twente-vortexflow
+pretty_name: "Flow Phantom Ultrasound Channel/Optical Data (Physics of Fluids, University of Twente)"
 license: cc-by-4.0
 task_categories:
   - image-segmentation
@@ -17,15 +18,14 @@ size_categories:
   - 1K<n<10K
 ---
 
-# OpenH-RF — Ultrasound-Optical Flow Phantom Chamber Data
+# Twente Ultrasound-Optical Flow Phantom Chamber Data
 
 ![Optical camera view beside the B-mode reconstruction of a von Karman vortex street](assets/vortex_street.gif)
 
-The Photron high-speed camera view (left) and the B-mode reconstruction (right) of
-[`AcqData_PVoltage80_TVoltage3.4.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5).
+*The Photron high-speed camera view (left) and the B-mode reconstruction (right) of
+[`data/AcqData_PVoltage80_TVoltage3.4.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/twente-vortexflow/data/AcqData_PVoltage80_TVoltage3.4.hdf5).
 Both come from `track_0`, frame for frame, so the optical and acoustic views show the
-same instant of the vortex street.
-
+same instant of the vortex street.*
 
 ## Dataset Description
 
@@ -61,10 +61,12 @@ The acquisition settings for all six datasets are summarized in Table 1.
 | 5 | AcqData_PVoltage160_TVoltage3.4 | 160 | 0.138 | 3.4 |
 | 6 | AcqData_PVoltage160_TVoltage7.1 | 160 | 0.138 | 7.1 |
 
-
 ## Dataset Contributor(s)
-Rienk Zorgdrager (email: r.c.zorgdrager@utwente.nl, ORCiD: 0009-0001-2537-117X), Guillaume Lajoinie, Michel Versluis
-Physics of Fluids Group, Faculty of Science and Technology, University of Twente, 2026.
+
+- Rienk Zorgdrager <r.c.zorgdrager@utwente.nl> (ORCiD: 0009-0001-2537-117X)
+- Guillaume Lajoinie
+- Michel Versluis
+- Physics of Fluids Group, Faculty of Science and Technology, University of Twente
 
 ## Dataset Creation Date
 
@@ -72,9 +74,8 @@ Physics of Fluids Group, Faculty of Science and Technology, University of Twente
 
 ## License / Terms of Use
 
-This dataset is released under the **Creative Commons Attribution 4.0 International
-(CC BY 4.0)** license. You are free to share and adapt the material for any purpose,
-including commercial use, provided appropriate credit is given.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -84,7 +85,6 @@ Suitable for research in:
 - Fluid dynamics using ultrasound
 - Chirp compression and coded-excitation beamforming
 - Beamforming quality comparison across transmit voltage levels (SNR studies)
-
 
 ## Dataset Characterization
 
@@ -99,7 +99,15 @@ Suitable for research in:
   - Data type: raw RF (n_ch = 1, float32)
   - System: Verasonics Vantage 256
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/twente-vortexflow/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the pipeline definitions in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+`ZEA_FILE` and `FRAME` at the top of the script select the acquisition and frame; each track is reconstructed with its own pipeline (`pipeline_short_imaging_pulse.yaml`, `pipeline_chirp.yaml`).
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 All files are in the **zea** format (HDF5 + zea schema, current release `zea_version` 0.1.6).
 Each `.hdf5` file contains two tracks:
@@ -151,18 +159,11 @@ by pump voltage (80 V, 120 V, 160 V), see Table 1.
 
 ## Data Validation
 
-The submission includes `reconstruct.py` and two pipeline YAML files (one per track):
+`reconstruct.py` uses one pipeline YAML file per track:
 - `pipeline_short_imaging_pulse.yaml` — for the short imaging pulse track
 - `pipeline_chirp.yaml` — for the chirp track
 
 The pipeline applies: `Cast(float32) → Demodulate → Beamform(DAS, 100 patches) → EnvelopeDetect → Normalize → LogCompress`
-
-To reconstruct:
-```bash
-python reconstruct.py
-```
-
-`ZEA_FILE` and `FRAME` at the top of the script select the acquisition and frame.
 
 Reference B-mode image (AcqData_PVoltage80_TVoltage3.4.hdf5, frame 10):
 
@@ -175,8 +176,7 @@ reverberation and grating-lobe artifacts at the walls and the cylinder are acqui
 Reference mapping between camera and ultrasound image (AcqData_PVoltage80_TVoltage3.4.hdf5, frame 10):
 
 ![Reference images of particles in flow](assets/reference_mapping.png)
-*Top: short imaging pulse track. Bottom: synchronized camera recording. The walls of the phantom and the cylinder are visible in both images. In the ultrasound image, speckle is visible in between the walls (mainly bubble induced), whereas in the camera image the contrast is induced by the hollow glass beads. Light reflection artefacts are visible in the camera image near the cylinder and the walls.* 
-
+*Top: short imaging pulse track. Bottom: synchronized camera recording. The walls of the phantom and the cylinder are visible in both images. In the ultrasound image, speckle is visible in between the walls (mainly bubble induced), whereas in the camera image the contrast is induced by the hollow glass beads. Light reflection artefacts are visible in the camera image near the cylinder and the walls.*
 
 ## Known Issues
 - The ultrasound recordings made with the chirp contain clipped reflections at the interface between walls and the water.
@@ -184,7 +184,6 @@ Reference mapping between camera and ultrasound image (AcqData_PVoltage80_TVolta
 - A chirp compression algorithm is not provided.
 - The center frequency of the chirp is determined as the mean of the input frequency for the associated cycle in the Verasonics. This may therefore only be considered a very rough estimation.
 - An image registration algorithm is not provided, but the camera pixel size can be estimated using the geometry of the flow chamber.
-
 
 ## Ethical Considerations
 

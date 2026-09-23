@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Robotic Tracked Ultrasound (Verasonics L11-5gH, arm, CIRS 054GS and CIRS 074 thyroid phantoms)"
+name: tumunich
+pretty_name: "Robotic Tracked Ultrasound (Verasonics L11-5gH, arm, CIRS 054GS and CIRS 074 thyroid phantoms)"
 license: cc-by-4.0
 task_categories:
   - image-to-3d
@@ -18,8 +19,7 @@ size_categories:
 
 # Robotic Tracked Ultrasound — Verasonics L11-5gH, vascular arm, CIRS 054GS and CIRS 074 thyroid phantoms
 
-<table>
-  <tr>
+<table><tr>
     <td width="30%"><img src="assets/acquisition_description.jpg" width="100%"/></td>
     <td width="20%"><img src="assets/reconstructed.png" width="100%"/></td>
     <td width="60%"><img src="assets/panorama_reconstructed.png" width="100%"/></td>
@@ -30,6 +30,10 @@ size_categories:
     <td align="center">Panoramic reconstruction (based on robotic tracking)</td>
   </tr>
 </table>
+
+*Acquisition setup (left), a single-frame reconstruction (middle) and a panoramic
+reconstruction compounded along the robot-tracked sweep (right) of the CIRS 054GS phantom,
+[`data/cirs_phantom/synth_apert_sweep_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/tumunich/data/cirs_phantom/synth_apert_sweep_1.hdf5).*
 
 ## Dataset Description
 
@@ -59,12 +63,12 @@ reconstruction and beamforming.
 
 ## Dataset Contributor(s)
 
-CAMP (Computer Aided Medical Procedures), Technical University of Munich (TUM).
-Primary contact: Felix Dülmer <felix.duelmer@tum.de>.
-Mohammad Farid Azampour <mf.azampour@tum.de>
-Rüdiger Göbl <goebl@imfusion.com>
-Oliver Zettinig <zettinig@imfusion.com>
-Nassir Navab <nassir.navab@tum.de>
+- Felix Dülmer <felix.duelmer@tum.de> (primary contact)
+- Mohammad Farid Azampour <mf.azampour@tum.de>
+- Rüdiger Göbl <goebl@imfusion.com>
+- Oliver Zettinig <zettinig@imfusion.com>
+- Nassir Navab <nassir.navab@tum.de>
+- CAMP (Computer Aided Medical Procedures), Technical University of Munich (TUM)
 
 ## Dataset Creation Date
 
@@ -72,8 +76,8 @@ Nassir Navab <nassir.navab@tum.de>
 
 ## License / Terms of Use
 
-CC BY 4.0. The data is phantom-derived and carries no patient consent or IP encumbrances, so it is
-cleared for CC BY 4.0.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -93,7 +97,18 @@ beamforming research.
   walking 64-element mux sub-apertures (21 acquisitions per frame). Imaging depth: 50 mm for the arm phantom 
   and 60 mm for the CIRS phantom.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/tumunich/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+`reconstruct.py` beamforms a single frame and compares it to the stored Verasonics B-mode;
+[`reconstruct_panorama.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/tumunich/reconstruct_panorama.py), with
+`pipeline_panorama.yaml`, compounds a tracked sweep into the panoramic reconstruction shown above,
+using the per-frame robot poses.
+
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 *zea* HDF5. The recorded Verasonics `.vrs` files are read natively in Python (no MATLAB): the
 multiplexed 64-channel receive apertures are expanded to the full 128-element probe dimension, and
@@ -208,3 +223,5 @@ Reference reconstructions are stored next to the sample they came from as
 
 Phantom data only — no human or animal subjects, no PHI, and no IRB/consent required. No
 de-identification is applicable.
+
+The data is phantom-derived and carries no patient consent or IP encumbrances, so it is cleared for CC BY 4.0.

@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — NV-Raw2Insights-US (simulated FSA, sound-speed / aberration / segmentation)"
+name: nv-raw2insights-us
+pretty_name: "NV-Raw2Insights-US (simulated FSA, sound-speed / aberration / segmentation)"
 license: cc-by-4.0
 task_categories:
   - other
@@ -23,7 +24,8 @@ size_categories:
 
 ![DBUA B-mode reconstruction and estimated sound speed using NV-Raw2Insights-US data](assets/dbua-reconstruction.gif)
 
-*DBUA results using synthetic validation sample 0084 from NV-Raw2Insights-US: B-mode (left) and estimated sound speed (right). Bulk-speed calibration is followed by 400 spatial-refinement iterations, with fixed display scales. These are DBUA reconstructions, not predictions from an NV-Raw2Insights-US model.*
+*DBUA results using synthetic validation sample
+[`data/nv_r2i_us_validation_0084.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/nv-raw2insights-us/data/nv_r2i_us_validation_0084.hdf5): B-mode (left) and estimated sound speed (right). Bulk-speed calibration is followed by 400 spatial-refinement iterations, with fixed display scales. These are DBUA reconstructions, not predictions from an NV-Raw2Insights-US model.*
 
 <!-- assets/main.png is the unlabelled final B-mode panel from this run, for the dataset collage. -->
 
@@ -48,7 +50,7 @@ published in a Hugging Face `datasets`/Arrow build at
 
 ## Dataset Contributor(s)
 
-NVIDIA Corporation.
+- NVIDIA Corporation
 
 ## Dataset Creation Date
 
@@ -78,7 +80,14 @@ supports fully-supervised training of channel-data-to-insight models.
   transmit centre frequency 6.5 MHz, baseband IQ sampled at 13.3 MHz,
   background sound speed 1540 m/s.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/nv-raw2insights-us/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), which uses the [zea library](https://github.com/tue-bmd/zea) and streams the data from the Hugging Face Hub.
+It reconstructs both a plain DAS B-mode (the `pipeline.yaml` in this folder) and a sound-speed-corrected B-mode using the ground-truth `sos_map`.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 Packaged in the **zea** file format (`zea_version` 0.1.6), **one HDF5 file per
 sample**, all under `data/`. The train/validation split is encoded in each

@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — UBC Module C Fetal Phantom"
+name: ubc-module-c
+pretty_name: "UBC Module C Fetal Phantom"
 license: cc-by-4.0
 task_categories:
   - image-to-image
@@ -21,7 +22,12 @@ size_categories:
   - "1K<n<10K"
 ---
 
-# UBC Module C
+# UBC Module C — Synthetic-Channel Multimodal Fetal Phantom
+
+![Example reconstruction](./assets/module_C.png)
+
+*Scan-converted B-mode of the Kyoto Kagaku SPACE FAN-ST fetal phantom, reconstructed from the
+synthetic channel data in [`acquisitions/`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/ubc/module_C/acquisitions).*
 
 ## Dataset Description
 
@@ -36,15 +42,22 @@ IQ using a custom scatterer model and assumed transmit/receive geometry. They
 are not measured pre-beamforming channels. Modalities have temporal
 synchronization only; no validated spatial registration is supplied.
 
-![Example reconstruction](./assets/module_C.png)
+## Dataset Contributor(s)
 
-## Dataset Contributors
-
-- **Organization:** The University of British Columbia (UBC), Department of
-  Electrical and Computer Engineering and School of Biomedical Engineering.
-- **Dataset-preparation contact:** Zongze Li, zongze@student.ubc.ca.
-- **Contributors:** Zongze Li, Yu Chung Lee, Qi Zeng, Wanwen Chen, Zijian Wu,
-  Yuxin Chen, Patrick Boyan Chen, Michael Frew, Tajwar Abrar Aleef, Hamid Moradi, Mohammad Honarvar, Septimiu E. Salcudean, Robert Rohling.
+- Zongze Li <zongze@student.ubc.ca> (dataset-preparation contact)
+- Yu Chung Lee
+- Qi Zeng
+- Wanwen Chen
+- Zijian Wu
+- Yuxin Chen
+- Patrick Boyan Chen
+- Michael Frew
+- Tajwar Abrar Aleef
+- Hamid Moradi
+- Mohammad Honarvar
+- Septimiu E. Salcudean
+- Robert Rohling
+- The University of British Columbia (UBC), Department of Electrical and Computer Engineering and School of Biomedical Engineering
 
 ## Dataset Creation Date
 
@@ -53,13 +66,8 @@ synchronization only; no validated spatial registration is supplied.
 
 ## License / Terms of Use
 
-The dataset is licensed under **Creative Commons Attribution 4.0 International
-(CC BY 4.0)** (https://creativecommons.org/licenses/by/4.0/). The HDF5 `metadata/credit` field carries
-the following attribution with the contributor names and contact listed above:
-
-> University of British Columbia OpenH-RF contributors (2026). *UBC Module C:
-> Synthetic Channel Proxy and Multimodal Fetal Phantom Ultrasound*. OpenH-RF.
-> CC BY 4.0.
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -111,8 +119,15 @@ The element geometry and dimensions are simulation assumptions, not measured
 probe specifications. The relationship between the recorded 98-mm focus and
 the proprietary scanner transmit law is unknown.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/ubc/module_C/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+Set `ZEA_FILE` and `FRAME` at the top of the script to pick a frame (default `session_01/session_01_f1306.hdf5`).
 
 ## Dataset Format
+
+[zea v0.1.5](https://github.com/tue-bmd/zea)
 
 Each zea HDF5 file contains one frame and is written with **zea 0.1.5**.
 The writer-version field describes serialization,
@@ -307,3 +322,11 @@ filesystem paths are excluded. The camera review fully decoded all ten retained 
 The contributor reports that the reviewed hits were false positives and no
 faces were visible in the crops. The underlying review records are not
 included in this HF release.
+
+## Citation
+
+The HDF5 `metadata/credit` field carries the following attribution:
+
+> University of British Columbia OpenH-RF contributors (2026). *UBC Module C:
+> Synthetic Channel Proxy and Multimodal Fetal Phantom Ultrasound*. OpenH-RF.
+> CC BY 4.0.

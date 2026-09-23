@@ -1,6 +1,7 @@
 ---
+name: weillcornell
 license: cc-by-4.0
-pretty_name: OpenH-RF QUS Phantom Dataset
+pretty_name: "Weill Cornell QUS Phantom Dataset"
 task_categories:
   - image-to-image
   - feature-extraction
@@ -17,25 +18,53 @@ size_categories:
   - n<1K
 ---
 
-# OpenH-RF QUS Phantom Dataset
+# Weill Cornell QUS Phantom Dataset
+
+![Reference zea reconstruction of ac1_15m_SK frame 0](assets/ac1_15m_SK_pipeline.png)
+
+*B-mode of frame 0 of
+[`data/ac1_15m_SK.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/weillcornell/data/ac1_15m_SK.hdf5),
+reconstructed from the raw RF on the common 597 x 300 zea grid (approximately 3-25 mm depth).*
+
+## Dataset Description
 
 Pre-beamformed RF channel data from three homogeneous tissue-mimicking
 phantoms. Each zea HDF5 acquisition is self-contained and includes raw RF,
 model-derived theoretical backscatter coefficient (BSC), direct per-frame
 Nakagami maps, and 20-frame pooled Nakagami references.
 
-## OpenH-RF Release Inventory
+## Dataset Contributor(s)
 
-**Current OpenH-RF release:** 120 HDF5 files; 1.00 GB (1,002,700,800 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
+- Shangke Liu <shl4035@med.cornell.edu> (contact)
+- Tipu Sultan
+- Cameron Hoerig
+- Jonathan Mamou
+- Biomedical Ultrasound Research Laboratory (BURL), Weill Cornell Medicine
 
-## Contributors
+## Dataset Creation Date
 
-Shangke Liu, Tipu Sultan, Cameron Hoerig, and Jonathan Mamou;
-Biomedical Ultrasound Research Laboratory (BURL), Weill Cornell Medicine.
+Not specified by the contributors.
 
-Contact: Shangke Liu, shl4035@med.cornell.edu
+## License / Terms of Use
 
-## Dataset Summary
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
+
+## Intended Usage
+
+1. Reconstruct B-mode from one frame of raw RF.
+2. Predict the phantom's theoretical BSC curve from one RF frame. This is a
+   material-model target, not a local experimentally estimated BSC curve.
+3. Predict pooled Nakagami `m` or `omega` from one RF frame. Use the supplied
+   direct per-frame map as the single-frame baseline.
+
+For Nakagami predictions, report MAE/RMSE and map correlation against the
+pooled reference. For BSC predictions, report the frequency range and unit and
+state whether evaluation uses linear BSC or a specified dB conversion.
+
+All QUS maps are public reference targets, not hidden competition labels.
+
+## Dataset Characterization
 
 - Verasonics Vantage 256 and GE9LD linear array
 - 192 elements, 0.23 mm pitch, 5.2083 MHz center frequency
@@ -48,21 +77,18 @@ Contact: Shangke Liu, shl4035@med.cornell.edu
 
 Keep all frames from one acquisition in the same split.
 
-## Files
+## Processing the Dataset
 
-```text
-data/<scan_id>.hdf5                         self-contained zea acquisitions
-reconstruct.py                              B-mode and QUS example
-pipeline.yaml                               zea reconstruction pipeline
-LICENSE                                     CC BY 4.0 license
-ac1_15m_SK_pipeline.png                     reference zea reconstruction
-```
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/weillcornell/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
 
-Scan IDs use `ac<number>_<phantom>_<operator>`, for example
-`ac1_15m_SK`. Phantom IDs are `15m`, `18m`, and `60m`; operator IDs are
-`SK` and `TP`; acquisition numbers run from 1 to 20.
+Use an OpenH-RF environment with `zea==0.1.6` and a supported Keras backend, and set
+`ZEA_FILE` and `FRAME` at the top of the script to pick an acquisition. The script defines the pipeline in code, writes `pipeline.yaml`, saves the
+B-mode PNG, then prints the selected frame's RF shape, BSC band and unit, QUS
+map shapes, and direct per-frame-to-pooled Nakagami errors.
 
-## HDF5 Contents
+## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 Each file follows zea 0.1.6 and contains one track. Raw RF is stored as `int16`
 ADC counts without demodulation, decimation, or resampling.
@@ -97,48 +123,34 @@ annotations and anatomical-view annotations are intentionally omitted.
 Plane-wave acquisition is recorded in the file description, and the linear
 array geometry is recorded in the probe fields.
 
-## Suggested Tasks
+## Dataset Quantification
 
-1. Reconstruct B-mode from one frame of raw RF.
-2. Predict the phantom's theoretical BSC curve from one RF frame. This is a
-   material-model target, not a local experimentally estimated BSC curve.
-3. Predict pooled Nakagami `m` or `omega` from one RF frame. Use the supplied
-   direct per-frame map as the single-frame baseline.
+**Current OpenH-RF release:** 120 HDF5 files; 1.00 GB (1,002,700,800 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
-For Nakagami predictions, report MAE/RMSE and map correlation against the
-pooled reference. For BSC predictions, report the frequency range and unit and
-state whether evaluation uses linear BSC or a specified dB conversion.
+## Files
 
-All QUS maps are public reference targets, not hidden competition labels.
-
-## Quick Start
-
-For the current release, use an OpenH-RF environment with `zea==0.1.6` and a supported Keras backend:
-
-```bash
-KERAS_BACKEND=jax python reconstruct.py \
-  --input data/ac1_15m_SK.hdf5 \
-  --output ac1_15m_SK_pipeline.png \
-  --frame 0
+```text
+data/<scan_id>.hdf5                         self-contained zea acquisitions
+reconstruct.py                              B-mode and QUS example
+pipeline.yaml                               zea reconstruction pipeline
+LICENSE                                     CC BY 4.0 license
+ac1_15m_SK_pipeline.png                     reference zea reconstruction
 ```
 
-The script defines the pipeline in code, writes `pipeline.yaml`, saves the
-B-mode PNG, then prints the selected frame's RF shape, BSC band and unit, QUS
-map shapes, and direct per-frame-to-pooled Nakagami errors.
+Scan IDs use `ac<number>_<phantom>_<operator>`, for example
+`ac1_15m_SK`. Phantom IDs are `15m`, `18m`, and `60m`; operator IDs are
+`SK` and `TP`; acquisition numbers run from 1 to 20.
 
-## Validation
+## Data Validation
 
 The original 120 HDF5 files passed zea 0.1.3 `File.validate()` and
 `File.validate_spec()`. Raw RF and embedded maps were checked for shape, dtype,
 finite values, coordinates, labels, min/max, and the documented frame-broadcast
 behavior. The original files used zea 0.1.3's default Blosc/Zstd+bitshuffle compression.
 
-![Reference zea reconstruction of ac1_15m_SK frame 0](assets/ac1_15m_SK_pipeline.png)
+The reconstruction of `ac1_15m_SK` frame 0 is shown at the top of this card.
 
-The reference uses frame 0 and the common 597 x 300 zea grid at approximately
-3-25 mm depth.
-
-## Limitations
+## Known Issues
 
 - Acquisition timestamps, PRF, explicit TGC curves, and emitted waveforms are
   unavailable; do not use these frames for calibrated temporal or flow analysis.
@@ -151,8 +163,6 @@ The reference uses frame 0 and the common 597 x 300 zea grid at approximately
   amplitude scale; it is not system-independent.
 - This release contains Verasonics data only.
 
-## License
+## Ethical Considerations
 
-CC BY 4.0. See `LICENSE`. Commercial and non-commercial reuse is permitted
-with attribution. The contributors confirm that these phantom data are cleared
-for release under CC BY 4.0.
+Phantom-only data; no human or animal subjects, clinical metadata, or PHI. The contributors confirm that these phantom data are cleared for release under CC BY 4.0.

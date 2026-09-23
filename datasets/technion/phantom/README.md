@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF — Technion Phantom Pre-Beamformed Channel Data"
+name: technion-phantom
+pretty_name: "Technion Phantom Pre-Beamformed Channel Data"
 license: cc-by-4.0
 task_categories:
   - image-to-image
@@ -16,22 +17,12 @@ size_categories:
   - n<1K
 ---
 
-# OpenH-RF — Tissue-mimicking phantom pre-beamformed RF channel data
+# Technion Tissue-mimicking Phantom Pre-beamformed RF Channel Data
 
 ![Tissue-mimicking phantom with point targets and an anechoic cyst](assets/bmode.png)
 
-Frame 6 of [`data/ph.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/phantom/data/ph.hdf5), reconstructed by
-`reconstruct.py`.
-
-`zea` renders it straight from the Hub with the
-`pipeline.yaml` in this folder. Try it out with the following command:
-
-```bash
-zea process \
-  --dataset hf://nvidia/OpenH-RF/technion/phantom/data/ph.hdf5 \
-  --config hf://nvidia/OpenH-RF/technion/phantom/pipeline.yaml \
-  --n-frames 1
-```
+*Frame 6 of [`data/ph.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/technion/phantom/data/ph.hdf5), reconstructed by
+`reconstruct.py`.*
 
 ## Dataset Description
 
@@ -44,8 +35,11 @@ beamforming and reconstruction. 12 frames, one acquisition.
 
 ## Dataset Contributor(s)
 
-Sanketh Vedula, Ortal Senouf, Dean Zadok, Alex M. Bronstein (PI) —
-Technion – Israel Institute of Technology. Primary contact: sanketh@campus.technion.ac.il.
+- Sanketh Vedula <sanketh@campus.technion.ac.il> (primary contact)
+- Ortal Senouf
+- Dean Zadok
+- Alex M. Bronstein (PI)
+- Technion – Israel Institute of Technology
 
 ## Dataset Creation Date
 
@@ -53,7 +47,8 @@ Source data 2018; converted to the OpenH-RF (zea) format 07/16/2026.
 
 ## License / Terms of Use
 
-CC BY 4.0 (proposal §8).
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -70,7 +65,24 @@ pipeline (point-target resolution, cyst contrast). Phantom tier (×1).
   probe, 0.30 mm pitch; sector scan, 180 transmit beams steered over ±45.13°
   (≈90.25° FOV), one image line per transmit; IQ demodulated at 3.44 MHz.
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/technion/phantom/data/ph.hdf5 \
+  --config hf://nvidia/OpenH-RF/technion/phantom/pipeline.yaml \
+  --n-frames 1
+```
+
+Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/technion/phantom/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
+
 ## Dataset Format
+
+[zea v0.1.4](https://github.com/tue-bmd/zea)
 
 zea file format, a single HDF5 file `data/ph.hdf5`. Source complex samples
 repackaged to `float32` I/Q (`n_ch = 2`), values verbatim. Carries
@@ -102,11 +114,7 @@ N/A — inanimate phantom (GAMMEX 403GS LE); `subject.type = phantom`.
 
 `reconstruct.py` reconstructs a B-mode from `raw_data` using the `zea.Pipeline`
 in `pipeline.yaml` (delay-and-sum on a polar scanline grid → envelope →
-normalization → log compression → sector scan conversion). Run:
-
-```
-python reconstruct.py
-```
+normalization → log compression → sector scan conversion).
 
 Reference output: `bmode.png` — frame 6 of `data/ph.hdf5`, shown above:
 resolvable point targets and a well-defined anechoic cyst at ~65 mm.

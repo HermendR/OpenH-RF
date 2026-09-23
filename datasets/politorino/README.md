@@ -1,4 +1,5 @@
 ---
+name: politorino
 pretty_name: High Frame Rate Fascicle Tracking - PoliTO
 license: cc-by-4.0
 task_categories:
@@ -16,21 +17,32 @@ size_categories:
   - n<1K
 ---
 
-# Data Card — High Frame Rate Fascicle Tracking - PoliTO - Torino, Italy
+# PoliTO High Frame Rate Fascicle Tracking
 
 ![Reconstructed cineloop from PAT02_w1.hdf5](assets/PAT02_w1.gif)
 
-Cine loop of [`PAT02_w1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/politorino/data/PAT02/PAT02_w1.hdf5), reconstructed from the raw
-channel data with the `pipeline.yaml` in this folder.
-
+*Cine loop of treadmill walking at 2 km/h,
+[`data/PAT02/PAT02_w1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/politorino/data/PAT02/PAT02_w1.hdf5),
+reconstructed from the raw channel data with the `pipeline.yaml` in this folder.*
 
 ## Dataset Description
 
 The dataset comprises in-vivo human musculoskeletal raw ultrasound data during dynamic tasks. It includes the acquisition of the medial gastrocnemius on 5 healthy volunteers  during heel raises and treadmill walking. The data is acquired with a Verasonics Vantage 256 research platform and a 128-element linear array probe (L11-5v) at 500 fps for 9.6 s per acquisition. Each subject was imaged during six task conditions: cyclical heel raises and drops at a fixed frequency provided by a metronome at 60 (hr1), 90 (hr2), and 120 bpm (hr3) and walking at 2 (w1), 4 (w2), and 5 (w3) km/h. We provide the raw data, the beamformed DAS and FDMAS images, and the automated fascicle tracking obtained with UltraTimTrack (https://github.com/timvanderzee/UltraTimTrack). The tracking data was obtained on the first 9s of sub-sampled .mp4 videos at three frame rates: 25 fps, 50 fps and 125 fps. The tracking data is provided for each frame rate and a Python code is provided to correctly visualize the data on the reconstructed images.  **Data type: in-vivo**
 
-## Dataset Contributors
+## Dataset Contributor(s)
 
-Contributors include the personnel involved in raw data acquisition, beamforming, annotation, dataset preparation and analysis: E. Cesti, M. Carbonaro, M. Boccardo, F. Truscello, S. Seoni, G.L. Cerone, K.M. Meiburger, G. Bardoscia, B.J. Raiteri, and A. Botter. 
+Personnel involved in raw data acquisition, beamforming, annotation, dataset preparation and analysis:
+
+- E. Cesti
+- M. Carbonaro
+- M. Boccardo
+- F. Truscello
+- S. Seoni
+- G.L. Cerone
+- K.M. Meiburger
+- G. Bardoscia
+- B.J. Raiteri
+- A. Botter
 
 ## Dataset Creation Date
 
@@ -39,7 +51,7 @@ Contributors include the personnel involved in raw data acquisition, beamforming
 ## License / Terms of Use
 
 [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-The data is cleared for this license (see ethical considerations below).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -52,17 +64,24 @@ This data was employed for an initial study evaluating fascicle tracking algorit
 - **Acquisition system:** 128-element linear array (L11-5v),
   sampling 31.25 MHz, center frequency 7.6 MHz
 
-## Dataset Format
+## Processing the Dataset
 
-Submitted in the [`zea` file format](https://zea.readthedocs.io/en/latest/)
-(one HDF5 file per acquisition). 
-`reconstruct.py` reconstructs a B-mode from the raw channel data and overlays
-the stored fascicle tracking on it, writing a `.png`. An example output is
-provided. The constants at the top of the script select what is drawn:
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/politorino/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+The script reconstructs a B-mode from the raw channel data and overlays
+the stored fascicle tracking on it, writing a `.png`. The constants at the top of
+the script select what is drawn:
 
 - `FRAME` -- index of the acquisition frame to reconstruct
 - `FPS` -- which stored tracking rate to overlay (25, 50 or 125 fps)
 - `TRACK_INDEX` -- index of the tracking sample within that rate
+
+## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
+
+Submitted in the [`zea` file format](https://zea.readthedocs.io/en/latest/)
+(one HDF5 file per acquisition).
 
 Per-sample contents of the HDF5:
 
@@ -74,7 +93,6 @@ Per-sample contents of the HDF5:
 | `scan` | -- | -- | -- | center/demodulation/sampling frequency, t0, sound speed, time_to_next_transmit |
 | `probe` | -- | -- | -- | element width, probe_center_frequency, probe_geometry |
 | `metadata/tracking_` | -- | -- | -- | Tracking data as saved by UltraTimTrack |
-
 
 ## Dataset Quantification
 
@@ -89,10 +107,10 @@ Five healthy subjects (2 men, 3 women; (mean ± SD) age: 25.6 ± 1.3 yr, height:
 
 ## Data Validation
 
-[`reconstruct.py`](reconstruct.py) builds a `zea.Pipeline` of DAS beamforming →
+`reconstruct.py` builds a `zea.Pipeline` of DAS beamforming →
 envelope detection → normalization → log-compression **in code** and reconstructs
 a B-mode directly from `raw_data` — showing the raw-to-image flow without any
-config file. It contains also the code employed to view the plotting of the tracking data. It also saves the pipeline to [`pipeline.yaml`](pipeline.yaml) as a
+config file. It contains also the code employed to view the plotting of the tracking data. It also saves the pipeline to `pipeline.yaml` as a
 shareable recipe. 
 
 ## Known Issues

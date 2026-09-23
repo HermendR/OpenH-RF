@@ -1,4 +1,5 @@
 ---
+name: waterloo-muscle
 pretty_name: UW-MuscleRF
 license: cc-by-4.0
 task_categories:
@@ -22,39 +23,29 @@ size_categories:
 
 ![Reconstructed cineloop from Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5](assets/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.gif)
 
-Cine loop of [`Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5), reconstructed from the raw
-channel data with the `pipeline.yaml` in this folder.
-
-`zea` renders it straight from the Hub:
-
-```bash
-zea process \
-  --dataset hf://nvidia/OpenH-RF/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5 \
-  --config hf://nvidia/OpenH-RF/waterloo-muscle/pipeline.yaml \
-  --n-frames 1 \
-  --save-as png
-```
-
-Swap `--n-frames 1 --save-as png` for `--save-as gif` to get the cine loop.
-
-
-Dataset consisting of raw RF data and speed of sound measurements acquired in an in vivo speed of sound study conducted by LITMUS @ University of Waterloo.
+*Cine loop of the relaxed left calf (lateral, longitudinal),
+[`data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5),
+reconstructed from the raw channel data with the `pipeline.yaml` in this folder.*
 
 ## Dataset Description
 
-This is a dataset consisting of 18,720 raw RF frames (plane wave; 580,320 frame-transmits) and associated SoS measurements using a programmable research scanner configured for high frame rate imaging. We used a rigorous image collection protocol based on landmarking according to bone markers to ensure image consistency. This data was collected as part of the following study:
+18,720 raw RF frames (plane wave; 580,320 frame-transmits) with associated speed-of-sound
+(SoS) measurements, acquired in vivo by LITMUS at the University of Waterloo with a
+programmable research scanner configured for high-frame-rate imaging. Images were collected
+with a rigorous protocol based on landmarking according to bone markers to ensure image
+consistency. This data was collected as part of the following study:
 
 D. Xiao, P. De La Torre, M. Saif El Nasr, A. J. Y. Chee, M. Mourtzakis, and A. C. H. Yu, “LivePulse-Echo Speed-of-Sound Estimation for Quality Assessment of Large Muscles in Humans,”Ultrasound in Medicine & Biology, vol. 51, no. 11, pp. 1925–1935, Nov. 2025.
 
-
 ## Dataset Contributor(s)
 
-Hassan Nahas, Di Xiao, Pat de la Torre, Adrian J.Y. Chee, Marina Mourtzakis, Alfred C.H. Yu
-
-Correspondence emails:
-hassan.nahas@uwaterloo.ca
-di.xiao@uwaterloo.ca
-alfred.yu@uwaterloo.ca
+- Hassan Nahas <hassan.nahas@uwaterloo.ca>
+- Di Xiao <di.xiao@uwaterloo.ca>
+- Pat de la Torre
+- Adrian J.Y. Chee
+- Marina Mourtzakis
+- Alfred C.H. Yu <alfred.yu@uwaterloo.ca>
+- LITMUS, University of Waterloo
 
 ## Dataset Creation Date
 
@@ -63,9 +54,7 @@ alfred.yu@uwaterloo.ca
 ## License / Terms of Use
 
 [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
-
-This human study was approved by the University of Waterloo’s Human Research Ethics Board (ORE #44778). All included data was acquired from participants who provided both written and verbal consent prior to participating in the study regarding public data sharing.
-
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -84,7 +73,27 @@ D. Xiao, P. D. l. Torre and A. C. H. Yu, "Real-Time Speed-of-Sound Estimation In
 - **Acquisition system:**
 Raw RF data was acquired from the US4R-Lite research scanner (US4US, Warsaw, Poland), equipped with an L14-5 linear array. For a subset of acquisitions, a through-transmission SoS estimation was made using a custom setup consisting of two single-element Olympus transducers (C567; Olympus; Tokyo, Japan).
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/waterloo-muscle/data/Acq_p35_Calf_left_calf_lateral_longitudinal_relaxed_pressure.hdf5 \
+  --config hf://nvidia/OpenH-RF/waterloo-muscle/pipeline.yaml \
+  --n-frames 1 \
+  --save-as png
+```
+
+Alternatively, you can use the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/waterloo-muscle/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF).
+
+Swap `--n-frames 1 --save-as png` for `--save-as gif` to get the cine loop. In the script, `ZEA_FILE` and `FRAME` at the top select what is reconstructed.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 Submitted in the [`zea` file format](https://zea.readthedocs.io/en/latest/)
 (one HDF5 file per acquisition).
@@ -134,10 +143,10 @@ All 1,248 HDF5 files are uploaded; current stored size and format version are re
 
 ## Data Validation
 
-[`reconstruct.py`](reconstruct.py) builds a `zea.Pipeline` of DAS beamforming →
+`reconstruct.py` builds a `zea.Pipeline` of DAS beamforming →
 envelope detection → normalization → log-compression **in code** and reconstructs
 a B-mode directly from `raw_data` — showing the raw-to-image flow without any
-config file. It also saves the pipeline to [`pipeline.yaml`](pipeline.yaml) as a
+config file. It also saves the pipeline to `pipeline.yaml` as a
 shareable recipe. Comparing the reconstruction against the stored B-mode is a
 sanity check that the acquisition parameters and probe geometry are recorded
 correctly, and serves as a reproducible reference reconstruction.

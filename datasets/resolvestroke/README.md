@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF - Resolve Stroke Transcranial CEUS, Flow and Imaging Phantom Channel Data"
+name: resolvestroke
+pretty_name: "Resolve Stroke Transcranial CEUS, Flow and Imaging Phantom Channel Data"
 license: cc-by-4.0
 task_categories:
   - other
@@ -21,13 +22,15 @@ size_categories:
   - 100K<n<1M
 ---
 
-# OpenH-RF - Resolve Stroke datasets
+# Resolve Stroke Transcranial CEUS, Flow and Imaging Phantom Channel Data
 
 <a href="assets/main_image.png"><img src="assets/main_image_small.png" alt="Transcranial contrast-enhanced power Doppler of a human subject (SP03-Left, bolus +10 s), x-z maximum-intensity projection" width="360"></a>
 
-*Figure: 3D power Doppler of the transcranial CEUS acquisition `clinical/SP03-Left` at
-bolus +10 s, x-z maximum-intensity projection, reconstructed from the released channel
-data.*
+*3D power Doppler of the transcranial CEUS acquisition
+[`clinical/SP03-Left/SP03-Left.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/resolvestroke/clinical/SP03-Left/SP03-Left.hdf5)
+at bolus +10 s, x-z maximum-intensity projection, reconstructed from the released channel data.*
+
+## Dataset Description
 
 [Resolve Stroke](https://www.resolvestroke.com/) develops SYLVER, a
 software-driven ultrasound platform that supports clinical assessment in
@@ -48,7 +51,38 @@ Each dataset directory holds its data card (`README.md`), a `reconstruct.py` +
 reconstruction; the HDF5 files are on the Hub and the preview images in
 [`assets/`](assets/).
 
-## OpenH-RF Release Inventory
+## Dataset Contributor(s)
+
+- Aitana Waelbroeck
+- Carl Ferlay
+- Arthur Chavignon
+- Maxence Reberol <maxence.reberol@resolvestroke.com> (contact)
+- Vincent Hingot
+- Resolve Stroke, 29 Rue du Faubourg Saint-Jacques, 75014 Paris
+
+## Dataset Creation Date
+
+01/23/2026 – 07/09/2026 (per sub-dataset; see each data card).
+
+## License / Terms of Use
+
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
+
+## Processing the Dataset
+
+Each sub-dataset has its own `reconstruct.py` and `pipeline.yaml`, as provided in the
+[OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF/tree/main/datasets/resolvestroke), built on the
+[zea library](https://github.com/tue-bmd/zea); the CEUS datasets add a power-Doppler
+reconstruction. See the data card of each sub-dataset for how to run them.
+
+The Python scripts carry their own `SPDX-License-Identifier: Apache-2.0` header; the dataset itself is CC BY 4.0.
+
+## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
+
+## Dataset Quantification
 
 **Current OpenH-RF release:** 43 HDF5 files; 110.62 GB (110,619,394,048 bytes) stored; root `zea_version` **0.1.6**. Sizes include all HDF5 contents and use decimal units (MB = 10^6 bytes, GB = 10^9 bytes, TB = 10^12 bytes), not decoded-array memory or original-source download sizes.
 
@@ -130,9 +164,3 @@ view at the same probe placement as the CEUS clips.
 *Figure: the 21 saddle B-modes.*
 
 See the [data card](saddle/README.md).
-
-## Contributors
-
-Aitana Waelbroeck\*, Carl Ferlay\*, Arthur Chavignon\*, Maxence Reberol\*, Vincent Hingot\*
-
-_\*Resolve Stroke, 29 Rue du Faubourg Saint-Jacques, 75014 Paris_

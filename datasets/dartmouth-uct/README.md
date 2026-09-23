@@ -1,11 +1,32 @@
-# OpenH-RF Sub-Dataset: 2D Ring-Array USCT Waveforms from 2D- and 3D-k-Wave Simulations
+---
+name: dartmouth-uct
+pretty_name: "2D Ring-Array USCT Waveforms from 2D- and 3D-k-Wave Simulations"
+license: cc-by-4.0
+task_categories:
+  - other
+tags:
+  - ultrasound
+  - rf
+  - openh-rf
+  - usct
+  - sound-speed-estimation
+  - attenuation
+  - breast
+  - simulation
+language:
+  - en
+size_categories:
+  - 1K<n<10K
+---
+
+# 2D Ring-Array USCT Waveforms from 2D- and 3D-k-Wave Simulations
 
 ![Ring-array USCT reflectivity reconstruction of a digital breast phantom, next to its ground-truth sound-speed and attenuation maps](assets/phantom_179604449_z200.png)
 
-A 2D-sim breast cross-section,
+*A 2D-sim breast cross-section,
 [`data/2d/phantom_179604449_z200.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/dartmouth-uct/data/2d/phantom_179604449_z200.hdf5),
-reconstructed by [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/dartmouth-uct/reconstruct.py) beside the ground-truth sound-speed
-and attenuation maps stored in the file.
+reconstructed as a reflectivity image beside the ground-truth sound-speed
+and attenuation maps stored in the file.*
 
 ## Dataset Description
 
@@ -35,10 +56,10 @@ are involved.
 
 ## Dataset Contributor(s)
 
-- **Contributing organizations:** Thayer School of Engineering, Dartmouth
-  College; University of Rochester Medical Center.
-- **Primary point of contact:** Yujia Wu — `yujia.wu.th@dartmouth.edu`
-- **PI:** Prof. Geoffrey P. Luke — `Geoffrey.P.Luke@dartmouth.edu`
+- Yujia Wu <yujia.wu.th@dartmouth.edu> (primary point of contact)
+- Geoffrey P. Luke <Geoffrey.P.Luke@dartmouth.edu> (PI)
+- Thayer School of Engineering, Dartmouth College
+- University of Rochester Medical Center
 
 ## Dataset Creation Date
 
@@ -46,10 +67,8 @@ are involved.
 
 ## License / Terms of Use
 
-**CC BY 4.0.** All contributed data are cleared for this license. The data are
-fully synthetic (no patient data, no consent or IRB requirements). The digital
-breast phantoms derive from the publicly available VICTRE model (U.S. FDA / NCI,
-public domain).
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en).
+Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 
@@ -98,7 +117,18 @@ public domain).
 | Time samples (T) | 2161 |
 | Record length | ~180 µs |
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/dartmouth-uct/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+Set `ZEA_FILE` at the top of the script and run `python reconstruct.py`; the
+figure at the top of this card is its output. `SOS_MAP = True` swaps the
+constant-sound-speed delays for a straight-ray integral through the
+ground-truth map.
+
 ## Dataset Format
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
 
 All data are packaged in the **`zea` HDF5 file format** (one `.hdf5` file per
 acquisition), written entirely through `zea.File.create`. Each file stores the
@@ -201,7 +231,7 @@ Not applicable — all data are synthetic. Aggregate phantom statistics:
 
 ## Data Validation
 
-A single reference reconstruction, [`reconstruct.py`](https://github.com/open-h/OpenH-RF/blob/main/datasets/dartmouth-uct/reconstruct.py), serves
+A single reference reconstruction, `reconstruct.py` (see *Processing the Dataset*), serves
 **both** sub-datasets. It builds a `zea.Pipeline` whose beamforming stage is
 zea's dedicated `zea.ops.USCTReflectivityDAS` — a round-trip time-of-flight
 Delay-And-Sum that, for every pixel, coherently sums over all transmit/receive
@@ -217,11 +247,6 @@ XZ imaging plane, so `zea.File.load_parameters` + `pipeline.prepare_parameters`
 drive the reconstruction directly. A resulting image whose bright skin boundary
 traces the ground-truth contour confirms the geometry, timing, and transmit
 parameters were recorded correctly.
-
-Set `ZEA_FILE` at the top of the script and run `python reconstruct.py`; the
-figure at the top of this card is its output. `SOS_MAP = True` swaps the
-constant-sound-speed delays for a straight-ray integral through the
-ground-truth map.
 
 ## Known Issues
 
