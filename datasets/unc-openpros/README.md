@@ -26,7 +26,7 @@ size_categories:
 
 <!-- ![Speed-of-sound map of a prostate slice, predicted by InversionNet](assets/main.png) -->
 
-*Speed of sound predicted from the limited-view waveform data of the first acquisition in [`data/3_01_P_prostate_00.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_04_P_prostate_51.hdf5) with the pretrained OpenPros InversionNet.*
+*Speed of sound predicted from the limited-view waveform data of the first acquisition in [`data/3_01_P_prostate_00.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/unc-openpros/data/3_01_P_prostate_00.hdf5) with the pretrained OpenPros InversionNet.*
 
 ## Dataset Description
 
