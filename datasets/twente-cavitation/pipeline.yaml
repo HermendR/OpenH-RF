@@ -20,3 +20,6 @@ parameters:
     - 0.01
     - 0.04
     apply_lens_correction: true
+    dynamic_range:
+    - -20
+    - 0
