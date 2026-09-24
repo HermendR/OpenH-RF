@@ -21,7 +21,9 @@ size_categories:
 
 # fullwave-abdominal-wall: Fullwave Abdominal Wall Simulation Dataset
 
-![Scan-converted B-mode through a simulated abdominal wall](assets/main.png)
+<p align="center">
+  <img src="assets/main.png" alt="Scan-converted B-mode through a simulated abdominal wall" width="480">
+</p>
 
 *Scan-converted B-mode reconstructed from the full-synthetic-aperture channel data of one simulated acquisition in [`data/`](https://huggingface.co/datasets/nvidia/OpenH-RF/tree/main/unc-liver/data): the abdominal wall layers in the near field above the liver.*
 
@@ -136,7 +138,7 @@ All maps are on the polar reconstruction grid: 640 radial samples spanning 5.0â€
 
 ### Splits
 
-`dataset_split.csv` ships alongside the HDF5 files. Splits are **grouped by phantom volume** so that no volume appears in both train and validation. This avoids anatomical leakage, which matters because many acquisitions are different 2-D slices of the same volume.
+[`assets/dataset_split.csv`](assets/dataset_split.csv) assigns every acquisition to the splits below, one row per HDF5 file (`hdf5_filename`, `volume`, and a `<split>_train` / `<split>_valid` flag pair per split). Splits are **grouped by phantom volume** so that no volume appears in both train and validation. This avoids anatomical leakage, which matters because many acquisitions are different 2-D slices of the same volume.
 
 | Split | Train | Validation |
 |---|---|---|
@@ -147,7 +149,7 @@ All maps are on the polar reconstruction grid: 640 radial samples spanning 5.0â€
 | `fold3` | 1314 | 488 |
 | `fold4` | 1328 | 465 |
 
-Note the `fold*` splits are **not** complementary: between 97 and 153 acquisitions are in neither the train nor the validation set of a given fold.
+Note the `fold*` splits are **not** complementary: between 97 and 113 acquisitions are in neither the train nor the validation set of a given fold.
 
 ## Subject Metadata
 
