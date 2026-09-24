@@ -93,7 +93,7 @@ FRAME = 0  # B-mode frame index (default: 0)
 # An acquisition is ~178 GB / 76000 frames; `None` means all of them, which is
 # only sensible on local disk. Four buffers is what the ULM parameters above
 # were tuned against.
-FRAMES = 4 * FRAMES_PER_BUFFER  # frames used for Power-Doppler and ULM
+N_FRAMES = 4 * FRAMES_PER_BUFFER  # frames used for Power-Doppler and ULM
 
 
 def build_pipeline():
@@ -384,7 +384,7 @@ def main():
     bf_head, ts_op = split_pipeline(ts_pipeline, TissueSuppression)
 
     print("Beamforming frame stack ...")
-    iq_bf = beamform_stack(ZEA_FILE, bf_head, n_frames=FRAMES)
+    iq_bf = beamform_stack(ZEA_FILE, bf_head, n_frames=N_FRAMES)
 
     print("SVD clutter filtering ...")
     iq_cf = np.concatenate(clutter_filter(iq_bf, ts_op), axis=0)

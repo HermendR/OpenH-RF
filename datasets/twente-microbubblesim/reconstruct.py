@@ -14,8 +14,6 @@ Usage:
     python reconstruct.py
 """
 
-from __future__ import annotations
-
 import os
 
 os.environ.setdefault("KERAS_BACKEND", "jax")
@@ -34,6 +32,8 @@ from utils import (
     plot_bmode,
     run_bmode,
 )
+
+HERE = Path(__file__).resolve().parent
 
 PULSE_NAMES = (
     "DPT",
@@ -59,7 +59,7 @@ PATH = "hf://nvidia/OpenH-RF/twente-microbubblesim/data/Monodispers/RFDATA00002.
 CONFIG_PATH = "hf://nvidia/OpenH-RF/twente-microbubblesim/pipeline/pipeline_track_0_DPT.yaml"
 PULSE = "DPT"  # Pulse label to reconstruct, for example REF, DPT, or L1.7
 # (must match the track in CONFIG_PATH; track 0 is DPT)
-OUTPUT = None  # Output PNG filename; otherwise uses population and pulse names
+OUT = None  # Output PNG filename; otherwise uses population and pulse names
 DYNAMIC_RANGE = (-30.0, 0.0)  # Display dynamic range in dB
 SHOW_BUBBLES = True  # Draw the red bubble ground-truth overlay
 
@@ -79,14 +79,12 @@ def default_config_path(pulse: str) -> Path:
     """Return the saved pipeline for the selected pulse track."""
 
     track_index = PULSE_TO_TRACK[pulse]
-    return (
-        Path(__file__).resolve().parent / "pipeline" / f"pipeline_track_{track_index}_{pulse}.yaml"
-    )
+    return HERE / "pipeline" / f"pipeline_track_{track_index}_{pulse}.yaml"
 
 
 def default_output_path(path: Path, pulse: str) -> Path:
     population = population_name(path)
-    return Path(__file__).resolve().parent / f"{population}_{pulse}.png"
+    return HERE / "assets" / f"{population}_{pulse}.png"
 
 
 def main() -> None:
@@ -98,7 +96,7 @@ def main() -> None:
     if not input_path.lower().endswith(".hdf5"):
         raise ValueError("PATH must point directly to a .hdf5 acquisition file")
     track_index = PULSE_TO_TRACK[PULSE]
-    output_path = Path(OUTPUT) if OUTPUT else default_output_path(Path(input_path), pulse=PULSE)
+    output_path = Path(OUT) if OUT else default_output_path(Path(input_path), pulse=PULSE)
 
     file, parameters, image, custom = run_bmode(
         input_path,

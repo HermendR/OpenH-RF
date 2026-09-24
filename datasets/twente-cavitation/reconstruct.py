@@ -99,9 +99,6 @@ def build_pipeline() -> Pipeline:
 
 
 def main():
-    global OUTPUT
-    if OUTPUT is None:
-        OUTPUT = Path(Path(INPUT).stem + ".png")
 
     zea.init_device(device=DEVICE, verbose=False)
 
@@ -114,9 +111,9 @@ def main():
     config = Config.from_path(str(CONFIG))
     pipeline = Pipeline.from_config(config)
 
-    with File(str(INPUT)) as f:
+    with File(str(ZEA_FILE)) as f:
         parameters = f.load_parameters(**config.parameters)
-        raw = f.data.raw_data[:FRAMES]  # (n_frames, n_tx, n_ax, n_el, 1)
+        raw = f.data.raw_data[:N_FRAMES]  # (n_frames, n_tx, n_ax, n_el, 1)
 
     # Passive-acquisition overrides (see module docstring).
     parameters["tx_apodizations"] = np.ones_like(np.asarray(parameters["tx_apodizations"]))
@@ -143,10 +140,11 @@ def main():
     ax.set_ylabel("Z (mm)")
     cax = make_axes_locatable(ax).append_axes("right", size="5%", pad=0.05)
     fig.colorbar(im, cax=cax, label="dB")
-    plt.savefig(str(OUTPUT), bbox_inches="tight", dpi=100)
+    Path(OUT).parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(str(OUT), bbox_inches="tight", dpi=100)
     plt.close()
 
-    print(f"Saved          : {OUTPUT}")
+    print(f"Saved          : {OUT}")
 
 if __name__ == "__main__":
     main()

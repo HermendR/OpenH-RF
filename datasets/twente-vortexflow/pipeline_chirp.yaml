@@ -1,3 +1,8 @@
+parameters:
+    xlims: [-0.08, 0.08]   # matches reconstruct.py
+    zlims: [0.05, 0.10]
+    grid_size_x: 1600
+    grid_size_z: 700
 pipeline:
     operations:
     -   name: keras.ops.cast

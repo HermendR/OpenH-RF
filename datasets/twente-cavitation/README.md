@@ -1,5 +1,6 @@
 ---
-pretty_name: "OpenH-RF —  Hermen de Roo / Passive cavitation detection"
+name: twente-cavitation
+pretty_name: "Twente Passive Cavitation Detection of Flowing Microbubbles"
 license: cc-by-4.0
 task_categories:
   - image-classification
@@ -21,29 +22,38 @@ The collected data is for cavitation mapping of microbubbles, insonified with fo
 
 ![A top view schematic of the experimental setup.](Schematic_setup.png?raw=true)
 
-
 ## Dataset Contributor(s)
-Hermen de Roo
-Michel Versluis
-Guillaume Lajoinie (contact email: g.p.r.lajoinie@utwente.nl)
 
+- Hermen de Roo
+- Michel Versluis
+- Guillaume Lajoinie <g.p.r.lajoinie@utwente.nl> (contact)
 
 ## Dataset Creation Date
 Data recorded on 01/19/2026. Dataset created on 07/09/2026.
 
 ## License / Terms of Use
-I confirm that the data is cleared for use under CC BY 4.0.
+
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode.en). Retain attribution and identify modifications when reusing the data.
 
 ## Intended Usage
 The dataset contains data over a large pressure range, from very low pressures up to the very high pressures used in therapeutic ultrasound. With this data one can quantify the treatment threshold and treatment effects over this wide range. The dataset also includes data for different levels of perfusion by varying the flowrate, from which the effect of perfusion on treatment efficacy can be studied. The data is intended to be processed with passive cavitation detection algorithms.
 
 ## Dataset Characterization
 - **Data Collection Method:** phantom
-- **Labeling Method:** N/A 
+- **Labeling Method:** N/A
 - **Acquisition system:** Verasonics Vantage 256, L11-4v transducer. 128 elements, 7.24MHz center frequency, 27.778 MHz sampling rate
 
+## Processing the Dataset
+
+The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/twente-cavitation/reconstruct.py) as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub.
+
+Set `ZEA_FILE` at the top of the script to pick an acquisition and `N_FRAMES` to set how many frames are averaged; the map is written to `assets/<file>.png`.
+
 ## Dataset Format
-.zea file format. No preprocessing is applied. 
+
+[zea v0.1.6](https://github.com/tue-bmd/zea)
+
+.zea file format. No preprocessing is applied.
 
 ## Dataset Quantification
 
@@ -54,8 +64,7 @@ The dataset contains data over a large pressure range, from very low pressures u
 - **Stored HDF5 size:** 10.85 GB (10,850,533,376 bytes).
 - All recordings were taken under identical conditions, except for the driving pressure and flowrate of the microbubble solution through the channel.
 
-Each acquisition is one zea HDF5 file with a single track (`tracks/track_0`). The
-per-frame channel data plus the scan/probe fields needed to reconstruct it are:
+Each acquisition is one zea HDF5 file with a single track (`tracks/track_0`). The per-frame channel data plus the scan/probe fields needed to reconstruct it are:
 
 | Field | Shape | dtype | Units | Description |
 |---|---|---|---|---|
@@ -74,11 +83,9 @@ per-frame channel data plus the scan/probe fields needed to reconstruct it are:
 | `scan/tgc_gain_curve` | (16384,) | float32 | a.u. | Time-gain-compensation curve applied along the axial dimension. |
 | `tracks/track_0/transmit_only` | scalar | bool | — | False (the array receives). |
 
-> **Note.** The table below is the **acquisition matrix** — it lists which files exist
-> and under what driving pressure / flowrate, not the internal layout of a sample.
+> **Note.** The table below is the **acquisition matrix** — it lists which files exist and under what driving pressure / flowrate, not the internal layout of a sample.
 
-Files are named `cavitation_bubbles_<pressure>kPa_<flowrate>mL.hdf5`, where
-`<flowrate>` is the microbubble flowrate in mL/min (`01` = 0.1, `05` = 0.5, `2` = 2).
+Files are named `cavitation_bubbles_<pressure>kPa_<flowrate>mL.hdf5`, where `<flowrate>` is the microbubble flowrate in mL/min (`01` = 0.1, `05` = 0.5, `2` = 2).
 
 | Name | Acoustic driving pressure [kPa]| Microbubble flowrate [mL/min] |
 |---                                    |---   |---  |
@@ -102,7 +109,6 @@ Files are named `cavitation_bubbles_<pressure>kPa_<flowrate>mL.hdf5`, where
 | cavitation_bubbles_500kPa_2mL.hdf5    | 500  | 2   |
 | cavitation_bubbles_1000kPa_2mL.hdf5   | 1000 | 2   |
 
-
 ## Subject Metadata
 Only one phantom was used. This is a phantom made of PVCp with a single flow channel ~200 micrometer diameter. The used scanner is a Verasonics Vantage 256 with a L11-4v transducer.
 
@@ -114,4 +120,7 @@ An reconstruction pipeline can be found in pipeline.yaml. The script reconstruct
 No known issues.
 
 ## Ethical Considerations
+
 This is phantom acquisition data, hence no human-subject IRB/HIPAA approval is required.
+
+The contributors confirm that the data is cleared for use under CC BY 4.0.
