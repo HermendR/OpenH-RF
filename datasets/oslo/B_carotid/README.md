@@ -19,6 +19,10 @@ size_categories:
 
 # USTB - In-vivo Carotid (Verasonics L7-4)
 
+![Focused B-mode of a carotid cross-section](assets/hero.png)
+
+*First frame of [`L7_FI_carotid_cross_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/B_carotid/L7_FI_carotid_cross_1.hdf5), reconstructed from the raw channel data with `reconstruct.py`.*
+
 ## Dataset Description
 
 Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** (see the [collection card](../README.md)).
@@ -53,7 +57,17 @@ Generalized reconstruction and adaptive beamforming of vascular ultrasound (RFP 
 
 ## Processing the Dataset
 
-The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/oslo/reconstruct.py) at the root of this collection, as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline*.yaml` definitions at the collection root and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub; `parameters.yaml` picks the pipeline, display window and dynamic range per acquisition (see the [collection card](../README.md#processing-the-dataset)).
+The example acquisition can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/oslo/B_carotid/L7_FI_carotid_cross_1.hdf5 \
+  --config hf://nvidia/OpenH-RF/oslo/B_carotid/pipeline.yaml
+```
+
+This `pipeline.yaml` holds the pipeline and display window of that acquisition. Alternatively, all acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/oslo/reconstruct.py) at the root of this collection, as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline*.yaml` definitions at the collection root and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub; `parameters.yaml` picks the pipeline, display window and dynamic range per acquisition (see the [collection card](../README.md#processing-the-dataset)).
 
 ## Dataset Format
 

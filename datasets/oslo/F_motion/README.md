@@ -19,6 +19,10 @@ size_categories:
 
 # USTB - Motion Estimation (SWE / ARFI, Verasonics L7-4)
 
+![Shear waves travelling outward after an acoustic push](assets/hero.gif)
+
+*First push-track sequence (frames 1-49) of [`SWE_L7_type_III.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/F_motion/SWE_L7_type_III.hdf5): B-mode (left) and axial displacement between consecutive frames (right), a lag-one autocorrelation (Kasai) estimate on the IQ beamformed with `pipeline.yaml`. The displacement estimate is not part of the reference pipeline.*
+
 ## Dataset Description
 
 Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** (see the [collection card](../README.md)).
@@ -53,7 +57,17 @@ Motion estimation (RFP task 6.4): shear-wave velocity estimation, ARFI displacem
 
 ## Processing the Dataset
 
-The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/oslo/reconstruct.py) at the root of this collection, as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline*.yaml` definitions at the collection root and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub; `parameters.yaml` picks the pipeline, display window and dynamic range per acquisition (see the [collection card](../README.md#processing-the-dataset)). These plane-wave tracking acquisitions use the non-focused `compound` pipeline, and the reference reconstruction shows a single tracking frame.
+The example acquisition can be processed with the `pipeline.yaml` definition in this folder and the [zea library](https://github.com/tue-bmd/zea).
+
+`zea` streams the data from the Hugging Face Hub and processes it according to the pipeline. You can try it out with the following command:
+
+```bash
+zea process \
+  --dataset hf://nvidia/OpenH-RF/oslo/F_motion/SWE_L7_type_III.hdf5 \
+  --config hf://nvidia/OpenH-RF/oslo/F_motion/pipeline.yaml
+```
+
+This `pipeline.yaml` holds the pipeline and display window of that acquisition. Alternatively, all acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/oslo/reconstruct.py) at the root of this collection, as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline*.yaml` definitions at the collection root and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub; `parameters.yaml` picks the pipeline, display window and dynamic range per acquisition (see the [collection card](../README.md#processing-the-dataset)). These plane-wave tracking acquisitions use the non-focused `compound` pipeline, and the reference reconstruction shows a single tracking frame.
 
 ## Dataset Format
 

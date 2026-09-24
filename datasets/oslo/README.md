@@ -18,9 +18,9 @@ size_categories:
 
 # UltraSound ToolBox (USTB) Channel Capture Collection
 
-![Focused sector B-mode of an apical four-chamber view](assets/Verasonics_P2-4_apical_four_chamber_subject_1_zea_bmode.png)
+![B-modes from five of the six sub-datasets: in-vivo cardiac, in-vivo carotid, Verasonics and Alpinion phantoms, and simulation](assets/hero.png)
 
-*Apical four-chamber view reconstructed from the raw channel data, [`A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1.hdf5).*
+*First frames reconstructed from the raw channel data with `reconstruct.py`. Top: [`A_cardiac/Verasonics_P2-4_parasternal_long_subject_1`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/A_cardiac/Verasonics_P2-4_parasternal_long_subject_1.hdf5), [`A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1.hdf5), [`C_verasonics_phantom/FI_P4_cysts_center`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/C_verasonics_phantom/FI_P4_cysts_center.hdf5). Bottom: [`B_carotid/L7_FI_carotid_cross_1`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/B_carotid/L7_FI_carotid_cross_1.hdf5), [`C_verasonics_phantom/L7_FI_Verasonics_CIRS`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/C_verasonics_phantom/L7_FI_Verasonics_CIRS.hdf5), [`D_alpinion_phantom/Alpinion_L3-8_CPWC_hypoechoic`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/D_alpinion_phantom/Alpinion_L3-8_CPWC_hypoechoic.hdf5), [`E_simulation/PICMUS_numerical_calib_v2`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/E_simulation/PICMUS_numerical_calib_v2.hdf5). Panels are scaled to a common height per row, not to a common physical scale.*
 
 ## Dataset Description
 
@@ -57,7 +57,7 @@ Total: **39 acquisitions**, 8.61 GB of stored HDF5 data.
 
 ## Processing the Dataset
 
-Every acquisition is reconstructable from the file alone — all acquisition parameters live in the zea `/scan` and `/probe` groups. The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/oslo/reconstruct.py), as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline*.yaml` and `parameters.yaml` definitions in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub: set `PATHS` to the acquisition to reconstruct (default: the apical four-chamber cardiac scan above) and `REFOCUS = True` to also emit the REFoCUS variant. See [Reconstruction Details](#reconstruction-details) for how each acquisition's pipeline is chosen.
+Every acquisition is reconstructable from the file alone — all acquisition parameters live in the zea `/scan` and `/probe` groups. The acquisitions can be processed with the `reconstruct.py` [script](https://github.com/open-h/OpenH-RF/blob/main/datasets/oslo/reconstruct.py), as provided in the [OpenH-RF GitHub repository](https://github.com/open-h/OpenH-RF), together with the `pipeline*.yaml` and `parameters.yaml` definitions in this folder and the [zea library](https://github.com/tue-bmd/zea). The script streams the data from the Hugging Face Hub: set `PATHS` to the acquisition to reconstruct (default: the apical four-chamber cardiac scan above) and `REFOCUS = True` to also emit the REFoCUS variant. See [Reconstruction Details](#reconstruction-details) for how each acquisition's pipeline is chosen. Each sub-dataset folder also holds a `pipeline.yaml` for its example acquisition, so it can be rendered with a single `zea process` command (see the sub-dataset cards).
 
 ## Dataset Format
 
