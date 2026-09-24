@@ -19,6 +19,10 @@ size_categories:
 
 # USTB - In-vivo Carotid (Verasonics L7-4)
 
+![Focused B-mode of a carotid cross-section](assets/hero.png)
+
+*First frame of [`L7_FI_carotid_cross_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/B_carotid/L7_FI_carotid_cross_1.hdf5), reconstructed from the raw channel data with `reconstruct.py`.*
+
 ## Dataset Description
 
 Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** (see the [collection card](../README.md)).

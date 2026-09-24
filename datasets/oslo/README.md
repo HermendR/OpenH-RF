@@ -18,9 +18,9 @@ size_categories:
 
 # UltraSound ToolBox (USTB) Channel Capture Collection
 
-![Focused sector B-mode of an apical four-chamber view](assets/Verasonics_P2-4_apical_four_chamber_subject_1_zea_bmode.png)
+![B-modes from five of the six sub-datasets: in-vivo cardiac, in-vivo carotid, Verasonics and Alpinion phantoms, and simulation](assets/hero.png)
 
-*Apical four-chamber view reconstructed from the raw channel data, [`A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1.hdf5).*
+*First frames reconstructed from the raw channel data with `reconstruct.py`. Top: [`A_cardiac/Verasonics_P2-4_parasternal_long_subject_1`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/A_cardiac/Verasonics_P2-4_parasternal_long_subject_1.hdf5), [`A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/A_cardiac/Verasonics_P2-4_apical_four_chamber_subject_1.hdf5), [`C_verasonics_phantom/FI_P4_cysts_center`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/C_verasonics_phantom/FI_P4_cysts_center.hdf5). Bottom: [`B_carotid/L7_FI_carotid_cross_1`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/B_carotid/L7_FI_carotid_cross_1.hdf5), [`C_verasonics_phantom/L7_FI_Verasonics_CIRS`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/C_verasonics_phantom/L7_FI_Verasonics_CIRS.hdf5), [`D_alpinion_phantom/Alpinion_L3-8_CPWC_hypoechoic`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/D_alpinion_phantom/Alpinion_L3-8_CPWC_hypoechoic.hdf5), [`E_simulation/PICMUS_numerical_calib_v2`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/E_simulation/PICMUS_numerical_calib_v2.hdf5). Panels are scaled to a common height per row, not to a common physical scale.*
 
 ## Dataset Description
 

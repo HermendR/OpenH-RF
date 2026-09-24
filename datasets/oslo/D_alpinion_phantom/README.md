@@ -18,6 +18,10 @@ size_categories:
 
 # USTB - Phantom (Alpinion L3-8)
 
+![Plane-wave compounded B-mode of hypoechoic cysts](assets/hero.png)
+
+*First frame of [`Alpinion_L3-8_CPWC_hypoechoic.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/D_alpinion_phantom/Alpinion_L3-8_CPWC_hypoechoic.hdf5), reconstructed from the raw channel data with `reconstruct.py`.*
+
 ## Dataset Description
 
 Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** (see the [collection card](../README.md)).

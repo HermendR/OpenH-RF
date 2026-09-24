@@ -18,6 +18,10 @@ size_categories:
 
 # USTB - In-vivo Cardiac (Verasonics P4-2)
 
+![Cine loop of a parasternal long-axis view](assets/hero.gif)
+
+*All 50 frames of [`Verasonics_P2-4_parasternal_long_subject_1.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/A_cardiac/Verasonics_P2-4_parasternal_long_subject_1.hdf5), reconstructed from the raw channel data with `reconstruct.py`.*
+
 ## Dataset Description
 
 Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** (see the [collection card](../README.md)).

@@ -18,6 +18,10 @@ size_categories:
 
 # USTB - Phantom (Verasonics L7-4 / P4)
 
+![Phased-array sector B-mode of a cyst phantom](assets/hero.png)
+
+*First frame of [`FI_P4_cysts_center.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/C_verasonics_phantom/FI_P4_cysts_center.hdf5), reconstructed from the raw channel data with `reconstruct.py`.*
+
 ## Dataset Description
 
 Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** (see the [collection card](../README.md)).

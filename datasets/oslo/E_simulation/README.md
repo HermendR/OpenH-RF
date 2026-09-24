@@ -19,6 +19,10 @@ size_categories:
 
 # USTB - Simulation (Field II)
 
+![B-mode of the PICMUS numerical phantom](assets/hero.png)
+
+*First frame of [`PICMUS_numerical_calib_v2.hdf5`](https://huggingface.co/datasets/nvidia/OpenH-RF/blob/main/oslo/E_simulation/PICMUS_numerical_calib_v2.hdf5), reconstructed from the raw channel data with `reconstruct.py`.*
+
 ## Dataset Description
 
 Part of the **UltraSound ToolBox (USTB) Channel Capture Collection** (see the [collection card](../README.md)).
