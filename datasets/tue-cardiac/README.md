@@ -178,12 +178,12 @@ The source tensor order is preserved as `(n_frames, n_tx, n_ax, n_el, n_ch) = (1
 
 Suggested citation for the dataset:
 
-> Penninga, S., & van Sloun, R. (2026). *TU/e Cardiac RF Multi-Transmit* [Data set]. Eindhoven University of Technology, OpenH-RF.
+> Penninga, S. W., & van Sloun, R. J. G. (2026). *TU/e Cardiac RF Multi-Transmit* [Data set]. Eindhoven University of Technology, OpenH-RF.
 
 ```bibtex
 @misc{penninga_tue_cardiac_plax_2026,
   title        = {TU/e Cardiac PLAX Multi-Transmit RF},
-  author       = {Penninga, Simon and van Sloun, Ruud},
+  author       = {Penninga, Simon W. and van Sloun, Ruud J. G.},
   year         = {2026},
   publisher    = {Biomedical Diagnostics Lab, Eindhoven University of Technology},
   howpublished = {OpenH-RF dataset},
